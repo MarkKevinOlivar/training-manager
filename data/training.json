@@ -209,12 +209,12 @@
     },
     {
       "id": "idtheft",
+      "order": 5,
       "name": "Ignite New Hire Training",
       "phase": "p4",
       "duration": 2,
       "required": 2,
-      "description": "",
-      "order": 5
+      "description": ""
     },
     {
       "id": "c1778607151419",
