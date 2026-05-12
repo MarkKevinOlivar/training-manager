@@ -119,7 +119,7 @@
     },
     {
       "id": "c1778609900411",
-      "order": 4,
+      "order": 5,
       "name": "Classroom | NEC Training",
       "phase": "p2",
       "duration": 1,
@@ -160,7 +160,7 @@
       "duration": 2,
       "required": 4,
       "description": "",
-      "order": 5
+      "order": 4
     }
   ],
   "trainees": [
