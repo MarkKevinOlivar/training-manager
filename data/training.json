@@ -333,6 +333,12 @@
           "type": "Nesting",
           "startDate": "2026-04-14",
           "endDate": "2026-05-15"
+        },
+        {
+          "label": "Lot-Level (Non-permit)",
+          "type": "Nesting",
+          "startDate": "2026-05-07",
+          "endDate": "2026-05-28"
         }
       ],
       "code": "JCX"
