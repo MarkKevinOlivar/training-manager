@@ -66,8 +66,8 @@
     },
     {
       "id": "nest-ip",
+      "name": "Nesting",
       "phase": "p2",
-      "name": "Nesting Ã¢ÂÂ IPlot (Wks 1Ã¢ÂÂ4)",
       "duration": 4,
       "required": 4,
       "description": "3Ã¢ÂÂ7 designs/day progression"
