@@ -601,6 +601,16 @@
           "completionDate": "",
           "notes": "",
           "trainer": ""
+        },
+        {
+          "courseId": "pv",
+          "startDate": "2026-04-22",
+          "endDate": "2026-04-23",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
         }
       ]
     }
