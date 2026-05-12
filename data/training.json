@@ -351,10 +351,10 @@
     },
     {
       "id": "p4",
-      "name": "Phase 4: Compliance",
-      "short": "Phase 4",
-      "color": "#7F77DD",
+      "name": "Phase 1: Compliance",
+      "short": "Phase 1",
       "order": 1,
+      "color": "#7f77dd",
       "description": "Compliance and security self-paced courses"
     }
   ]
