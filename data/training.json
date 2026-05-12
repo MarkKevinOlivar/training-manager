@@ -173,12 +173,12 @@
     },
     {
       "id": "c1778615669090",
+      "order": 5,
       "name": "Ignite | Social Media Security Awareness",
       "phase": "p4",
       "duration": 1,
       "required": 2,
-      "description": "",
-      "order": 5
+      "description": "https://ignite.talentlms.com/plus/my/training/897/units/9430"
     },
     {
       "id": "c1778615697746",
