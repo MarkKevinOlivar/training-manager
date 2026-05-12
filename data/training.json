@@ -48,7 +48,7 @@
     {
       "id": "ipermit-ess",
       "order": 2,
-      "name": "IPermit ESS",
+      "name": "Individual Permit Package - ESS (iPermit)",
       "phase": "p2",
       "duration": 1,
       "required": 4,
