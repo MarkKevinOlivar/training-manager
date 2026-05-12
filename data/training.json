@@ -2,12 +2,12 @@
   "courses": [
     {
       "id": "pv",
-      "name": "PV Fundamentals",
+      "order": 6,
+      "name": "Classroom | PV Fundamentals",
       "phase": "p4",
       "duration": 1,
       "required": 2,
-      "description": "Intro to PV systems end-to-end",
-      "order": 6
+      "description": "Intro to PV systems end-to-end"
     },
     {
       "id": "nh",
