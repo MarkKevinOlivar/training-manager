@@ -145,15 +145,6 @@
       "order": 5
     },
     {
-      "id": "mppp-mf",
-      "name": "MPPP (MF)",
-      "phase": "p2",
-      "duration": 2,
-      "required": 4,
-      "description": "Master plan permit package MF",
-      "order": 6
-    },
-    {
       "id": "fse",
       "name": "Future Solar Exhibit",
       "phase": "p1",
