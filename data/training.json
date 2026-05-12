@@ -84,7 +84,7 @@
     {
       "id": "ssp",
       "order": 6,
-      "name": "Solar Site Plan",
+      "name": "Solar Site Plan (SSP)",
       "phase": "p1",
       "duration": 1,
       "required": 4,
