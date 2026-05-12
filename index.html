@@ -575,12 +575,10 @@ function detail(el){
   const t=S.trainees.find(x=>x.id===trainee);
   if(!t){trainee=null;return trainees(el)}
   const p=prog(t),plan=t.plan||[],bph_=bph(plan);
-  const allDates=plan.flatMap(e=>[e.startDate,e.endDate]).filter(Boolean).sort();
-  const ganttStart=allDates[0]||today();
-  const ganttEnd=allDates[allDates.length-1]||today();
-  let h='';
+  const blocks=t.blocks||[]; // nesting/practice overlay blocks
 
-  // Header
+  // ── Header ──────────────────────────────────────────────────────
+  let h='';
   h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">';
   h+='<button class="btn sm bg_" onclick="back()">&#8592; All trainees</button>';
   h+='<div class="av av-l">'+ini(t.name)+'</div>';
@@ -596,79 +594,214 @@ function detail(el){
   h+='<button class="btn sm bs" data-tid="'+t.id+'" onclick="exportMemo(this.dataset.tid)">&#8595; Export memo</button>';
   h+='</div>';
 
-  // Action bar
+  // ── Action bar ──────────────────────────────────────────────────
   if(editMode){
     const inRoster=!!(S.members||[]).find(x=>x.id===t.id);
     h+='<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">';
     h+='<button class="btn bp sm" data-tid="'+t.id+'" onclick="openAssign(this.dataset.tid)">+ Assign courses &amp; dates</button>';
+    h+='<button class="btn sm" data-tid="'+t.id+'" onclick="openBlockModal(this.dataset.tid)">+ Add nesting/practice</button>';
     if(plan.length){
       h+='<button class="btn sm" data-tid="'+t.id+'" onclick="openDuplicate(this.dataset.tid)">&#x2398; Duplicate plan</button>';
       h+='<button class="btn sm" data-tid="'+t.id+'" onclick="clearPlan(this.dataset.tid)">&#128465; Clear plan</button>';
     }
     if(inRoster) h+='<button class="btn sm" style="background:var(--ltgreen);color:var(--dkgreen);border-color:#97C459" onclick="go(\'roster\')">&#10003; In team roster</button>';
-    else h+='<button class="btn sm" data-tid="'+t.id+'" onclick="promoteToRoster(this.dataset.tid)" title="Move this trainee to the Team Roster">&#11014; Promote to roster</button>';
+    else h+='<button class="btn sm" data-tid="'+t.id+'" onclick="promoteToRoster(this.dataset.tid)">&#11014; Promote to roster</button>';
     h+='</div>';
   }
 
-  if(!plan.length){
+  if(!plan.length&&!blocks.length){
     h+='<div class="card"><div class="empty"><div class="ei">&#128197;</div>No courses assigned yet.<br>';
     h+=editMode?'Click "+ Assign courses &amp; dates" to build this trainee\'s schedule.':'No training plan set up yet.';
     h+='</div></div>';
     el.innerHTML=h; return;
   }
 
-  // Gantt
-  const gStart=new Date(ganttStart+'T12:00:00');
+  // ── Build daily Gantt ────────────────────────────────────────────
+  const allDates=plan.flatMap(e=>[e.startDate,e.endDate]).filter(Boolean);
+  blocks.forEach(b=>{if(b.startDate)allDates.push(b.startDate);if(b.endDate)allDates.push(b.endDate)});
+  allDates.sort();
+  const ganttStart=allDates[0]||today();
+  const ganttEnd=allDates[allDates.length-1]||today();
+
+  // Build array of all days
+  const days=[];
+  const cur=new Date(ganttStart+'T12:00:00');
   const gEnd=new Date(ganttEnd+'T12:00:00');
-  const dayOfWeek=gStart.getDay();
-  const monday=new Date(gStart);monday.setDate(gStart.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
-  const weeks=[];let cur=new Date(monday);
-  while(cur<=gEnd){weeks.push(new Date(cur));cur.setDate(cur.getDate()+7)}
-  if(weeks.length>52) weeks.splice(52);
+  while(cur<=gEnd&&days.length<180){
+    days.push(new Date(cur));
+    cur.setDate(cur.getDate()+1);
+  }
+
   const d2t=d=>d?new Date(d+'T12:00:00').getTime():null;
-  const wkLabel=d=>{
-    const end=new Date(d);end.setDate(d.getDate()+6);
-    const s=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    const e=end.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    return s+'\u2013'+e;
+  const dayMs=86400000;
+  const DAY_W=24; // px per day column
+  const NAME_W=160; // px for course name col
+
+  // Type colors for blocks
+  const BLOCK_COLORS={
+    'Nesting':  {bg:'rgba(29,158,117,0.18)',border:'#1D9E75',text:'#0a5c42',label:'Nesting'},
+    'Practice': {bg:'rgba(239,159,39,0.18)', border:'#EF9F27',text:'#7D4800',label:'Practice'},
+    'Other':    {bg:'rgba(127,119,221,0.18)',border:'#7F77DD',text:'#3C3489',label:'Other'},
   };
 
-  h+='<div class="card" style="padding:14px 16px;margin-bottom:12px">';
-  h+='<div class="chd"><span class="ct">Training schedule &mdash; Gantt</span></div>';
-  h+='<div class="go"><table class="gt"><thead><tr><th class="nc">Course</th>';
-  weeks.forEach(function(w){ h+='<th>'+wkLabel(w)+'</th>'; });
-  h+='</tr></thead><tbody>';
+  // Build day headers grouped by month
+  // Group consecutive days by month for a two-row header
+  const months=[];
+  let curMonth=null,curCount=0,curStart=0;
+  days.forEach((d,i)=>{
+    const mk=d.getFullYear()+'-'+d.getMonth();
+    if(mk!==curMonth){
+      if(curMonth!==null) months.push({label:days[curStart].toLocaleDateString('en-US',{month:'short',year:'numeric'}),count:curCount,start:curStart});
+      curMonth=mk;curCount=1;curStart=i;
+    } else curCount++;
+  });
+  if(curMonth!==null) months.push({label:days[curStart].toLocaleDateString('en-US',{month:'short',year:'numeric'}),count:curCount,start:curStart});
 
+  const totalW=NAME_W+days.length*DAY_W;
+
+  // ── Render Gantt ─────────────────────────────────────────────────
+  h+='<div class="card" style="padding:14px 16px;margin-bottom:12px">';
+  h+='<div class="chd"><span class="ct">Training schedule &mdash; Daily Gantt</span>';
+  if(editMode&&blocks.length) h+='<button class="btn sm" data-tid="'+t.id+'" onclick="openBlockModal(this.dataset.tid)" style="font-size:11px">+ Add block</button>';
+  h+='</div>';
+
+  h+='<div class="go" style="overflow-x:auto">';
+  h+='<div style="position:relative;min-width:'+totalW+'px">';
+
+  // ── Overlay blocks (rendered as absolute positioned divs) ─────────
+  // We'll render them as table cells shading — but since HTML tables don't support
+  // column spans across rows easily, we use a canvas-like div approach:
+  // The Gantt is built as a CSS grid where overlays are position:absolute
+
+  // Build the gantt as a div grid instead of table for overlay support
+  h+='<div style="display:grid;grid-template-columns:'+NAME_W+'px repeat('+days.length+','+DAY_W+'px)">';
+
+  // Month header row
+  h+='<div style="grid-column:1;background:var(--navy);color:#fff;font-size:10px;font-weight:700;padding:4px 6px;border-right:1px solid rgba(255,255,255,.1)">Course</div>';
+  months.forEach(function(m){
+    h+='<div style="grid-column:span '+m.count+';background:var(--navy);color:#fff;font-size:10px;font-weight:600;padding:4px 4px;border-left:1px solid rgba(255,255,255,.2);text-align:center;overflow:hidden;white-space:nowrap">'+m.label+'</div>';
+  });
+
+  // Day number header row
+  h+='<div style="grid-column:1;background:#27518A;color:#fff;font-size:9px;padding:3px 6px;border-right:1px solid rgba(255,255,255,.1)"></div>';
+  days.forEach(function(d){
+    const isWeekend=d.getDay()===0||d.getDay()===6;
+    const isToday=d.toISOString().slice(0,10)===today();
+    h+='<div style="background:'+(isToday?'#E67E22':isWeekend?'#1a3055':'#27518A')+';color:'+(isToday?'#fff':'rgba(255,255,255,.75)')+';font-size:8px;font-weight:'+(isToday?'700':'400')+';padding:2px 1px;text-align:center;border-left:1px solid rgba(255,255,255,.08)">'+d.getDate()+'</div>';
+  });
+
+  // ── Phase + course rows ──────────────────────────────────────────
+  let rowCount=0;
   getPhases().forEach(function(ph){
-    const rows=bph_[ph.id]||[];if(!rows.length)return;
-    h+='<tr class="gph"><td class="nc" colspan="'+(weeks.length+1)+'" style="color:'+ph.color+';padding-left:10px">'+ph.name+'</td></tr>';
+    const rows=bph_[ph.id]||[];
+    if(!rows.length) return;
+
+    // Phase label row
+    h+='<div style="grid-column:1 / -1;background:'+ph.color+'22;color:'+ph.color+';font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-top:1px solid '+ph.color+'44">'+ph.name+'</div>';
+
     rows.forEach(function(row){
       const c=row.c,e=row.e;
+      rowCount++;
+      const alt=rowCount%2===1;
+      const rowBg=alt?'var(--bg)':'var(--bg2)';
       const bc=e.result==='pass'?'#1D9E75':e.result==='fail'?'#E24B4A':e.result==='ip'?'#EF9F27':ph.color;
-      const sW=d2t(e.startDate),eW=d2t(e.endDate||e.startDate);
-      h+='<tr><td class="nc" title="'+c.name+'">'+c.name+'</td>';
-      weeks.forEach(function(wk,wi){
-        const wkS=wk.getTime(),wkE=wkS+6*86400000;
-        const inRange=sW&&eW&&!(eW<wkS||sW>wkE);
+      const st=d2t(e.startDate),en=d2t(e.endDate||e.startDate);
+
+      // Course name cell
+      h+='<div style="background:'+rowBg+';font-size:11px;color:var(--text);padding:4px 6px;border-top:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:sticky;left:0;z-index:1;border-right:1px solid var(--border2)" title="'+c.name+'">'+c.name+'</div>';
+
+      // Day cells
+      days.forEach(function(d){
+        const dt=d.getTime();
+        const inRange=st&&en&&dt>=st&&dt<=en;
+        const isFirst=inRange&&dt===st;
+        const isLast=inRange&&dt===en;
+        const isWeekend=d.getDay()===0||d.getDay()===6;
+        const isToday=d.toISOString().slice(0,10)===today();
+        let bg=rowBg;
+        if(isWeekend) bg=alt?'#f0f0f0':'#e8e8e8';
+        if(isToday) bg='#FEF9E7';
+
         if(inRange){
-          const isFirst=wi===0||sW>=wk.getTime();
-          const isLast=wi===weeks.length-1||!weeks[wi+1]||d2t(e.endDate||e.startDate)<weeks[wi+1].getTime();
           const r=isFirst&&isLast?'3px':isFirst?'3px 0 0 3px':isLast?'0 3px 3px 0':'0';
-          h+='<td class="bc"><div class="bar" style="background:'+bc+';border-radius:'+r+';opacity:.88"></div></td>';
-        } else h+='<td></td>';
+          h+='<div style="background:'+bg+';border-top:1px solid var(--border);padding:2px 1px">';
+          h+='<div style="height:18px;background:'+bc+';border-radius:'+r+';opacity:.88"></div>';
+          h+='</div>';
+        } else {
+          h+='<div style="background:'+bg+';border-top:1px solid var(--border);height:26px'+(isToday?';border-left:1.5px solid #E67E22;border-right:1.5px solid #E67E22':'')+'"></div>';
+        }
       });
-      h+='</tr>';
     });
   });
 
-  h+='</tbody></table></div>';
+  h+='</div>'; // end grid
+
+  // ── Overlay blocks as absolute-positioned strips ──────────────────
+  // These need to be done differently — we'll add a separate overlay row section
+  if(blocks.length){
+    // Add block rows at top of gantt as special rows
+    h+='</div>'; // close relative div — we'll reopen below after blocks section
+    h+='<div style="margin-top:6px;border-top:1px solid var(--border);padding-top:6px">';
+    h+='<div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Nesting &amp; Practice periods</div>';
+    h+='<div style="display:grid;grid-template-columns:'+NAME_W+'px repeat('+days.length+','+DAY_W+'px)">';
+
+    // Header
+    h+='<div style="font-size:10px;color:var(--text3);padding:3px 6px"></div>';
+    days.forEach(function(d){
+      const isWeekend=d.getDay()===0||d.getDay()===6;
+      h+='<div style="background:'+(isWeekend?'var(--bg3)':'var(--bg2)')+';border-left:1px solid var(--border);height:6px"></div>';
+    });
+
+    blocks.forEach(function(b,bi){
+      const cfg=BLOCK_COLORS[b.type]||BLOCK_COLORS['Other'];
+      const st=d2t(b.startDate),en=d2t(b.endDate||b.startDate);
+
+      h+='<div style="font-size:11px;font-weight:600;color:'+cfg.text+';padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-top:1px solid var(--border);display:flex;align-items:center;gap:4px">';
+      h+='<span style="width:8px;height:8px;border-radius:2px;background:'+cfg.border+';display:inline-block;flex-shrink:0"></span>';
+      h+=b.label;
+      if(editMode){
+        h+=' <button class="btn" style="height:16px;padding:0 4px;font-size:9px;margin-left:4px" data-tid="'+t.id+'" data-bid="'+bi+'" onclick="editBlock(this.dataset.tid,parseInt(this.dataset.bid))">&#9998;</button>';
+        h+=' <button class="btn bd" style="height:16px;padding:0 4px;font-size:9px" data-tid="'+t.id+'" data-bid="'+bi+'" onclick="delBlock(this.dataset.tid,parseInt(this.dataset.bid))">&#10005;</button>';
+      }
+      h+='</div>';
+
+      days.forEach(function(d){
+        const dt=d.getTime();
+        const inRange=st&&en&&dt>=st&&dt<=en;
+        const isFirst=inRange&&dt===st;
+        const isLast=inRange&&dt===en;
+        const isWeekend=d.getDay()===0||d.getDay()===6;
+        if(inRange){
+          const bdrL=isFirst?'border-left:2px solid '+cfg.border+';':'';
+          const bdrR=isLast?'border-right:2px solid '+cfg.border+';':'';
+          h+='<div style="background:'+cfg.bg+';border-top:2px solid '+cfg.border+';border-bottom:2px solid '+cfg.border+';'+bdrL+bdrR+'height:26px;border-top:1px solid var(--border)"></div>';
+        } else {
+          h+='<div style="background:'+(isWeekend?'var(--bg3)':'var(--bg)')+';border-top:1px solid var(--border);height:26px"></div>';
+        }
+      });
+    });
+
+    h+='</div></div>'; // close blocks grid and container
+  } else {
+    h+='</div>'; // close relative div
+  }
+
+  h+='</div>'; // close gantt-outer go div
+
+  // Legend
   h+='<div style="display:flex;gap:14px;margin-top:10px;flex-wrap:wrap">';
   [['#1D9E75','Passed'],['#EF9F27','In progress'],['#E24B4A','Failed'],['#185FA5','Scheduled']].forEach(function(pair){
     h+='<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:14px;height:8px;border-radius:2px;background:'+pair[0]+';display:inline-block"></span>'+pair[1]+'</span>';
   });
-  h+='</div></div>';
+  if(blocks.length){
+    Object.entries(BLOCK_COLORS).forEach(function(entry){
+      h+='<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:14px;height:8px;border-radius:2px;background:'+entry[1].border+';opacity:.5;display:inline-block"></span>'+entry[0]+'</span>';
+    });
+  }
+  h+='<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:8px;height:16px;background:#E67E22;opacity:.4;display:inline-block;border-radius:1px"></span>Today</span>';
+  h+='</div></div>'; // close card
 
-  // Results
+  // ── Results ──────────────────────────────────────────────────────
   h+='<div class="sh" style="margin-bottom:12px"><span class="st">Training results</span>';
   if(!editMode) h+='<span class="lh">&#128274; Unlock to record</span>';
   h+='</div>';
@@ -710,6 +843,7 @@ function detail(el){
   if(t.notes) h+='<div class="card"><div class="ct" style="margin-bottom:6px">Onboarding notes</div><div style="font-size:13px;color:var(--text)">'+t.notes+'</div></div>';
   el.innerHTML=h;
 }
+
 
 
 function openT(id){trainee=id;render()}
@@ -1006,6 +1140,53 @@ function saveDuplicate(){
   cm('m-dup');
   push('Duplicate plan: '+src.name+' → '+name);
   trainee=newTrainee.id;
+  render();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// NESTING / PRACTICE BLOCKS
+// ══════════════════════════════════════════════════════════════════
+function openBlockModal(tid, idx){
+  const t=S.trainees.find(x=>x.id===tid);if(!t)return;
+  const b=(t.blocks||[])[idx];
+  g('block-modal-title').textContent=b?'Edit block':'Add nesting/practice block';
+  g('bm-tid').value=tid;
+  g('bm-idx').value=idx!==undefined?idx:-1;
+  g('bm-label').value=b?b.label:'';
+  g('bm-type').value=b?b.type:'Nesting';
+  g('bm-start').value=b?b.startDate:'';
+  g('bm-end').value=b?b.endDate:'';
+  g('m-block').style.display='flex';
+  setTimeout(()=>g('bm-label').focus(),80);
+}
+
+function editBlock(tid,idx){openBlockModal(tid,idx)}
+
+function saveBlock(){
+  const tid=g('bm-tid').value;
+  const idx=parseInt(g('bm-idx').value);
+  const label=g('bm-label').value.trim();
+  if(!label)return alert('Label is required.');
+  const startDate=g('bm-start').value;
+  const endDate=g('bm-end').value;
+  if(!startDate||!endDate)return alert('Start and end dates are required.');
+  if(endDate<startDate)return alert('End date must be on or after start date.');
+  const t=S.trainees.find(x=>x.id===tid);if(!t)return;
+  if(!t.blocks)t.blocks=[];
+  const block={label,type:g('bm-type').value,startDate,endDate};
+  if(idx>=0) t.blocks[idx]=block;
+  else t.blocks.push(block);
+  cm('m-block');
+  push((idx>=0?'Update':'Add')+' block: '+label);
+  render();
+}
+
+function delBlock(tid,idx){
+  const t=S.trainees.find(x=>x.id===tid);if(!t)return;
+  const b=(t.blocks||[])[idx];
+  if(!b||!confirm('Remove block "'+b.label+'"?'))return;
+  t.blocks.splice(idx,1);
+  push('Remove block: '+b.label);
   render();
 }
 
@@ -1501,9 +1682,10 @@ function roster(el){
   let h='';
   h+='<div class="metrics">';
   h+='<div class="metric"><div class="ml">Members</div><div class="mv">'+members.length+'</div></div>';
-  const avgSkills=members.length?Math.round(members.reduce((a,m)=>a+(Object.keys(m.skills||{}).length),0)/members.length):0;
+  const qualCourseIdsSet=new Set((S.courses||[]).filter(c=>c.required>2).map(c=>c.id));
+  const avgSkills=members.length?Math.round(members.reduce((a,m)=>a+Object.entries(m.skills||{}).filter(([cid,lv])=>qualCourseIdsSet.has(cid)&&lv>0).length,0)/members.length):0;
   h+='<div class="metric"><div class="ml">Avg skills</div><div class="mv">'+avgSkills+'</div><div class="ms">courses per member</div></div>';
-  const expertCount=members.filter(m=>Object.values(m.skills||{}).some(v=>v>=5)).length;
+  const expertCount=members.filter(m=>Object.entries(m.skills||{}).some(([cid,lv])=>qualCourseIdsSet.has(cid)&&lv>=5)).length;
   h+='<div class="metric"><div class="ml">Expert members</div><div class="mv">'+expertCount+'</div><div class="ms">with level 5 skills</div></div>';
   h+='</div>';
   h+='<div class="sh"><span class="st">Existing team members</span>';
@@ -1517,9 +1699,12 @@ function roster(el){
     h+='</div></div>';
   } else {
     members.forEach(function(m){
-      const skillCount=Object.keys(m.skills||{}).length;
-      const expCount=Object.values(m.skills||{}).filter(v=>v>=5).length;
-      const avgLvl=skillCount?(Object.values(m.skills||{}).reduce((a,v)=>a+v,0)/skillCount).toFixed(1):'-';
+      // Only count courses with required level > 2
+      const qualCourseIds=new Set((S.courses||[]).filter(c=>c.required>2).map(c=>c.id));
+      const qualSkills=Object.entries(m.skills||{}).filter(([cid,lv])=>qualCourseIds.has(cid)&&lv>0);
+      const skillCount=qualSkills.length;
+      const expCount=qualSkills.filter(([,lv])=>lv>=5).length;
+      const avgLvl=skillCount?(qualSkills.reduce((a,[,v])=>a+v,0)/skillCount).toFixed(1):'-';
       const activePlan=S.trainees?S.trainees.find(x=>x.id===m.id):null;
       const activeProgress=activePlan?prog(activePlan):null;
 
@@ -1548,7 +1733,7 @@ function roster(el){
       h+='</div>';
 
       getPhases().forEach(function(ph){
-        const phaseCourses=S.courses.filter(c=>c.phase===ph.id&&m.skills&&m.skills[c.id]!==undefined);
+        const phaseCourses=S.courses.filter(c=>c.phase===ph.id&&c.required>2&&m.skills&&m.skills[c.id]!==undefined);
         if(!phaseCourses.length) return;
         h+='<div style="margin-bottom:8px">';
         h+='<div style="font-size:10px;font-weight:700;color:'+ph.color+';text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">'+ph.name+'</div>';
@@ -1561,7 +1746,7 @@ function roster(el){
         h+='</div></div>';
       });
 
-      const unset=S.courses.filter(c=>!m.skills||m.skills[c.id]===undefined);
+      const unset=S.courses.filter(c=>c.required>2&&(!m.skills||m.skills[c.id]===undefined));
       if(unset.length&&editMode) h+='<div style="font-size:11px;color:var(--text3);margin-top:4px">'+unset.length+' courses not yet rated &mdash; click Edit to set levels</div>';
       h+='</div>';
     });
@@ -1578,7 +1763,7 @@ function roster(el){
       const pc=S.courses.filter(c=>c.phase===ph.id);
       if(!pc.length) return;
       h+='<tr><td colspan="'+(members.length+2)+'" style="background:var(--bg3);font-size:10px;font-weight:700;color:'+ph.color+';text-transform:uppercase;letter-spacing:.04em;padding:5px 10px">'+ph.name+'</td></tr>';
-      pc.forEach(function(c){
+      pc.filter(c=>c.required>2).forEach(function(c){
         const lvls=members.map(m=>(m.skills||{})[c.id]);
         const set=lvls.filter(v=>v!==undefined);
         const avg=set.length?(set.reduce((a,v)=>a+v,0)/set.length).toFixed(1):'-';
@@ -2165,6 +2350,32 @@ if(GH.owner&&GH.repo){sync('Loading...','#FAC775');reload()}
   <div class="mf">
     <button class="btn sm" onclick="cm('m-dup')">Cancel</button>
     <button class="btn bp sm" onclick="saveDuplicate()">Create duplicate</button>
+  </div>
+</div></div>
+
+<!-- BLOCK MODAL (Nesting/Practice) -->
+<div class="modal-bg" id="m-block" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal" style="max-width:420px">
+  <div class="mt" id="block-modal-title">Add nesting/practice block</div>
+  <input type="hidden" id="bm-tid"/>
+  <input type="hidden" id="bm-idx" value="-1"/>
+  <div class="form-row">
+    <div class="fg" style="flex:2"><label>Label *</label><input id="bm-label" placeholder="e.g. Nesting Week 1-4"/></div>
+    <div class="fg"><label>Type</label>
+      <select id="bm-type">
+        <option value="Nesting">Nesting</option>
+        <option value="Practice">Practice</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="fg"><label>Start date *</label><input id="bm-start" type="date"/></div>
+    <div class="fg"><label>End date *</label><input id="bm-end" type="date"/></div>
+  </div>
+  <div class="mf">
+    <button class="btn sm" onclick="cm('m-block')">Cancel</button>
+    <button class="btn bp sm" onclick="saveBlock()">Save block</button>
   </div>
 </div></div>
 </body></html>
