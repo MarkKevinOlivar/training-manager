@@ -338,7 +338,7 @@
       "name": "Phase 2: Lot-Level",
       "short": "Phase 2",
       "color": "#185FA5",
-      "order": 2,
+      "order": 3,
       "description": "Lot-level design courses including IPlot and IPermit"
     },
     {
@@ -354,7 +354,7 @@
       "name": "Phase 4: Compliance",
       "short": "Phase 4",
       "color": "#7F77DD",
-      "order": 3,
+      "order": 2,
       "description": "Compliance and security self-paced courses"
     }
   ]
