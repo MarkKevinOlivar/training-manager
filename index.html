@@ -264,10 +264,21 @@ code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;b
       <span style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;text-align:center">End date</span>
     </div>
     <div id="sched-list" style="max-height:380px;overflow-y:auto"></div>
-    <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-      <span style="font-size:12px;color:var(--text3)">Set all start dates to:</span>
-      <input type="date" id="bulk-date" class="date-input" style="width:140px">
-      <button class="btn sm" onclick="applyBulkDate()">Apply</button>
+    <div style="margin-top:12px;background:var(--bg3);border-radius:var(--r);padding:10px 12px;display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em">Bulk date tools</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span style="font-size:12px;color:var(--text2);min-width:60px">Start date:</span>
+        <input type="date" id="bulk-start" class="date-input" style="width:140px">
+        <button class="btn sm" onclick="applyBulkDate('start','new')">Apply to new</button>
+        <button class="btn sm" onclick="applyBulkDate('start','all')">Apply to all</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span style="font-size:12px;color:var(--text2);min-width:60px">End date:</span>
+        <input type="date" id="bulk-end" class="date-input" style="width:140px">
+        <button class="btn sm" onclick="applyBulkDate('end','new')">Apply to new</button>
+        <button class="btn sm" onclick="applyBulkDate('end','all')">Apply to all</button>
+      </div>
+      <div style="font-size:11px;color:var(--text3)">"Apply to new" only fills courses without existing dates &mdash; won't override your previous entries.</div>
     </div>
     <div class="mf">
       <button class="btn sm" onclick="backStep1()">← Back</button>
@@ -615,7 +626,12 @@ function detail(el){
   while(cur<=gEnd){weeks.push(new Date(cur));cur.setDate(cur.getDate()+7)}
   if(weeks.length>52) weeks.splice(52);
   const d2t=d=>d?new Date(d+'T12:00:00').getTime():null;
-  const wkLabel=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  const wkLabel=d=>{
+    const end=new Date(d);end.setDate(d.getDate()+6);
+    const s=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const e=end.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    return s+'\u2013'+e;
+  };
 
   h+='<div class="card" style="padding:14px 16px;margin-bottom:12px">';
   h+='<div class="chd"><span class="ct">Training schedule &mdash; Gantt</span></div>';
@@ -820,6 +836,10 @@ function goStep2(){
   if(!selectedCourses.size){alert('Select at least one course.');return}
   const t=S.trainees.find(x=>x.id===assignTid);
   const existingMap={};(t.plan||[]).forEach(e=>existingMap[e.courseId]=e);
+  // Track which selected courses already have dates (previous batch)
+  window._preExisting=new Set(
+    [...selectedCourses].filter(cid=>existingMap[cid]&&(existingMap[cid].startDate||existingMap[cid].endDate))
+  );
 
   // Build schedule list grouped by phase
   let html='';
@@ -829,24 +849,33 @@ function goStep2(){
     html+=`<div style="font-size:11px;font-weight:700;color:${ph.color};text-transform:uppercase;letter-spacing:.05em;padding:10px 0 4px;border-bottom:1px solid var(--border);margin-bottom:2px">${ph.name}</div>`;
     pc.forEach(c=>{
       const ex=existingMap[c.id]||{};
-      html+=`<div class="sched-row">
-        <div><div class="sched-name" title="${c.name}">${c.name}</div><div class="sched-phase" style="color:${ph.color}">${c.duration} days</div></div>
+      const isNew=!ex.startDate&&!ex.endDate;
+      html+=`<div class="sched-row" style="background:${isNew?'var(--ltgreen)':'var(--bg)'}">
+        <div><div class="sched-name" title="${c.name}">${c.name} ${isNew?'<span style="font-size:10px;padding:1px 5px;border-radius:99px;background:#1D9E75;color:#fff;font-weight:600">NEW</span>':''}</div><div class="sched-phase" style="color:${ph.color}">${c.duration} days</div></div>
         <input type="date" class="date-input" id="sd-${c.id}" value="${ex.startDate||t.startDate||''}" placeholder="Start"/>
         <input type="date" class="date-input" id="ed-${c.id}" value="${ex.endDate||''}" placeholder="End"/>
       </div>`;
     });
   });
   g('sched-list').innerHTML=html;
-  g('bulk-date').value=t.startDate||today();
+  g('bulk-start').value=t.startDate||today();
+  g('bulk-end').value='';
   g('assign-step1').style.display='none';
   g('assign-step2').style.display='block';
 }
 
 function backStep1(){g('assign-step1').style.display='block';g('assign-step2').style.display='none'}
 
-function applyBulkDate(){
-  const d=g('bulk-date').value;if(!d)return;
-  document.querySelectorAll('[id^="sd-"]').forEach(inp=>inp.value=d);
+function applyBulkDate(field,scope){
+  const val=field==='end'?g('bulk-end').value:g('bulk-start').value;
+  if(!val)return;
+  const preExisting=window._preExisting||new Set();
+  document.querySelectorAll('[id^="'+(field==='end'?'ed':'sd')+'-"]').forEach(inp=>{
+    const cid=inp.id.slice(3); // remove 'sd-' or 'ed-'
+    if(scope==='all'||!preExisting.has(cid)){
+      inp.value=val;
+    }
+  });
 }
 
 function saveAssign(){
@@ -1736,7 +1765,12 @@ async function exportMemo(tid){
       cur.setDate(cur.getDate()+7);
     }
   }
-  const wkLbl=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  const wkLbl=d=>{
+    const end=new Date(d);end.setDate(d.getDate()+6);
+    const s=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const e=end.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    return s+'\u2013'+e;
+  };
   const d2t=d=>d?new Date(d+'T12:00:00').getTime():null;
 
   // ── Result colors/labels ──────────────────────────────────────────
