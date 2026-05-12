@@ -199,11 +199,11 @@
           "courseId": "sha",
           "startDate": "",
           "endDate": "",
-          "result": "none",
+          "result": "pass",
           "score": "",
-          "completionDate": "",
+          "completionDate": "2026-04-01",
           "notes": "",
-          "trainer": ""
+          "trainer": "John Patrick Salazar"
         },
         {
           "courseId": "sha-p",
