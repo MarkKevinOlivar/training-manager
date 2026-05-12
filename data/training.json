@@ -18,10 +18,10 @@
     },
     {
       "id": "sha",
-      "phase": "p1",
       "name": "Shading Analysis Training",
+      "phase": "p1",
       "duration": 1,
-      "required": 4,
+      "required": 2,
       "description": "Aurora Solar shading reports"
     },
     {
