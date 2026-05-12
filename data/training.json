@@ -161,6 +161,15 @@
       "required": 2,
       "description": "International Fire Code Training | Fire Setback",
       "order": 6
+    },
+    {
+      "id": "c1778610117208",
+      "name": "Bill of Materials (BOM) Training",
+      "phase": "p1",
+      "duration": 1,
+      "required": 4,
+      "description": "",
+      "order": 13
     }
   ],
   "trainees": [
