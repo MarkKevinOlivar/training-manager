@@ -67,7 +67,7 @@
     {
       "id": "nest-ip",
       "name": "Nesting",
-      "phase": "p2",
+      "phase": "p1",
       "duration": 4,
       "required": 4,
       "description": ""
