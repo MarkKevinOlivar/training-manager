@@ -133,7 +133,7 @@
       "duration": 1,
       "required": 4,
       "description": "Guided master plan practice",
-      "order": 11
+      "order": 10
     },
     {
       "id": "mp-mf",
@@ -187,7 +187,7 @@
       "duration": 1,
       "required": 1,
       "description": "Optimal PV placement per community lot",
-      "order": 10
+      "order": 11
     },
     {
       "id": "c1778607151419",
