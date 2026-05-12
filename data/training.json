@@ -596,11 +596,11 @@
           "courseId": "c1778607151419",
           "startDate": "2026-04-22",
           "endDate": "2026-04-23",
-          "result": "none",
+          "result": "pass",
           "score": "",
-          "completionDate": "",
+          "completionDate": "2026-04-23",
           "notes": "",
-          "trainer": ""
+          "trainer": "Leojen Perez"
         },
         {
           "courseId": "c1778609275646",
