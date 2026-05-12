@@ -124,7 +124,7 @@
       "duration": 1,
       "required": 4,
       "description": "Community master plan single-family",
-      "order": 9
+      "order": 10
     },
     {
       "id": "mp-ex",
@@ -187,7 +187,7 @@
       "duration": 1,
       "required": 1,
       "description": "Optimal PV placement per community lot",
-      "order": 10
+      "order": 9
     },
     {
       "id": "memo",
@@ -205,7 +205,7 @@
       "duration": 1,
       "required": 3,
       "description": "Insperity self-paced",
-      "order": 5
+      "order": 6
     },
     {
       "id": "idtheft",
@@ -214,7 +214,7 @@
       "duration": 2,
       "required": 2,
       "description": "",
-      "order": 6
+      "order": 5
     },
     {
       "id": "c1778607151419",
