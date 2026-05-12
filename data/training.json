@@ -46,15 +46,6 @@
       "order": 3
     },
     {
-      "id": "nest-ip",
-      "name": "Nesting",
-      "phase": "p1",
-      "duration": 4,
-      "required": 4,
-      "description": "",
-      "order": 7
-    },
-    {
       "id": "ipermit",
       "order": 1,
       "name": "IPermit Training",
@@ -152,6 +143,15 @@
       "required": 2,
       "description": "An Introduction to SPECSs & Memos \nPhishing and Anti-Spam Software\nSocial Engineering\nSocial Media Security Awareness\nIdentity Theft",
       "order": 2
+    },
+    {
+      "id": "c1778609900411",
+      "name": "NEC Training",
+      "phase": "p4",
+      "duration": 1,
+      "required": 2,
+      "description": "National Electric Code Training | Solar & ESS",
+      "order": 5
     }
   ],
   "trainees": [
@@ -208,16 +208,6 @@
         },
         {
           "courseId": "iplot",
-          "startDate": "",
-          "endDate": "",
-          "result": "none",
-          "score": "",
-          "completionDate": "",
-          "notes": "",
-          "trainer": ""
-        },
-        {
-          "courseId": "nest-ip",
           "startDate": "",
           "endDate": "",
           "result": "none",
