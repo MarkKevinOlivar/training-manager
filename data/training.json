@@ -128,9 +128,9 @@
     },
     {
       "id": "c1778609900411",
-      "order": 13,
+      "order": 6,
       "name": "Classroom | NEC Training",
-      "phase": "p4",
+      "phase": "p2",
       "duration": 1,
       "required": 2,
       "description": "National Electric Code Training | Solar & ESS"
