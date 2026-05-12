@@ -251,6 +251,15 @@
       "required": 2,
       "description": "",
       "order": 17
+    },
+    {
+      "id": "c1778616099165",
+      "name": "Ignite Design Training 3 | Structural Overview",
+      "phase": "p4",
+      "duration": 1,
+      "required": 2,
+      "description": "",
+      "order": 18
     }
   ],
   "trainees": [
