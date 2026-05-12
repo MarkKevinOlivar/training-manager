@@ -39,7 +39,7 @@
     {
       "id": "ipermit",
       "order": 1,
-      "name": "IPermit Training",
+      "name": "Individual Permit Package (iPermit)",
       "phase": "p2",
       "duration": 1,
       "required": 4,
@@ -80,15 +80,6 @@
       "duration": 1,
       "required": 4,
       "description": ""
-    },
-    {
-      "id": "ssp",
-      "order": 6,
-      "name": "Solar Site Plan (SSP)",
-      "phase": "p1",
-      "duration": 1,
-      "required": 4,
-      "description": "Optimal PV placement per community lot"
     },
     {
       "id": "c1778607151419",
@@ -137,7 +128,7 @@
     },
     {
       "id": "c1778609963787",
-      "order": 7,
+      "order": 6,
       "name": "Classroom | IFC Training",
       "phase": "p1",
       "duration": 1,
@@ -267,16 +258,6 @@
         },
         {
           "courseId": "mp-sf",
-          "startDate": "2026-03-23",
-          "endDate": "2026-03-23",
-          "result": "none",
-          "score": "",
-          "completionDate": "",
-          "notes": "",
-          "trainer": ""
-        },
-        {
-          "courseId": "ssp",
           "startDate": "2026-03-23",
           "endDate": "2026-03-23",
           "result": "none",
