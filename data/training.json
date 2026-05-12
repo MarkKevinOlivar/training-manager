@@ -217,15 +217,6 @@
       "order": 5
     },
     {
-      "id": "social",
-      "name": "Ignite | New Hire Training",
-      "phase": "p4",
-      "duration": 2,
-      "required": 2,
-      "description": "An Introduction to SPECSs & Memos \nPhishing and Anti-Spam Software\nSocial Engineering\nSocial Media Security Awareness\nIdentity Theft",
-      "order": 6
-    },
-    {
       "id": "c1778607151419",
       "name": "NEOP",
       "phase": "p4",
