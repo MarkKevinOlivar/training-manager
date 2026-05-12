@@ -50,8 +50,8 @@
     },
     {
       "id": "cert-w",
-      "phase": "p2",
       "name": "Written Certification",
+      "phase": "p1",
       "duration": 1,
       "required": 4,
       "description": "Written knowledge exam"
