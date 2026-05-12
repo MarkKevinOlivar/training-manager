@@ -591,7 +591,28 @@
       "role": "90031",
       "startDate": "2026-04-22",
       "notes": "",
-      "plan": []
+      "plan": [
+        {
+          "courseId": "c1778607151419",
+          "startDate": "2026-04-22",
+          "endDate": "2026-04-23",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "pv",
+          "startDate": "2026-04-22",
+          "endDate": "2026-04-23",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        }
+      ]
     }
   ],
   "members": [
