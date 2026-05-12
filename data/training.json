@@ -151,7 +151,7 @@
       "duration": 1,
       "required": 4,
       "description": "Master plan with energy storage",
-      "order": 11
+      "order": 12
     },
     {
       "id": "mppp-sf",
@@ -178,7 +178,7 @@
       "duration": 1,
       "required": 3,
       "description": "Preliminary sales document MF",
-      "order": 12
+      "order": 11
     },
     {
       "id": "ssp",
