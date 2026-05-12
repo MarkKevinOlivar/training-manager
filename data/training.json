@@ -29,7 +29,7 @@
     },
     {
       "id": "iplot",
-      "order": 4,
+      "order": 3,
       "name": "Individual Plot Plan (iPlot)",
       "phase": "p1",
       "duration": 2,
@@ -128,7 +128,7 @@
     },
     {
       "id": "c1778609963787",
-      "order": 2,
+      "order": 4,
       "name": "Classroom | IFC Training",
       "phase": "p1",
       "duration": 1,
@@ -137,7 +137,7 @@
     },
     {
       "id": "c1778610117208",
-      "order": 3,
+      "order": 2,
       "name": "Bill of Materials (BOM)",
       "phase": "p1",
       "duration": 1,
