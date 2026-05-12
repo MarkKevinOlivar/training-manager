@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NH Design Team — Training Manager</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -143,21 +144,26 @@ code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;b
     <button class="tab on" id="tab-trainees" onclick="go('trainees')">Trainees</button>
     <button class="tab" id="tab-courses" onclick="go('courses')">Courses &amp; skill matrix</button>
     <button class="tab" id="tab-roster" onclick="go('roster')">Team Roster</button>
+    <button class="tab" id="tab-reports" onclick="go('reports')">&#128202; Reports</button>
     <button class="tab" id="tab-settings" onclick="go('settings')">&#9881; Settings</button>
   </div>
   <div id="ct"></div>
 </div>
 
-<!-- AUTH -->
+<!-- AUTH — simple password -->
 <div class="modal-bg" id="m-auth" style="display:none" onclick="if(event.target===this)this.style.display='none'">
-<div class="modal" style="max-width:420px">
+<div class="modal" style="max-width:360px">
   <div class="mt">&#128274; Unlock editing</div>
-  <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Enter the shared GitHub Personal Access Token. Never stored — re-enter each session.</p>
-  <div class="fg" style="margin-bottom:10px"><label>GitHub token</label><input type="password" id="ai" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"/></div>
-  <div id="aerr" class="al ae" style="display:none">&#10060; <span id="aerrm">Invalid token or repository not found.</span></div>
+  <div id="auth-no-config" class="al aw" style="display:none">&#9888; GitHub is not configured yet. Go to <strong>Settings</strong> to set it up first.</div>
+  <div id="auth-no-pw" class="al aw" style="display:none">&#9888; No edit password set. Go to <strong>Settings</strong> to set one.</div>
+  <div class="fg" style="margin-bottom:10px" id="auth-pw-group">
+    <label>Edit password</label>
+    <input type="password" id="ai" placeholder="Enter password" autocomplete="current-password"/>
+  </div>
+  <div id="aerr" class="al ae" style="display:none">&#10060; Incorrect password.</div>
   <div class="mf">
     <button class="btn sm" onclick="cm('m-auth')">Cancel</button>
-    <button class="btn bp sm" id="aok" onclick="doAuth()"><span id="aokt">Unlock</span></button>
+    <button class="btn bp sm" id="aok" onclick="doAuth()">Unlock</button>
   </div>
 </div></div>
 
@@ -260,7 +266,7 @@ code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;b
   </div>
   <div class="form-row">
     <div class="fg"><label>Completion date</label><input id="rm-dt" type="date"/></div>
-    <div class="fg"><label>Assessed by</label><input id="rm-as" placeholder="Trainer name"/></div>
+    <div class="fg"><label>Trainer for this course</label><input id="rm-as" placeholder="Who trained this course?"/></div>
   </div>
   <div class="fg"><label>Notes</label><textarea id="rm-no" rows="2" style="height:52px" placeholder="Observations, next steps, retry plan..."></textarea></div>
   <div class="mf"><button class="btn sm" onclick="cm('m-result')">Cancel</button><button class="btn bp sm" onclick="saveResult()">Save result</button></div>
@@ -331,8 +337,20 @@ function bph(plan){
   return m;
 }
 
-function saveLs(){localStorage.setItem('gh_owner',GH.owner);localStorage.setItem('gh_repo',GH.repo);localStorage.setItem('gh_path',GH.path)}
-function loadLs(){GH.owner=localStorage.getItem('gh_owner')||'';GH.repo=localStorage.getItem('gh_repo')||'';GH.path=localStorage.getItem('gh_path')||'data/training.json'}
+function saveLs(){
+  localStorage.setItem('gh_owner',GH.owner);
+  localStorage.setItem('gh_repo',GH.repo);
+  localStorage.setItem('gh_path',GH.path);
+  if(GH.token) localStorage.setItem('gh_token',GH.token);
+}
+function loadLs(){
+  GH.owner=localStorage.getItem('gh_owner')||'';
+  GH.repo=localStorage.getItem('gh_repo')||'';
+  GH.path=localStorage.getItem('gh_path')||'data/training.json';
+  GH.token=localStorage.getItem('gh_token')||'';
+}
+function getEditPw(){return localStorage.getItem('edit_pw')||''}
+function setEditPw(pw){localStorage.setItem('edit_pw',pw)}
 
 const ghH=()=>({'Authorization':'token '+GH.token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'});
 const ghUrl=()=>`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.path}`;
@@ -371,27 +389,50 @@ async function push(msg){
 }
 
 function openAuth(){
-  if(!GH.owner||!GH.repo){alert('Configure the GitHub repository in Settings first.');go('settings');return}
-  g('aerr').style.display='none';g('ai').value='';
-  g('m-auth').style.display='flex';setTimeout(()=>g('ai').focus(),80);
+  g('aerr').style.display='none';
+  g('ai').value='';
+  // Show config warning if not set up
+  const noConfig=!GH.owner||!GH.repo||!GH.token;
+  const noPw=!getEditPw();
+  g('auth-no-config').style.display=noConfig?'flex':'none';
+  g('auth-no-pw').style.display=(!noConfig&&noPw)?'flex':'none';
+  g('auth-pw-group').style.display=(noConfig||noPw)?'none':'block';
+  g('aok').style.display=(noConfig||noPw)?'none':'inline-flex';
+  if(noConfig||noPw){
+    g('m-auth').style.display='flex';
+    return;
+  }
+  g('m-auth').style.display='flex';
+  setTimeout(()=>g('ai').focus(),80);
 }
 
 async function doAuth(){
-  const token=g('ai').value.trim();if(!token)return;
-  const btn=g('aok'),txt=g('aokt');btn.disabled=true;txt.innerHTML='<span class="sp"></span> Verifying...';
+  const entered=g('ai').value;
+  const correct=getEditPw();
+  if(entered!==correct){
+    g('aerr').style.display='flex';
+    g('ai').value='';
+    setTimeout(()=>g('ai').focus(),80);
+    return;
+  }
   g('aerr').style.display='none';
+  // Token already in GH.token from loadLs — just verify it works
+  editMode=true;
+  cm('m-auth');
+  updateUI();
+  sync('Loading...','#FAC775');
   try{
-    GH.token=token;
-    const r=await fetch(ghUrl(),{headers:ghH()});
-    if(r.status===404){await ghSave('Initialize training data')}
-    else if(!r.ok) throw new Error('HTTP '+r.status);
-    else{const j=await r.json();GH.sha=j.sha;const d=JSON.parse(atob(j.content.replace(/\n/g,'')));if(d)S=d;}
-    editMode=true;cm('m-auth');updateUI();sync('Loaded from GitHub ✓','#9FE1CB');render();
-  } catch(e){GH.token='';g('aerrm').textContent=e.message||'Invalid token.';g('aerr').style.display='flex'}
-  btn.disabled=false;txt.textContent='Unlock';
+    const d=await ghLoad(true);
+    if(d){S=d;sync('Loaded from GitHub ✓','#9FE1CB');}
+    else{await ghSave('Initialize training data');sync('Initialized ✓','#9FE1CB');}
+    render();
+  } catch(e){
+    editMode=false;GH.token='';updateUI();
+    sync('GitHub error: '+e.message,'#F09595');
+  }
 }
 
-function lockEdit(){editMode=false;GH.token='';updateUI();render()}
+function lockEdit(){editMode=false;updateUI();render()}
 function updateUI(){
   const p=g('pill'),u=g('ubtn'),l=g('lbtn');
   if(editMode){p.className='pill pill-e';p.textContent='✏ Edit mode';u.style.display='none';l.style.display='inline-flex'}
@@ -399,7 +440,7 @@ function updateUI(){
 }
 
 function go(t){tab=t;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));g('tab-'+t).classList.add('on');render()}
-function render(){const el=g('ct');if(tab==='trainees')trainee?detail(el):trainees(el);else if(tab==='courses')courses(el);else if(tab==='roster')roster(el);else settings(el)}
+function render(){const el=g('ct');if(tab==='trainees')trainee?detail(el):trainees(el);else if(tab==='courses')courses(el);else if(tab==='roster')roster(el);else if(tab==='reports')reports(el);else settings(el)}
 
 // ── TRAINEES LIST ─────────────────────────────────────────────────
 function trainees(el){
@@ -419,10 +460,11 @@ function trainees(el){
     h+=`<div class="card">`;
     ts.forEach(t=>{
       const p=prog(t),pa=(t.plan||[]).filter(x=>x.result==='pass').length,fa=(t.plan||[]).filter(x=>x.result==='fail').length;
+      const inRoster=!!(S.members||[]).find(x=>x.id===t.id);
       h+=`<div class="lrow">
         <div class="av av-m">${ini(t.name)}</div>
         <div class="ri">
-          <div class="rn">${t.name}</div>
+          <div class="rn">${t.name} ${inRoster?`<span style="font-size:10px;padding:1px 6px;border-radius:99px;background:var(--ltgreen);color:var(--dkgreen);font-weight:600;vertical-align:middle">&#10003; Roster</span>`:''}</div>
           <div class="rs">${[t.role,t.trainer?'Trainer: '+t.trainer:'',t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' · ')}
             ${pa?`<span class="tag tpass" style="margin-left:6px">&#10003; ${pa} passed</span>`:''}
             ${fa?`<span class="tag tfail" style="margin-left:4px">&#10007; ${fa} failed</span>`:''}
@@ -466,9 +508,13 @@ function detail(el){
 
   // Action bar
   if(editMode){
+    const inRoster=!!(S.members||[]).find(x=>x.id===t.id);
     h+=`<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
       <button class="btn bp sm" onclick="openAssign('${t.id}')">+ Assign courses &amp; dates</button>
       ${plan.length?`<button class="btn sm" onclick="clearPlan('${t.id}')">&#128465; Clear plan</button>`:''}
+      ${inRoster
+        ?`<button class="btn sm" style="background:var(--ltgreen);color:var(--dkgreen);border-color:#97C459" onclick="go('roster')">&#10003; In team roster</button>`
+        :`<button class="btn sm" onclick="promoteToRoster('${t.id}')" title="Move this trainee to the Team Roster with their skill levels">&#11014; Promote to roster</button>`}
     </div>`;
   }
 
@@ -536,9 +582,11 @@ function detail(el){
         <div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap">
           <div style="flex:1;min-width:150px">
             <div style="font-size:13px;font-weight:500;color:var(--text)">${c.name}</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:2px">
-              ${e.startDate||e.endDate?`&#128197; ${fmt(e.startDate)}${e.endDate&&e.endDate!==e.startDate?' – '+fmt(e.endDate):''}`:''} · Required: ${c.required}/5
-              ${editMode?`<button class="btn sm bg_" style="height:20px;font-size:11px;padding:0 6px;margin-left:4px" onclick="openEditDate('${t.id}','${c.id}')">edit dates</button>`:''}
+            <div style="font-size:11px;color:var(--text3);margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              ${e.startDate||e.endDate?`<span>&#128197; ${fmt(e.startDate)}${e.endDate&&e.endDate!==e.startDate?' – '+fmt(e.endDate):''}</span>`:''}
+              <span>Required: ${c.required}/5</span>
+              ${e.trainer?`<span style="color:var(--blue)">&#128100; ${e.trainer}</span>`:''}
+              ${editMode?`<button class="btn sm bg_" style="height:20px;font-size:11px;padding:0 6px" onclick="openEditDate('${t.id}','${c.id}')">edit dates</button>`:''}
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex-shrink:0">
@@ -562,9 +610,85 @@ function openT(id){trainee=id;render()}
 function back(){trainee=null;render()}
 function clearPlan(id){if(!confirm('Remove all assigned courses from this trainee?'))return;const t=S.trainees.find(x=>x.id===id);if(t)t.plan=[];push('Clear plan: '+t.name);render()}
 
+// ── PROMOTE TRAINEE → ROSTER ─────────────────────────────────────
+function promoteToRoster(tid){
+  const t=S.trainees.find(x=>x.id===tid);
+  if(!t) return;
+  if(!confirm(`Promote "${t.name}" to the Team Roster?\n\nTheir passed courses will become their skill levels. They'll remain in Trainees too if they have an active plan.`)) return;
+  // Build skills from passed courses
+  const skills={};
+  (t.plan||[]).forEach(e=>{
+    if(e.result==='pass'){
+      // Level 4 = Independent (default for passed training)
+      skills[e.courseId]=4;
+    }
+  });
+  // Check if already in roster
+  if(!S.members) S.members=[];
+  const existing=S.members.find(x=>x.id===t.id);
+  if(existing){
+    // Merge — update skills with any new passes, keep existing levels
+    Object.keys(skills).forEach(k=>{if(!existing.skills[k]) existing.skills[k]=skills[k]});
+    alert(`${t.name} is already in the roster. Their new passed courses have been added.`);
+  } else {
+    S.members.push({
+      id:t.id, // same ID so they're linked
+      name:t.name,
+      role:t.role||'',
+      team:'',
+      years:'',
+      notes:'Promoted from training — '+new Date().toLocaleDateString(),
+      skills
+    });
+  }
+  push('Promote to roster: '+t.name);
+  render();
+}
+
+// ── ENROLL ROSTER MEMBER → TRAINING ──────────────────────────────
+function enrollMember(mid){
+  const m=(S.members||[]).find(x=>x.id===mid);
+  if(!m) return;
+  // Check if already a trainee
+  if(!S.trainees) S.trainees=[];
+  let t=S.trainees.find(x=>x.id===mid);
+  if(!t){
+    // Create trainee record linked to this member
+    t={id:mid,name:m.name,role:m.role||'',trainer:'',startDate:today(),notes:'',plan:[]};
+    S.trainees.push(t);
+  }
+  // Open assign modal — this lets trainer pick which courses (new or refresher)
+  assignTid=mid;
+  selectedCourses=new Set((t.plan||[]).map(e=>e.courseId));
+  const grid=g('course-pick-grid');
+  let html='';
+  ['p1','p2','p3','p4'].forEach(ph=>{
+    const pc=S.courses.filter(c=>c.phase===ph);
+    html+=`<div style="grid-column:1/-1;font-size:11px;font-weight:700;color:${PC[ph]};text-transform:uppercase;letter-spacing:.05em;padding:8px 0 4px;border-bottom:1px solid var(--border);margin-bottom:4px">${PL[ph]}</div>`;
+    pc.forEach(c=>{
+      const alreadyPassed=(m.skills||{})[c.id]>=4;
+      const sel=selectedCourses.has(c.id);
+      const label=alreadyPassed?`${c.name} <span style="color:var(--dkamber);font-size:10px">(refresher)</span>`:c.name;
+      html+=`<div class="course-pick-item${sel?' selected':''}" onclick="toggleCourse('${c.id}',this)">
+        <input type="checkbox" ${sel?'checked':''} onclick="event.stopPropagation();toggleCourse('${c.id}',this.parentElement)"/>
+        <span class="course-pick-label" title="${c.name}">${alreadyPassed?'↻ ':''}<b>${c.name}</b>${alreadyPassed?' <small style=\'color:var(--dkamber)\'>(refresher)</small>':''}</span>
+        <span class="course-pick-phase" style="background:${PC[ph]}22;color:${PC[ph]}">${PS[ph]}</span>
+      </div>`;
+    });
+  });
+  grid.innerHTML=html;
+  updatePickCount();
+  g('assign-step1').style.display='block';
+  g('assign-step2').style.display='none';
+  // Update modal title
+  document.querySelector('#m-assign .mt').textContent=`Enroll ${m.name} — select courses`;
+  g('m-assign').style.display='flex';
+}
+
 // ── ASSIGN COURSES MODAL ──────────────────────────────────────────
 function openAssign(tid){
   assignTid=tid;
+  document.querySelector('#m-assign .mt').textContent='Assign training courses';
   const t=S.trainees.find(x=>x.id===tid);
   selectedCourses=new Set((t.plan||[]).map(e=>e.courseId));
 
@@ -771,24 +895,210 @@ function saveCourse(){
 }
 function delC(id){const c=S.courses.find(x=>x.id===id);if(!c||!confirm('Delete "'+c.name+'"?\nRemoved from all training plans.'))return;S.courses=S.courses.filter(x=>x.id!==id);S.trainees.forEach(t=>{if(t.plan)t.plan=t.plan.filter(p=>p.courseId!==id)});push('Delete course: '+c.name);render()}
 
+// ══════════════════════════════════════════════════════════════════
+// REPORTS TAB
+// ══════════════════════════════════════════════════════════════════
+function reports(el){
+  const ts=S.trainees||[];
+  const cs=S.courses||[];
+  if(!ts.length){
+    el.innerHTML=`<div class="card"><div class="empty"><div class="ei">&#128202;</div>No training data yet.<br>Add trainees and assign courses to see reports.</div></div>`;
+    return;
+  }
+
+  // ── Compute stats ─────────────────────────────────────────────
+  const totalSessions=ts.reduce((a,t)=>(t.plan||[]).length+a,0);
+  const totalPassed=ts.reduce((a,t)=>a+(t.plan||[]).filter(e=>e.result==='pass').length,0);
+  const totalFailed=ts.reduce((a,t)=>a+(t.plan||[]).filter(e=>e.result==='fail').length,0);
+  const totalIP=ts.reduce((a,t)=>a+(t.plan||[]).filter(e=>e.result==='ip').length,0);
+  const totalPending=totalSessions-totalPassed-totalFailed-totalIP;
+  const overallPct=totalSessions?Math.round((totalPassed/totalSessions)*100):0;
+
+  // Per-trainee completion
+  const traineeStats=ts.map(t=>{
+    const p=prog(t);
+    const passed=(t.plan||[]).filter(e=>e.result==='pass').length;
+    const failed=(t.plan||[]).filter(e=>e.result==='fail').length;
+    const ip=(t.plan||[]).filter(e=>e.result==='ip').length;
+    const pending=(t.plan||[]).length-passed-failed-ip;
+    return{name:t.name.split(' ')[0]+(t.name.split(' ')[1]?' '+t.name.split(' ')[1][0]+'.':''),fullName:t.name,pct:p.pct,passed,failed,ip,pending,total:p.tot};
+  }).sort((a,b)=>b.pct-a.pct);
+
+  // Per-course pass rate
+  const courseStats=cs.map(c=>{
+    let passed=0,failed=0,ip=0,pending=0;
+    ts.forEach(t=>{const e=(t.plan||[]).find(x=>x.courseId===c.id);if(!e)return;if(e.result==='pass')passed++;else if(e.result==='fail')failed++;else if(e.result==='ip')ip++;else pending++;});
+    const total=passed+failed+ip+pending;
+    return{name:c.name,phase:c.phase,passed,failed,ip,pending,total,rate:total?Math.round(passed/total*100):0};
+  }).filter(c=>c.total>0).sort((a,b)=>b.rate-a.rate);
+
+  // ── Render layout ──────────────────────────────────────────────
+  el.innerHTML=`
+  <div class="st" style="margin-bottom:20px">Training Reports Dashboard</div>
+
+  <div class="metrics">
+    <div class="metric"><div class="ml">Overall completion</div><div class="mv">${overallPct}%</div><div class="ms">${totalPassed} of ${totalSessions} sessions</div></div>
+    <div class="metric"><div class="ml">Passed</div><div class="mv" style="color:var(--teal)">${totalPassed}</div><div class="ms">sessions</div></div>
+    <div class="metric"><div class="ml">In progress</div><div class="mv" style="color:var(--amber)">${totalIP}</div><div class="ms">sessions</div></div>
+    <div class="metric"><div class="ml">Failed / retry</div><div class="mv" style="color:var(--red)">${totalFailed}</div><div class="ms">sessions</div></div>
+    <div class="metric"><div class="ml">Pending</div><div class="mv" style="color:var(--text3)">${totalPending}</div><div class="ms">not started</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+    <div class="card" style="padding:16px">
+      <div class="ct" style="margin-bottom:14px">Overall status breakdown</div>
+      <div style="position:relative;height:220px"><canvas id="chart-donut" role="img" aria-label="Donut chart showing overall training status breakdown"></canvas></div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;justify-content:center">
+        ${[['#1D9E75','Passed',totalPassed],['#EF9F27','In Progress',totalIP],['#E24B4A','Failed',totalFailed],['#AEB6BF','Pending',totalPending]].map(([c,l,v])=>`<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)"><span style="width:10px;height:10px;border-radius:2px;background:${c};display:inline-block"></span>${l} (${v})</span>`).join('')}
+      </div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div class="ct" style="margin-bottom:14px">Trainee completion %</div>
+      <div style="position:relative;height:${Math.max(220,traineeStats.length*36+40)}px"><canvas id="chart-trainees" role="img" aria-label="Horizontal bar chart of trainee completion percentages"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:16px;margin-bottom:14px">
+    <div class="ct" style="margin-bottom:14px">Pass rate by course</div>
+    <div style="position:relative;height:${Math.max(200,courseStats.length*28+60)}px"><canvas id="chart-courses" role="img" aria-label="Horizontal bar chart of pass rate per course"></canvas></div>
+  </div>
+
+  <div class="card" style="padding:16px;margin-bottom:14px">
+    <div class="ct" style="margin-bottom:14px">Trainee progress — stacked comparison</div>
+    <div style="position:relative;height:${Math.max(200,traineeStats.length*40+60)}px"><canvas id="chart-stacked" role="img" aria-label="Stacked bar chart comparing trainee progress by status"></canvas></div>
+  </div>
+
+  <div class="card" style="padding:16px">
+    <div class="ct" style="margin-bottom:12px">Trainee × Course matrix</div>
+    <div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;font-size:11px">
+      <thead><tr>
+        <th style="text-align:left;padding:6px 8px;background:var(--navy);color:#fff;position:sticky;left:0;min-width:120px">Trainee</th>
+        ${cs.filter(c=>ts.some(t=>(t.plan||[]).find(e=>e.courseId===c.id))).map(c=>`<th style="padding:4px 3px;background:var(--navy);color:#fff;white-space:nowrap;max-width:80px;overflow:hidden;text-overflow:ellipsis;writing-mode:vertical-rl;transform:rotate(180deg);height:80px" title="${c.name}">${c.name}</th>`).join('')}
+        <th style="padding:6px 8px;background:var(--navy);color:#fff;text-align:center">%</th>
+      </tr></thead>
+      <tbody>
+      ${ts.map((t,ti)=>{
+        const activeCourses=cs.filter(c=>ts.some(x=>(x.plan||[]).find(e=>e.courseId===c.id)));
+        const p=prog(t);
+        return`<tr style="background:${ti%2?'var(--bg2)':'var(--bg)'}">
+          <td style="padding:6px 8px;font-weight:500;color:var(--text);position:sticky;left:0;background:${ti%2?'var(--bg2)':'var(--bg)';};border-right:1px solid var(--border)">${t.name}</td>
+          ${activeCourses.map(c=>{
+            const e=(t.plan||[]).find(x=>x.courseId===c.id);
+            if(!e) return`<td style="text-align:center;color:var(--border)">—</td>`;
+            const fill={pass:'#D5F5E3',ip:'#FDEBD0',fail:'#FADBD8',none:'var(--bg3)'}[e.result||'none'];
+            const sym={pass:'✓',ip:'⏳',fail:'✗',none:'·'}[e.result||'none'];
+            const fc={pass:'#145A32',ip:'#784212',fail:'#641E16',none:'var(--text3)'}[e.result||'none'];
+            return`<td style="text-align:center;background:${fill};color:${fc};font-weight:600;padding:4px 2px">${sym}</td>`;
+          }).join('')}
+          <td style="text-align:center;font-weight:700;color:${p.pct>=80?'var(--teal)':p.pct>=50?'var(--amber)':'var(--red)';}">${p.pct}%</td>
+        </tr>`;
+      }).join('')}
+      </tbody>
+    </table></div>
+    <div style="display:flex;gap:14px;margin-top:10px;flex-wrap:wrap">
+      ${[['#D5F5E3','#145A32','✓ Passed'],['#FDEBD0','#784212','⏳ In progress'],['#FADBD8','#641E16','✗ Failed'],['var(--bg3)','var(--text3)','· Pending'],['transparent','var(--border)','— Not assigned']].map(([bg,fc,l])=>`<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:16px;height:14px;border-radius:2px;background:${bg};border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:${fc};font-weight:700">${l.split(' ')[0]}</span>${l}</span>`).join('')}
+    </div>
+  </div>`;
+
+  // ── Draw charts after DOM is ready ──────────────────────────────
+  setTimeout(()=>{
+    // 1. Donut — overall status
+    new Chart(g('chart-donut'),{
+      type:'doughnut',
+      data:{
+        labels:['Passed','In Progress','Failed','Pending'],
+        datasets:[{data:[totalPassed,totalIP,totalFailed,totalPending],backgroundColor:['#1D9E75','#EF9F27','#E24B4A','#D5D8DC'],borderWidth:2,borderColor:'#fff'}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} (${totalSessions?Math.round(ctx.raw/totalSessions*100):0}%)`}}}}
+    });
+
+    // 2. Trainee completion horizontal bar
+    new Chart(g('chart-trainees'),{
+      type:'bar',
+      data:{
+        labels:traineeStats.map(x=>x.name),
+        datasets:[{label:'Completion %',data:traineeStats.map(x=>x.pct),backgroundColor:traineeStats.map(x=>x.pct>=80?'#1D9E75':x.pct>=50?'#EF9F27':'#E24B4A'),borderRadius:4}]
+      },
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.raw}% complete`}}},scales:{x:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.06)'}},y:{ticks:{font:{size:11}}}}}
+    });
+
+    // 3. Pass rate by course horizontal bar
+    new Chart(g('chart-courses'),{
+      type:'bar',
+      data:{
+        labels:courseStats.map(x=>x.name.length>30?x.name.slice(0,28)+'…':x.name),
+        datasets:[{label:'Pass rate %',data:courseStats.map(x=>x.rate),backgroundColor:courseStats.map(x=>PC[x.phase]+'CC'),borderRadius:4}]
+      },
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const s=courseStats[ctx.dataIndex];return[`Pass rate: ${ctx.raw}%`,`Passed: ${s.passed}  Failed: ${s.failed}  IP: ${s.ip}  Pending: ${s.pending}`]}}}},scales:{x:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.06)'}},y:{ticks:{font:{size:10}}}}}
+    });
+
+    // 4. Stacked bar — per trainee by status
+    new Chart(g('chart-stacked'),{
+      type:'bar',
+      data:{
+        labels:traineeStats.map(x=>x.name),
+        datasets:[
+          {label:'Passed',data:traineeStats.map(x=>x.passed),backgroundColor:'#1D9E75',borderRadius:0},
+          {label:'In Progress',data:traineeStats.map(x=>x.ip),backgroundColor:'#EF9F27'},
+          {label:'Failed',data:traineeStats.map(x=>x.failed),backgroundColor:'#E24B4A'},
+          {label:'Pending',data:traineeStats.map(x=>x.pending),backgroundColor:'#D5D8DC'},
+        ]
+      },
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:16}}},scales:{x:{stacked:true,ticks:{stepSize:1},grid:{color:'rgba(0,0,0,.06)'}},y:{stacked:true,ticks:{font:{size:11}}}}}
+    });
+  },100);
+}
+
 // ── SETTINGS TAB ──────────────────────────────────────────────────
 function settings(el){
-  const ok=GH.owner&&GH.repo;
-  let h=`<div class="st" style="margin-bottom:16px">GitHub configuration</div>`;
-  if(ok)h+=`<div class="al ao">&#10003; Connected to <strong>${GH.owner}/${GH.repo}</strong> &nbsp;·&nbsp; Data file: <code>${GH.path}</code></div>`;
-  else h+=`<div class="al aw">&#9888; Not configured — fill in your repository details below.</div>`;
+  const ok=GH.owner&&GH.repo&&GH.token;
+  const hasPw=!!getEditPw();
+  let h=`<div class="st" style="margin-bottom:16px">Settings</div>`;
+
+  // Status banner
+  if(ok&&hasPw){
+    h+=`<div class="al ao">&#10003; All configured — app is ready. Share the URL and edit password with your team.</div>`;
+  } else {
+    h+=`<div class="al aw">&#9888; Complete the setup below before using the app.</div>`;
+  }
+
+  // GitHub config
   h+=`<div class="card">
-    <div class="ct" style="margin-bottom:12px">Repository details</div>
+    <div class="ct" style="margin-bottom:12px">GitHub repository</div>
     <div class="form-row">
       <div class="fg"><label>GitHub username or org *</label><input id="so" value="${GH.owner}" placeholder="e.g. markkevinolivar"/></div>
       <div class="fg"><label>Repository name *</label><input id="sr" value="${GH.repo}" placeholder="e.g. training-manager"/></div>
     </div>
-    <div class="form-row"><div class="fg" style="max-width:280px"><label>Data file path</label><input id="sp" value="${GH.path}" placeholder="data/training.json"/></div></div>
+    <div class="form-row">
+      <div class="fg" style="max-width:280px"><label>Data file path</label><input id="sp" value="${GH.path}" placeholder="data/training.json"/></div>
+    </div>
+    <div class="ct" style="margin-bottom:8px;margin-top:14px">GitHub Personal Access Token</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:8px">Stored securely in your browser. Needed to save data to GitHub. Generate one at github.com → Settings → Developer settings → Personal access tokens → Tokens (classic) → with <strong>repo</strong> scope.</div>
+    <div class="form-row">
+      <div class="fg"><label>${GH.token?'Token (saved — paste new one to replace)':'Token *'}</label>
+        <input type="password" id="st" placeholder="${GH.token?'••••••••••••••••••••••••••  (already saved)':'ghp_xxxxxxxxxxxxxxxxxxxx'}" autocomplete="off"/>
+      </div>
+    </div>
+    <div class="ct" style="margin-bottom:8px;margin-top:14px">Edit password</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:8px">A simple password that trainers enter to unlock editing. Share this with your team. Stored in browser only.</div>
+    <div class="form-row">
+      <div class="fg" style="max-width:260px">
+        <label>${hasPw?'Change password':'Set edit password *'}</label>
+        <input type="password" id="spw" placeholder="${hasPw?'Enter new password to change':'Set a password...'}"/>
+      </div>
+      <div class="fg" style="max-width:260px" id="spw2-wrap">
+        <label>Confirm password</label>
+        <input type="password" id="spw2" placeholder="Repeat password"/>
+      </div>
+    </div>
+    ${hasPw?`<div style="font-size:12px;color:var(--dkgreen);margin-bottom:8px">&#10003; Edit password is set. Leave blank to keep current password.</div>`:''}
+    <div id="settings-err" class="al ae" style="display:none;margin-bottom:8px"></div>
     <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
-      <button class="btn bp sm" onclick="saveGH()">Save configuration</button>
-      ${ok?`<button class="btn sm" onclick="reload()">&#8635; Reload from GitHub</button>`:''}
+      <button class="btn bp sm" onclick="saveGH()">Save settings</button>
+      ${ok?`<button class="btn sm" onclick="reload()">&#8635; Reload data from GitHub</button>`:''}
     </div>
   </div>
+
   <div class="card" style="margin-top:4px">
     <div class="ct" style="margin-bottom:10px">Data backup &amp; restore</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -802,7 +1112,29 @@ function settings(el){
   el.innerHTML=h;
 }
 
-function saveGH(){GH.owner=g('so').value.trim();GH.repo=g('sr').value.trim();GH.path=g('sp').value.trim()||'data/training.json';saveLs();settings(g('ct'));if(GH.owner&&GH.repo)reload()}
+function saveGH(){
+  const err=g('settings-err');
+  err.style.display='none';
+  GH.owner=g('so').value.trim();
+  GH.repo=g('sr').value.trim();
+  GH.path=g('sp').value.trim()||'data/training.json';
+  // Token — only update if user entered something
+  const newToken=g('st').value.trim();
+  if(newToken) GH.token=newToken;
+  // Password
+  const pw=g('spw').value;
+  const pw2=g('spw2').value;
+  if(pw){
+    if(pw!==pw2){err.textContent='Passwords do not match.';err.style.display='flex';return}
+    setEditPw(pw);
+  }
+  if(!GH.owner||!GH.repo){err.textContent='GitHub username and repository name are required.';err.style.display='flex';return}
+  if(!GH.token){err.textContent='GitHub token is required.';err.style.display='flex';return}
+  if(!getEditPw()){err.textContent='Please set an edit password.';err.style.display='flex';return}
+  saveLs();
+  settings(g('ct'));
+  reload();
+}
 async function reload(){sync('Loading...','#FAC775');try{const d=await ghLoad(!!GH.token);if(d){S=d;sync('Loaded ✓','#9FE1CB');render()}else sync('No data file yet — unlock to create it','#FAC775')}catch(e){sync('Load failed: '+e.message,'#F09595')}}
 
 function exportD(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='training-backup-'+today()+'.json';a.click()}
@@ -810,6 +1142,9 @@ function importD(input){const f=input.files[0];if(!f)return;const r=new FileRead
 function resetD(){if(!confirm('Reset ALL data to defaults?\nDeletes all trainees. Cannot be undone.'))return;S={courses:JSON.parse(JSON.stringify(DC)),trainees:[]};push('Reset to defaults');render()}
 
 g('ai').addEventListener('keydown',e=>{if(e.key==='Enter')doAuth()});
+
+loadLs();render();
+if(GH.owner&&GH.repo){sync('Loading...','#FAC775');reload()}
 
 // ══════════════════════════════════════════════════════════════════
 // TEAM ROSTER TAB
@@ -826,25 +1161,35 @@ function roster(el){
   </div>`;
 
   if(!members.length){
-    h+=`<div class="card"><div class="empty"><div class="ei">&#128101;</div>No members added yet.<br>${editMode?'Add existing team members and their current skill levels.':'Unlock editing to add members.'}</div></div>`;
+    h+=`<div class="card"><div class="empty"><div class="ei">&#128101;</div>No members added yet.<br>${editMode?'Add existing team members and their current skill levels, or promote a trainee from the Trainees tab.':'Unlock editing to add members.'}</div></div>`;
   } else {
     members.forEach(m=>{
       const skillCount=Object.keys(m.skills||{}).length;
       const expertCount=Object.values(m.skills||{}).filter(v=>v>=5).length;
-      const avgLvl=skillCount?( Object.values(m.skills||{}).reduce((a,v)=>a+v,0)/skillCount).toFixed(1):'-';
+      const avgLvl=skillCount?(Object.values(m.skills||{}).reduce((a,v)=>a+v,0)/skillCount).toFixed(1):'-';
+      // Check if this member has an active training plan
+      const activePlan=S.trainees?S.trainees.find(x=>x.id===m.id):null;
+      const activeProgress=activePlan?prog(activePlan):null;
+
       h+=`<div class="card" style="margin-bottom:10px">
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
           <div class="av av-l">${ini(m.name)}</div>
           <div style="flex:1;min-width:0">
-            <div style="font-size:15px;font-weight:700;color:var(--text)">${m.name}</div>
-            <div style="font-size:12px;color:var(--text3);margin-top:2px">${[m.role,m.team].filter(Boolean).join(' · ')}</div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <span style="font-size:15px;font-weight:700;color:var(--text)">${m.name}</span>
+              ${activePlan?`<span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--ltamber);color:var(--dkamber);font-weight:600;border:1px solid var(--amber)">&#128218; In training · ${activeProgress.pct}%</span>`:''}
+            </div>
+            <div style="font-size:12px;color:var(--text3);margin-top:2px">${[m.role,m.team,m.years?m.years+' yrs exp':''].filter(Boolean).join(' · ')}</div>
             <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:12px;color:var(--text2)">&#128218; ${skillCount} skills logged</span>
-              <span style="font-size:12px;color:var(--text2)">&#11088; Avg level: ${avgLvl}</span>
-              ${expertCount?`<span style="font-size:12px;color:var(--dkgreen)">&#127775; ${expertCount} expert-level</span>`:''}
+              <span style="font-size:12px;color:var(--text2)">&#128218; ${skillCount} skills</span>
+              <span style="font-size:12px;color:var(--text2)">&#11088; Avg: ${avgLvl}/5</span>
+              ${expertCount?`<span style="font-size:12px;color:var(--dkgreen)">&#127775; ${expertCount} expert</span>`:''}
             </div>
           </div>
-          ${editMode?`<div style="display:flex;gap:6px;flex-shrink:0">
+          ${editMode?`<div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">
+            ${activePlan
+              ?`<button class="btn sm" onclick="trainee='${m.id}';go('trainees')" style="background:var(--ltamber);color:var(--dkamber);border-color:var(--amber)">View training &#8250;</button>`
+              :`<button class="btn sm bp" onclick="enrollMember('${m.id}')">+ Enroll for training</button>`}
             <button class="btn sm" onclick="openMemberModal('${m.id}')">&#9998; Edit</button>
             <button class="btn sm bd ic" onclick="delMember('${m.id}')">&#10005;</button>
           </div>`:''}
