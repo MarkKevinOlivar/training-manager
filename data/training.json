@@ -215,6 +215,14 @@
       "duration": 5,
       "required": 4,
       "description": ""
+    },
+    {
+      "id": "c1778607429695",
+      "name": "Commercial Estimating Design",
+      "phase": "p3",
+      "duration": 5,
+      "required": 4,
+      "description": ""
     }
   ],
   "trainees": [
