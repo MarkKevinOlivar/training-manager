@@ -136,15 +136,6 @@
       "order": 11
     },
     {
-      "id": "mp-ess",
-      "name": "Master Plan ESS",
-      "phase": "p1",
-      "duration": 1,
-      "required": 4,
-      "description": "Master plan with energy storage",
-      "order": 13
-    },
-    {
       "id": "mppp-sf",
       "name": "MPPP (SF)",
       "phase": "p2",
