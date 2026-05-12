@@ -1,0 +1,205 @@
+{
+  "courses": [
+    {
+      "id": "pv",
+      "phase": "p1",
+      "name": "PV Fundamentals",
+      "duration": 1,
+      "required": 4,
+      "description": "Intro to PV systems end-to-end"
+    },
+    {
+      "id": "nh",
+      "phase": "p1",
+      "name": "Introduction to New Homes",
+      "duration": 1,
+      "required": 4,
+      "description": "NH design types and CRM"
+    },
+    {
+      "id": "sha",
+      "phase": "p1",
+      "name": "Shading Analysis Training",
+      "duration": 1,
+      "required": 4,
+      "description": "Aurora Solar shading reports"
+    },
+    {
+      "id": "sha-p",
+      "phase": "p1",
+      "name": "Shading Analysis Practice",
+      "duration": 1,
+      "required": 4,
+      "description": "2–5 reports/day progression"
+    },
+    {
+      "id": "iplot",
+      "phase": "p2",
+      "name": "IPlot Training + FM Path",
+      "duration": 2,
+      "required": 4,
+      "description": "SF/MF plot plan with BOM and PV Calc"
+    },
+    {
+      "id": "iplot-p",
+      "phase": "p2",
+      "name": "IPlot/Shading Practice",
+      "duration": 1,
+      "required": 4,
+      "description": "2–6 designs/day practice"
+    },
+    {
+      "id": "cert-w",
+      "phase": "p2",
+      "name": "Written Certification",
+      "duration": 1,
+      "required": 4,
+      "description": "Written knowledge exam"
+    },
+    {
+      "id": "cert-d",
+      "phase": "p2",
+      "name": "Actual Design Certification",
+      "duration": 1,
+      "required": 4,
+      "description": "Practical design exam"
+    },
+    {
+      "id": "nest-ip",
+      "phase": "p2",
+      "name": "Nesting — IPlot (Wks 1–4)",
+      "duration": 4,
+      "required": 4,
+      "description": "3–7 designs/day progression"
+    },
+    {
+      "id": "ipermit",
+      "phase": "p2",
+      "name": "IPermit Training",
+      "duration": 1,
+      "required": 4,
+      "description": "1D classroom — Individual permit SF"
+    },
+    {
+      "id": "ipermit-ex",
+      "phase": "p2",
+      "name": "IPermit Exercises 1–10",
+      "duration": 2,
+      "required": 4,
+      "description": "1–3 days each exercise"
+    },
+    {
+      "id": "ipermit-ess",
+      "phase": "p2",
+      "name": "IPermit ESS",
+      "duration": 1,
+      "required": 4,
+      "description": "IPermit with energy storage"
+    },
+    {
+      "id": "nest-ipm",
+      "phase": "p2",
+      "name": "Nesting — IPermit (Wks 1–4)",
+      "duration": 4,
+      "required": 4,
+      "description": "1–2 permits/week progression"
+    },
+    {
+      "id": "mp-sf",
+      "phase": "p3",
+      "name": "Master Plan (SF)",
+      "duration": 1,
+      "required": 4,
+      "description": "Community master plan single-family"
+    },
+    {
+      "id": "mp-ex",
+      "phase": "p3",
+      "name": "Master Plan Exercises 1–3",
+      "duration": 1,
+      "required": 4,
+      "description": "Guided master plan practice"
+    },
+    {
+      "id": "mp-mf",
+      "phase": "p3",
+      "name": "Master Plan (MF)",
+      "duration": 1,
+      "required": 4,
+      "description": "Community master plan multi-family"
+    },
+    {
+      "id": "mp-ess",
+      "phase": "p3",
+      "name": "Master Plan ESS",
+      "duration": 1,
+      "required": 4,
+      "description": "Master plan with energy storage"
+    },
+    {
+      "id": "mppp-sf",
+      "phase": "p3",
+      "name": "MPPP (SF)",
+      "duration": 2,
+      "required": 4,
+      "description": "Master plan permit package SF"
+    },
+    {
+      "id": "mppp-mf",
+      "phase": "p3",
+      "name": "MPPP (MF)",
+      "duration": 2,
+      "required": 4,
+      "description": "Master plan permit package MF"
+    },
+    {
+      "id": "fse",
+      "phase": "p3",
+      "name": "Future Solar Exhibit",
+      "duration": 1,
+      "required": 3,
+      "description": "Preliminary sales document MF"
+    },
+    {
+      "id": "ssp",
+      "phase": "p3",
+      "name": "Solar Site Plan",
+      "duration": 1,
+      "required": 1,
+      "description": "Optimal PV placement per community lot"
+    },
+    {
+      "id": "memo",
+      "phase": "p4",
+      "name": "Intro to SPECs & Memos",
+      "duration": 1,
+      "required": 3,
+      "description": "Insperity self-paced"
+    },
+    {
+      "id": "phish",
+      "phase": "p4",
+      "name": "Phishing & Anti-Spam",
+      "duration": 1,
+      "required": 3,
+      "description": "Insperity self-paced"
+    },
+    {
+      "id": "idtheft",
+      "phase": "p4",
+      "name": "Identity Theft Awareness",
+      "duration": 1,
+      "required": 3,
+      "description": "Insperity self-paced"
+    },
+    {
+      "id": "social",
+      "phase": "p4",
+      "name": "Social Engineering",
+      "duration": 1,
+      "required": 3,
+      "description": "Insperity self-paced"
+    }
+  ],
+  "trainees": []
+}
