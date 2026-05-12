@@ -30,7 +30,7 @@
     {
       "id": "iplot",
       "order": 3,
-      "name": "IPlot Training",
+      "name": "IPlot",
       "phase": "p1",
       "duration": 2,
       "required": 4,
