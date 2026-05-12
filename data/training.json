@@ -183,16 +183,6 @@
           "trainer": "Leojen Perez"
         },
         {
-          "courseId": "c1778609275646",
-          "startDate": "2026-03-25",
-          "endDate": "2026-03-25",
-          "result": "pass",
-          "score": "",
-          "completionDate": "2026-03-25",
-          "notes": "",
-          "trainer": "Self-Directed"
-        },
-        {
           "courseId": "pv",
           "startWW": 23,
           "endWW": 23,
@@ -204,6 +194,16 @@
           "startDate": "2026-04-14",
           "endDate": "2026-04-14",
           "completionDate": "2026-04-14"
+        },
+        {
+          "courseId": "c1778609275646",
+          "startDate": "2026-03-25",
+          "endDate": "2026-03-25",
+          "result": "pass",
+          "score": "",
+          "completionDate": "2026-03-25",
+          "notes": "",
+          "trainer": "Self-Directed"
         },
         {
           "courseId": "nh",
@@ -256,6 +256,16 @@
           "trainer": "Ronnel Gozon"
         },
         {
+          "courseId": "c1778609963787",
+          "startDate": "2026-03-23",
+          "endDate": "2026-03-23",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
           "courseId": "fse",
           "startDate": "2026-03-23",
           "endDate": "2026-03-23",
@@ -276,9 +286,9 @@
           "trainer": ""
         },
         {
-          "courseId": "c1778609963787",
-          "startDate": "2026-03-23",
-          "endDate": "2026-03-23",
+          "courseId": "c1778609900411",
+          "startDate": "2026-05-12",
+          "endDate": "2026-05-12",
           "result": "none",
           "score": "",
           "completionDate": "",
@@ -307,16 +317,6 @@
         },
         {
           "courseId": "mppp-sf",
-          "startDate": "2026-05-12",
-          "endDate": "2026-05-12",
-          "result": "none",
-          "score": "",
-          "completionDate": "",
-          "notes": "",
-          "trainer": ""
-        },
-        {
-          "courseId": "c1778609900411",
           "startDate": "2026-05-12",
           "endDate": "2026-05-12",
           "result": "none",
