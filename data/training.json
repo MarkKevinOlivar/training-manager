@@ -416,11 +416,11 @@
           "courseId": "c1778615939564",
           "startDate": "2026-03-30",
           "endDate": "2026-03-30",
-          "result": "none",
+          "result": "pass",
           "score": "",
-          "completionDate": "",
+          "completionDate": "2026-03-30",
           "notes": "",
-          "trainer": ""
+          "trainer": "Self-Directed"
         },
         {
           "courseId": "c1778616031610",
