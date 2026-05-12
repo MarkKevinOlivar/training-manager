@@ -137,7 +137,7 @@
     },
     {
       "id": "c1778609963787",
-      "order": 9,
+      "order": 10,
       "name": "Classroom | IFC Training",
       "phase": "p4",
       "duration": 1,
@@ -187,7 +187,7 @@
       "duration": 1,
       "required": 2,
       "description": "",
-      "order": 10
+      "order": 9
     }
   ],
   "trainees": [
