@@ -18,11 +18,11 @@
     },
     {
       "id": "sha",
-      "name": "Shading Analysis Training",
+      "name": "Aurora Solar Training",
       "phase": "p1",
       "duration": 1,
       "required": 2,
-      "description": "Aurora Solar shading reports"
+      "description": "Aurora Solar Model / PV & Storage System Configuration / Proposal / Share Report"
     },
     {
       "id": "sha-p",
