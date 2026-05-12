@@ -506,11 +506,11 @@
           "courseId": "fse",
           "startDate": "2026-03-23",
           "endDate": "2026-03-23",
-          "result": "none",
+          "result": "ip",
           "score": "",
-          "completionDate": "",
+          "completionDate": "2026-05-12",
           "notes": "",
-          "trainer": ""
+          "trainer": "Jecko Gevana"
         },
         {
           "courseId": "mp-sf",
