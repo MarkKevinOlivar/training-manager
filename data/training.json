@@ -188,6 +188,15 @@
       "required": 2,
       "description": "",
       "order": 6
+    },
+    {
+      "id": "c1778615844808",
+      "name": "Albatross Training 2",
+      "phase": "p4",
+      "duration": 1,
+      "required": 2,
+      "description": "",
+      "order": 11
     }
   ],
   "trainees": [
