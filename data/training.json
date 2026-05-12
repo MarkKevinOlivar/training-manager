@@ -227,12 +227,12 @@
     },
     {
       "id": "c1778615939564",
+      "order": 15,
       "name": "Ignite | NH Albatross Training 4 - Smartlists",
       "phase": "p4",
       "duration": 1,
       "required": 2,
-      "description": "",
-      "order": 15
+      "description": "https://ignite.talentlms.com/plus/my/training/947/units/10021"
     },
     {
       "id": "c1778616031610",
