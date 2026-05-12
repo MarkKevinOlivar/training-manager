@@ -729,6 +729,36 @@
           "completionDate": "",
           "notes": "",
           "trainer": "Ronnel Gozon"
+        },
+        {
+          "courseId": "c1778609963787",
+          "startDate": "2026-05-19",
+          "endDate": "2026-05-19",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "fse",
+          "startDate": "2026-05-19",
+          "endDate": "2026-05-19",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "mp-sf",
+          "startDate": "2026-05-19",
+          "endDate": "2026-05-19",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
         }
       ],
       "code": "JTZ"
