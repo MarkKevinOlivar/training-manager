@@ -330,7 +330,7 @@
       "name": "Phase 1: NH Onboarding",
       "short": "Phase 1",
       "color": "#1D9E75",
-      "order": 1,
+      "order": 2,
       "description": "Foundational onboarding training for new hires"
     },
     {
@@ -354,7 +354,7 @@
       "name": "Phase 4: Compliance",
       "short": "Phase 4",
       "color": "#7F77DD",
-      "order": 2,
+      "order": 1,
       "description": "Compliance and security self-paced courses"
     }
   ]
