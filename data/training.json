@@ -128,7 +128,7 @@
     },
     {
       "id": "c1778609900411",
-      "order": 11,
+      "order": 12,
       "name": "Classroom | NEC Training",
       "phase": "p4",
       "duration": 1,
@@ -214,7 +214,16 @@
       "duration": 1,
       "required": 2,
       "description": "",
-      "order": 12
+      "order": 11
+    },
+    {
+      "id": "c1778615917610",
+      "name": "Ignite | NH Albatross Training 3 - Creating Cash Proposals",
+      "phase": "p4",
+      "duration": 1,
+      "required": 2,
+      "description": "",
+      "order": 14
     }
   ],
   "trainees": [
