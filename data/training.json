@@ -3,7 +3,7 @@
     {
       "id": "pv",
       "name": "PV Fundamentals",
-      "phase": "p1",
+      "phase": "p4",
       "duration": 1,
       "required": 2,
       "description": "Intro to PV systems end-to-end"
