@@ -92,12 +92,12 @@
     },
     {
       "id": "c1778607151419",
-      "name": "NEOP",
+      "order": 1,
+      "name": "Classroom | NEOP",
       "phase": "p4",
       "duration": 2,
       "required": 2,
-      "description": "New Employee Orientation Program",
-      "order": 1
+      "description": "New Employee Orientation Program"
     },
     {
       "id": "c1778607409920",
