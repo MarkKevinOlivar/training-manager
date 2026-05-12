@@ -116,7 +116,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;ba
 .bc{padding:3px 1px}.bar{height:16px;border-radius:3px;margin:0 1px}
 .rb{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;border-radius:99px;font-weight:600;white-space:nowrap}
 .rn_{background:var(--bg3);color:var(--text3)}.rp{background:var(--ltgreen);color:var(--dkgreen)}
-.ri_{background:var(--ltamber);color:var(--dkamber)}.rf{background:var(--ltred);color:var(--dkred)}
+.ri_{background:var(--ltamber);color:var(--dkamber)}.rf{background:var(--ltred);color:var(--dkred)}.rs_{background:var(--ltblue);color:#0C447C}
 .mw{overflow-x:auto}
 .mx{border-collapse:collapse;width:100%}
 .mx th{font-size:11px;padding:7px 10px;background:var(--bg3);color:var(--text2);border:1px solid var(--border);white-space:nowrap;font-weight:600;text-align:center}
@@ -223,6 +223,7 @@ code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;b
   <input type="hidden" id="tm-eid">
   <div class="form-row">
     <div class="fg" style="flex:2"><label>Full name *</label><input id="tm-n" placeholder="e.g. Juan Cruz"></div>
+    <div class="fg" style="max-width:110px"><label>3-letter code</label><input id="tm-code" placeholder="JCX" maxlength="5" style="text-transform:uppercase"/></div>
     <div class="fg"><label>Role / ID</label><input id="tm-r" placeholder="e.g. NCG 6"></div>
   </div>
   <div class="form-row">
@@ -553,7 +554,7 @@ function trainees(el){
       h+='<div class="ri"><div class="rn">'+t.name;
       if(inRoster) h+=' <span style="font-size:10px;padding:1px 6px;border-radius:99px;background:var(--ltgreen);color:var(--dkgreen);font-weight:600;vertical-align:middle">&#10003; Roster</span>';
       h+='</div>';
-      h+='<div class="rs">'+[t.role,t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' &middot; ');
+      h+='<div class="rs">'+(t.code?'<span style="font-size:10px;font-weight:700;background:var(--navy);color:#fff;padding:1px 5px;border-radius:3px;margin-right:5px">'+t.code+'</span>':'')+[t.role,t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' &middot; ');
       if(pa) h+=' <span class="tag tpass" style="margin-left:6px">&#10003; '+pa+' passed</span>';
       if(fa) h+=' <span class="tag tfail" style="margin-left:4px">&#10007; '+fa+' failed</span>';
       h+='</div></div>';
@@ -584,7 +585,7 @@ function detail(el){
   h+='<div class="av av-l">'+ini(t.name)+'</div>';
   h+='<div style="flex:1;min-width:0">';
   h+='<div style="font-size:18px;font-weight:700;color:var(--text)">'+t.name+'</div>';
-  h+='<div style="font-size:12px;color:var(--text3)">'+[t.role,t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' &middot; ')+'</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">'+(t.code?'<span style="font-size:11px;font-weight:700;background:var(--navy);color:#fff;padding:1px 6px;border-radius:4px;margin-right:6px">'+t.code+'</span>':'')+[t.role,t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' &middot; ')+'</div>';
   h+='</div>';
   h+='<div style="text-align:right">';
   h+='<div style="font-size:12px;color:var(--text3);margin-bottom:4px">'+p.done+'/'+p.tot+' sessions &middot; '+p.pct+'% complete</div>';
@@ -704,7 +705,8 @@ function detail(el){
       rowCount++;
       const alt=rowCount%2===1;
       const rowBg=alt?'var(--bg)':'var(--bg2)';
-      const bc=e.result==='pass'?'#1D9E75':e.result==='fail'?'#E24B4A':e.result==='ip'?'#EF9F27':ph.color;
+      const er=getER(e);
+      const bc=er==='pass'?'#1D9E75':er==='fail'?'#E24B4A':er==='ip'?'#EF9F27':er==='scheduled'?'#2E6DB4':ph.color;
       const st=d2t(e.startDate),en=d2t(e.endDate||e.startDate);
 
       // Course name cell
@@ -790,7 +792,7 @@ function detail(el){
 
   // Legend
   h+='<div style="display:flex;gap:14px;margin-top:10px;flex-wrap:wrap">';
-  [['#1D9E75','Passed'],['#EF9F27','In progress'],['#E24B4A','Failed'],['#185FA5','Scheduled']].forEach(function(pair){
+  [['#1D9E75','Passed'],['#EF9F27','In progress'],['#E24B4A','Failed'],['#2E6DB4','Scheduled (date set)'],['#7F77DD','Unscheduled']].forEach(function(pair){
     h+='<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:14px;height:8px;border-radius:2px;background:'+pair[0]+';display:inline-block"></span>'+pair[1]+'</span>';
   });
   if(blocks.length){
@@ -813,10 +815,11 @@ function detail(el){
     rows.forEach(function(row,i){
       const c=row.c,e=row.e;
       const last=i===rows.length-1;
-      const rcMap={pass:'rp',ip:'ri_',fail:'rf',none:'rn_'};
-      const rlMap={pass:'&#10003; Passed',ip:'&#9203; In progress',fail:'&#10007; Failed',none:'&#8212; Pending'};
-      const rc=rcMap[e.result||'none']||'rn_';
-      const rl=rlMap[e.result||'none']||'&#8212; Pending';
+      const getER=e=>( e.result&&e.result!=='none')?e.result:(e.startDate?'scheduled':'none');
+      const rcMap={pass:'rp',ip:'ri_',fail:'rf',scheduled:'rs_',none:'rn_'};
+      const rlMap={pass:'&#10003; Passed',ip:'&#9203; In progress',fail:'&#10007; Failed',scheduled:'&#128197; Scheduled',none:'&#8212; Pending'};
+      const rc=rcMap[getER(e)]||'rn_';
+      const rl=rlMap[getER(e)]||'&#8212; Pending';
       h+='<div style="padding:10px 0;border-bottom:'+(last?'none':'1px solid var(--border)'+'">'
 );
       h+='<div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap">';
@@ -873,8 +876,9 @@ function promoteToRoster(tid){
     alert(`${t.name} is already in the roster. Their new passed courses have been added.`);
   } else {
     S.members.push({
-      id:t.id, // same ID so they're linked
+      id:t.id,
       name:t.name,
+      code:t.code||'',
       role:t.role||'',
       team:'',
       years:'',
@@ -1055,19 +1059,19 @@ function saveEditDate(){
 // ── TRAINEE MODAL ─────────────────────────────────────────────────
 function openTm(){
   g('tm-t').textContent='Add new trainee';g('tm-eid').value='';g('tm-n').value='';g('tm-r').value='';
-  g('tm-sd').value=today();g('tm-no').value='';g('tm-ok').textContent='Add trainee';
+  g('tm-sd').value=today();g('tm-no').value='';g('tm-code').value='';g('tm-ok').textContent='Add trainee';
   g('m-trainee').style.display='flex';setTimeout(()=>g('tm-n').focus(),80);
 }
 function openTmEdit(id){
   const t=S.trainees.find(x=>x.id===id);if(!t)return;
   g('tm-t').textContent='Edit trainee info';g('tm-eid').value=id;g('tm-n').value=t.name;g('tm-r').value=t.role||'';
-  g('tm-sd').value=t.startDate||'';g('tm-no').value=t.notes||'';g('tm-ok').textContent='Save changes';
+  g('tm-sd').value=t.startDate||'';g('tm-no').value=t.notes||'';g('tm-code').value=t.code||'';g('tm-ok').textContent='Save changes';
   g('m-trainee').style.display='flex';setTimeout(()=>g('tm-n').focus(),80);
 }
 function saveTrainee(){
   const name=g('tm-n').value.trim();if(!name)return alert('Name is required.');
   const eid=g('tm-eid').value;
-  const data={name,role:g('tm-r').value.trim(),startDate:g('tm-sd').value,notes:g('tm-no').value.trim()};
+  const data={name,role:g('tm-r').value.trim(),code:g('tm-code').value.trim().toUpperCase().slice(0,5),startDate:g('tm-sd').value,notes:g('tm-no').value.trim()};
   if(eid){const t=S.trainees.find(x=>x.id===eid);if(t){Object.assign(t,data);cm('m-trainee');push('Update trainee: '+name);render();return}}
   const t={id:'t'+Date.now(),...data,plan:[]};
   if(!S.trainees)S.trainees=[];S.trainees.push(t);
@@ -1388,7 +1392,9 @@ function reports(el){
     const failed=(t.plan||[]).filter(e=>e.result==='fail').length;
     const ip=(t.plan||[]).filter(e=>e.result==='ip').length;
     const pending=(t.plan||[]).length-passed-failed-ip;
-    return{name:t.name.split(' ')[0]+(t.name.split(' ')[1]?' '+t.name.split(' ')[1][0]+'.':''),fullName:t.name,pct:p.pct,passed,failed,ip,pending,total:p.tot};
+    // Use code if set, otherwise abbreviated name
+    const label=t.code||(t.name.split(' ')[0]+(t.name.split(' ')[1]?' '+t.name.split(' ')[1][0]+'.':''));
+    return{name:label,fullName:t.name,pct:p.pct,passed,failed,ip,pending,total:p.tot};
   }).sort((a,b)=>b.pct-a.pct);
 
   // Per-course pass rate
@@ -1449,7 +1455,7 @@ function reports(el){
         const p=prog(t);
         const rowBg=ti%2?'var(--bg2)':'var(--bg)';
         return`<tr style="background:${rowBg}">
-          <td style="padding:6px 8px;font-weight:500;color:var(--text);position:sticky;left:0;background:${rowBg};border-right:1px solid var(--border)">${t.name}</td>
+          <td style="padding:6px 8px;font-weight:500;color:var(--text);position:sticky;left:0;background:${rowBg};border-right:1px solid var(--border)">${t.code?'<span style="font-size:10px;font-weight:700;background:var(--navy);color:#fff;padding:1px 4px;border-radius:3px;margin-right:4px">'+t.code+'</span>':''} ${t.name}</td>
           ${activeCourses.map(c=>{
             const e=(t.plan||[]).find(x=>x.courseId===c.id);
             if(!e) return`<td style="text-align:center;color:var(--border)">—</td>`;
@@ -1717,7 +1723,7 @@ function roster(el){
       h+='<span style="font-size:15px;font-weight:700;color:var(--text)">'+m.name+'</span>';
       if(activePlan) h+='<span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--ltamber);color:var(--dkamber);font-weight:600;border:1px solid var(--amber)">&#128218; In training &middot; '+activeProgress.pct+'%</span>';
       h+='</div>';
-      h+='<div style="font-size:12px;color:var(--text3);margin-top:2px">'+[m.role,m.team,m.years?m.years+' yrs exp':''].filter(Boolean).join(' &middot; ')+'</div>';
+      h+='<div style="font-size:12px;color:var(--text3);margin-top:2px">'+(m.code?'<span style="font-size:11px;font-weight:700;background:var(--navy);color:#fff;padding:1px 6px;border-radius:4px;margin-right:6px">'+m.code+'</span>':'')+[m.role,m.team,m.years?m.years+' yrs exp':''].filter(Boolean).join(' &middot; ')+'</div>';
       h+='<div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap">';
       h+='<span style="font-size:12px;color:var(--text2)">&#128218; '+skillCount+' skills</span>';
       h+='<span style="font-size:12px;color:var(--text2)">&#11088; Avg: '+avgLvl+'/5</span>';
@@ -1759,7 +1765,7 @@ h+='<button class="btn sm" data-mid="'+m.id+'" onclick="openMemberModal(this.dat
     h+='<div class="sh" style="margin-bottom:12px"><span class="st">Team skill overview</span></div>';
     h+='<div class="card" style="padding:14px 16px"><div class="mw"><table class="mx">';
     h+='<thead><tr><th style="text-align:left;min-width:180px">Course</th>';
-    members.forEach(function(m){ h+='<th style="font-size:10px;max-width:80px" title="'+m.name+'">'+m.name.split(' ')[0]+'</th>'; });
+    members.forEach(function(m){ h+='<th style="font-size:10px;max-width:80px" title="'+m.name+'">'+(m.code||m.name.split(' ')[0])+'</th>'; });
     h+='<th>Team avg</th></tr></thead><tbody>';
     getPhases().forEach(function(ph){
       const pc=S.courses.filter(c=>c.phase===ph.id);
@@ -1795,6 +1801,7 @@ function openMemberModal(id){
   let html=`<div class="mt">${m?'Edit member':'Add team member'}</div>
   <div class="form-row">
     <div class="fg" style="flex:2"><label>Full name *</label><input id="mbr-n" value="${m?m.name:''}" placeholder="e.g. Maria Santos"/></div>
+    <div class="fg" style="max-width:110px"><label>3-letter code</label><input id="mbr-code" value="${m?m.code||'':''}" placeholder="JCX" maxlength="5" style="text-transform:uppercase"/></div>
     <div class="fg"><label>Role / ID</label><input id="mbr-r" value="${m?m.role||'':''}" placeholder="e.g. Senior DE"/></div>
   </div>
   <div class="form-row">
@@ -1892,6 +1899,7 @@ function saveMember(){
 
   const member={
     id:editMemberId||'m'+Date.now(),name,
+    code:document.getElementById('mbr-code').value.trim().toUpperCase().slice(0,5),
     role:document.getElementById('mbr-r').value.trim(),
     team:document.getElementById('mbr-t').value.trim(),
     years:document.getElementById('mbr-y').value.trim(),
@@ -1919,6 +1927,7 @@ function dupMember(id){
   const newMember={
     id:'m'+Date.now(),
     name:name.trim(),
+    code:'',  // let user set their own code
     role:m.role||'',
     team:m.team||'',
     years:m.years||'',
@@ -1951,95 +1960,102 @@ async function exportCourseMemo(tid, cid){
   if(typeof JSZip==='undefined'){alert('JSZip library not loaded. Please check your internet connection and try again.');return;}
 
   const e=(t.plan||[]).find(p=>p.courseId===cid)||{};
-  const dateStr=new Date().toLocaleDateString('en-US',{month:'M/d/yyyy'.slice(0,5),day:'numeric',year:'numeric'}).replace(/\//g,'/');
-  const today=new Date().toLocaleDateString('en-US',{month:'numeric',day:'numeric',year:'numeric'});
   const fmtD=d=>d?new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
-  const resLabel={pass:'PASSED',ip:'IN PROGRESS',fail:'FAILED / NEEDS RETRY',none:'PENDING'}[e.result||'none']||'PENDING';
+  const todayStr=new Date().toLocaleDateString('en-US',{month:'numeric',day:'numeric',year:'numeric'});
+  const effResult=(e.result&&e.result!=='none')?e.result:(e.startDate?'scheduled':'none');
+  const resLabel={pass:'PASSED',ip:'IN PROGRESS',fail:'FAILED / NEEDS RETRY',scheduled:'SCHEDULED',none:'PENDING'}[effResult]||'PENDING';
   const ph=getPhase(c.phase);
+  const trainer=e.trainer||'—';
+  const to=t.name+(t.role?' ('+t.role+')':'');
+  const subject='Training Completion: '+c.name+' \u2014 '+t.name;
   const safeName=(t.name+'-'+c.name).replace(/[^a-zA-Z0-9]/g,'-');
   const filename='CourseMemo-'+safeName+'-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'.docx';
 
-  // Decode template
+  const ex=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  // ── Decode template ──────────────────────────────────────────────
   const templateBytes=Uint8Array.from(atob(MEMO_TEMPLATE_B64),ch=>ch.charCodeAt(0));
   const zip=await JSZip.loadAsync(templateBytes);
-
-  // Read and modify document.xml
   let docXml=await zip.file('word/document.xml').async('string');
 
-  // Helper: replace a w:t text node content
-  const replaceText=(xml,search,replacement)=>{
-    // Escape replacement for XML
-    const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    return xml.replace(search, esc(replacement));
+  // ── Robust field replacement using regex ─────────────────────────
+  // Replace field values by finding the label w:t and injecting after the next tab
+
+  // Helper: inject text after a bold label + tab in the memo header
+  const injectAfterLabel=(xml,labelText,value)=>{
+    // Find the label, then find the next tab after it, then inject a run with the value
+    const labelRe=new RegExp('(<w:t>'+labelText.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'</w:t>(?:.*?)<w:tab/></w:r>)','s');
+    const m=xml.match(labelRe);
+    if(!m) return xml;
+    const insertAfter=m[0];
+    const injectedRun='<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr><w:t xml:space="preserve">'+ex(value)+'</w:t></w:r>';
+    // Only inject once - replace first occurrence
+    return xml.replace(insertAfter, insertAfter+injectedRun);
   };
 
-  // Fill in To: field — inject a run after the To: tab
-  // The To: paragraph ends with tabs and empty content — we inject trainee name
+  docXml=injectAfterLabel(docXml,'To:',to);
+  docXml=injectAfterLabel(docXml,'Subject:',subject);
+
+  // Author: — replace the placeholder bold text
   docXml=docXml.replace(
-    '<w:t>To:</w:t></w:r><w:r w:rsidRPr="00C45CD1"><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr><w:tab/></w:r><w:r w:rsidR="003325D8" w:rsidRPr="00C45CD1"><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr><w:tab/></w:r>',
-    '<w:t>To:</w:t></w:r><w:r w:rsidRPr="00C45CD1"><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr><w:t>'+escXml(t.name+(t.role?' ('+t.role+')':''))+'</w:t></w:r><w:r w:rsidR="003325D8" w:rsidRPr="00C45CD1"><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr><w:tab/></w:r>'
+    /<w:t>\(.*?type your name.*?\)<\/w:t>/s,
+    '<w:t>'+ex(trainer)+'</w:t>'
   );
 
-  // Fill Author: — replace placeholder text
+  // Author File #: — replace the whole example text block with a simple value
   docXml=docXml.replace(
-    '<w:t>(</w:t></w:r><w:r w:rsidR="0013068A"><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr><w:t>type your name)</w:t></w:r>',
-    '<w:t>'+escXml(e.trainer||'NH Design Team')+'</w:t></w:r>'
+    /<w:t[^>]*>&lt;3-letter initials&gt;.*?<\/w:t>(?:.*?<\/w:r>)*.*?<w:t>\)<\/w:t>/s,
+    '<w:t>'+ex((t.code||t.name.slice(0,3).toUpperCase())+'-'+c.name.slice(0,3).toUpperCase())+'</w:t>'
   );
 
-  // Fill Author File #: — replace the example text
-  docXml=docXml.replace(
-    '<w:t xml:space="preserve">&lt;3-letter initials&gt; &#x201C;-&#x201D; &lt;Memo Number&gt; (e.g. </w:t></w:r><w:r w:rsidR="006F00F6" w:rsidRPr="00C45CD1"><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:bCs/></w:rPr><w:t>WJA-0</w:t></w:r><w:r w:rsidR="003325D8" w:rsidRPr="00C45CD1"><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:bCs/></w:rPr><w:t>1</w:t></w:r><w:r w:rsidR="006F00F6" w:rsidRPr="00C45CD1"><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:bCs/></w:rPr><w:t>4</w:t></w:r><w:r w:rsidR="00A105EB" w:rsidRPr="00C45CD1"><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:bCs/></w:rPr><w:t>)</w:t></w:r>',
-    '<w:t>'+escXml(c.name.slice(0,3).toUpperCase().replace(/[^A-Z]/g,'X')+'-001')+'</w:t></w:r>'
-  );
+  // ── Build replacement body paragraphs ────────────────────────────
+  const p=(text,bold)=>`<w:p><w:pPr><w:jc w:val="both"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>${bold?'<w:b/>':''}</w:rPr><w:t xml:space="preserve">${ex(text)}</w:t></w:r></w:p>`;
+  const pEmpty=()=>`<w:p><w:pPr><w:jc w:val="both"/></w:pPr></w:p>`;
+  const pField=(label,value)=>`<w:p><w:pPr><w:jc w:val="both"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr><w:t xml:space="preserve">${ex(label)}: </w:t></w:r><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr><w:t>${ex(value)}</w:t></w:r></w:p>`;
 
-  // Fill Subject:
-  const subject='Training Completion: '+c.name+' — '+t.name;
-  docXml=docXml.replace(
-    '<w:t>Subject:</w:t></w:r><w:r w:rsidRPr="00C45CD1"><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr><w:tab/></w:r></w:p>',
-    '<w:t>Subject:</w:t></w:r><w:r w:rsidRPr="00C45CD1"><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr><w:t>'+escXml(subject)+'</w:t></w:r></w:p>'
-  );
+  const bodyXml=[
+    p('Training Details',true),
+    pEmpty(),
+    pField('Course',c.name),
+    pField('Phase',ph.name),
+    pField('Trainee',to),
+    pField('Start Date',fmtD(e.startDate)),
+    pField('End Date',fmtD(e.endDate)),
+    pField('Result',resLabel),
+    pField('Score / Grade',e.score||'—'),
+    pField('Completion Date',fmtD(e.completionDate)),
+    pField('Trainer',trainer),
+    pField('Required Level',c.required+'/5'),
+    pField('Duration',c.duration+' day(s)'),
+    pField('Description',c.description||'—'),
+    e.notes?pEmpty()+''+p('Trainer Notes',true)+p(e.notes,false):'',
+    pEmpty(),
+    p('Acknowledgement',true),
+    pEmpty(),
+    p('The trainer and trainee acknowledge that the above training has been completed as described.',false),
+    pEmpty(),
+    p('Trainer signature: ___________________________  Date: _______________',false),
+    pEmpty(),
+    p('Trainee signature: ___________________________  Date: _______________',false),
+  ].join('');
 
-  // Build body paragraphs to replace Introduction through Conclusion
-  const bodyRows=[
-    {label:'Course',value:c.name},
-    {label:'Phase',value:ph.name},
-    {label:'Trainee',value:t.name+(t.role?' ('+t.role+')':'')},
-    {label:'Start Date',value:fmtD(e.startDate)},
-    {label:'End Date',value:fmtD(e.endDate)},
-    {label:'Result',value:resLabel},
-    {label:'Score / Grade',value:e.score||'—'},
-    {label:'Completion Date',value:fmtD(e.completionDate)},
-    {label:'Trainer',value:e.trainer||'—'},
-    {label:'Required Level',value:c.required+'/5'},
-    {label:'Duration',value:c.duration+' day(s)'},
-    {label:'Description',value:c.description||'—'},
-  ];
-
-  // Build XML for the body rows
-  const bodyParas=bodyRows.map(r=>`<w:p><w:pPr><w:jc w:val="both"/><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr><w:t xml:space="preserve">${escXml(r.label)}: </w:t></w:r><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr><w:t>${escXml(r.value)}</w:t></w:r></w:p>`).join('');
-
-  // Add notes paragraph if present
-  const notesPara=e.notes?`<w:p><w:pPr><w:jc w:val="both"/><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr></w:pPr></w:p><w:p><w:pPr><w:jc w:val="both"/><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr><w:t>Trainer Notes</w:t></w:r></w:p><w:p><w:pPr><w:spacing w:line="276" w:lineRule="auto"/><w:jc w:val="both"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr><w:t>${escXml(e.notes)}</w:t></w:r></w:p>`:'';
-
-  // Sign-off para
-  const signoffPara=`<w:p><w:pPr><w:jc w:val="both"/><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr></w:pPr></w:p><w:p><w:pPr><w:jc w:val="both"/><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:b/></w:rPr><w:t>Acknowledgement</w:t></w:r></w:p><w:p><w:pPr><w:spacing w:line="276" w:lineRule="auto"/><w:jc w:val="both"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr><w:t>The trainer and trainee acknowledge that the above training has been completed as described.</w:t></w:r></w:p><w:p><w:pPr><w:jc w:val="both"/></w:pPr></w:p><w:p><w:pPr><w:jc w:val="both"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr><w:t xml:space="preserve">Trainer signature: ___________________________  Date: _______________</w:t></w:r></w:p><w:p><w:pPr><w:jc w:val="both"/></w:pPr></w:p><w:p><w:pPr><w:jc w:val="both"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/></w:rPr><w:t xml:space="preserve">Trainee signature: ___________________________  Date: _______________</w:t></w:r></w:p>`;
-
-  // Replace Introduction paragraph and everything through "A second page..." paragraph
-  // Find the Introduction paragraph and replace from there to just before the second page note
-  const introStart=docXml.indexOf('<w:t>Introduction</w:t>');
-  // Find the paragraph containing "A second page..."
-  const secondPageText='<w:t>A second page is included below';
-  const secondPageParaStart=docXml.lastIndexOf('<w:p ',docXml.indexOf(secondPageText));
-  // Find end of the last paragraph (the "Page included..." paragraph)
-  const lastBodyText='<w:t>Page included to show required footer after first page</w:t>';
-  const lastBodyParaStart=docXml.lastIndexOf('<w:p ',docXml.indexOf(lastBodyText));
-  const lastBodyParaEnd=docXml.indexOf('</w:p>',docXml.indexOf(lastBodyText))+6;
-
-  if(introStart>0&&secondPageParaStart>0){
-    // Find the start of the paragraph containing Introduction
-    const introPStart=docXml.lastIndexOf('<w:p ',introStart);
-    const replacementBody=bodyParas+notesPara+signoffPara;
-    docXml=docXml.slice(0,introPStart)+replacementBody+docXml.slice(lastBodyParaEnd);
+  // ── Replace body content (Introduction through end of sample page note) ──
+  // Find Introduction paragraph start
+  const introIdx=docXml.indexOf('<w:t>Introduction</w:t>');
+  if(introIdx<0){
+    // Fallback: append after last header field paragraph
+    const sectPrIdx=docXml.lastIndexOf('<w:sectPr');
+    if(sectPrIdx>0){
+      docXml=docXml.slice(0,sectPrIdx)+bodyXml+docXml.slice(sectPrIdx);
+    }
+  } else {
+    // Find start of the Introduction paragraph
+    const introPStart=docXml.lastIndexOf('<w:p ',introIdx);
+    // Find end of document body (before sectPr)
+    const sectPrIdx=docXml.lastIndexOf('<w:sectPr');
+    if(introPStart>0&&sectPrIdx>0){
+      docXml=docXml.slice(0,introPStart)+bodyXml+docXml.slice(sectPrIdx);
+    }
   }
 
   zip.file('word/document.xml',docXml);
@@ -2049,6 +2065,7 @@ async function exportCourseMemo(tid, cid){
   const a=document.createElement('a');a.href=url;a.download=filename;a.click();
   setTimeout(()=>URL.revokeObjectURL(url),5000);
 }
+
 
 function escXml(s){
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
@@ -2128,7 +2145,8 @@ async function exportMemo(tid){
     <w:r>${rPr(false,'000000',19)}<w:t xml:space="preserve">${esc(value)}</w:t></w:r></w:p>`;
 
   // ── Progress stats ────────────────────────────────────────────────
-  const passed=plan.filter(e=>e.result==='pass').length;
+  const getER2=e=>(e.result&&e.result!=='none')?e.result:(e.startDate?'scheduled':'none');
+    const passed=plan.filter(e=>e.result==='pass').length;
   const failed=plan.filter(e=>e.result==='fail').length;
   const ip=plan.filter(e=>e.result==='ip').length;
   const pct=plan.length?Math.round(passed/plan.length*100):0;
