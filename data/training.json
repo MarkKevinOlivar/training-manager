@@ -205,11 +205,11 @@
       "duration": 1,
       "required": 3,
       "description": "Insperity self-paced",
-      "order": 5
+      "order": 6
     },
     {
       "id": "idtheft",
-      "order": 6,
+      "order": 5,
       "name": "Ignite New Hire Training",
       "phase": "p4",
       "duration": 2,
