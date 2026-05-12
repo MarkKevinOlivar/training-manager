@@ -154,8 +154,8 @@
     },
     {
       "id": "fse",
-      "phase": "p3",
       "name": "Future Solar Exhibit",
+      "phase": "p1",
       "duration": 1,
       "required": 3,
       "description": "Preliminary sales document MF"
