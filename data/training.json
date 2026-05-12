@@ -97,7 +97,7 @@
       "duration": 2,
       "required": 4,
       "description": "",
-      "order": 2
+      "order": 3
     },
     {
       "id": "ipermit-ess",
@@ -106,7 +106,7 @@
       "duration": 1,
       "required": 4,
       "description": "IPermit with energy storage",
-      "order": 3
+      "order": 2
     },
     {
       "id": "nest-ipm",
