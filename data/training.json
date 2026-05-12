@@ -214,14 +214,14 @@
           "courseId": "pv",
           "startWW": 23,
           "endWW": 23,
-          "result": "none",
+          "result": "pass",
           "score": "",
           "date": "",
-          "notes": "",
-          "trainer": "",
+          "notes": "Training Completed",
+          "trainer": "Mark Kevin Olivar",
           "startDate": "2026-04-14",
           "endDate": "2026-05-14",
-          "completionDate": ""
+          "completionDate": "2026-04-14"
         }
       ]
     }
