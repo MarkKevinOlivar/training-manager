@@ -366,11 +366,11 @@
           "courseId": "nh",
           "startDate": "2026-03-27",
           "endDate": "2026-03-27",
-          "result": "none",
+          "result": "pass",
           "score": "",
-          "completionDate": "",
+          "completionDate": "2026-03-27",
           "notes": "",
-          "trainer": ""
+          "trainer": "Self-Directed"
         },
         {
           "courseId": "c1778615844808",
