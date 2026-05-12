@@ -323,5 +323,39 @@
         "social": 5
       }
     }
+  ],
+  "phases": [
+    {
+      "id": "p1",
+      "name": "Phase 1: NH Onboarding",
+      "short": "Phase 1",
+      "color": "#1D9E75",
+      "order": 1,
+      "description": "Foundational onboarding training for new hires"
+    },
+    {
+      "id": "p2",
+      "name": "Phase 2: Lot-Level",
+      "short": "Phase 2",
+      "color": "#185FA5",
+      "order": 2,
+      "description": "Lot-level design courses including IPlot and IPermit"
+    },
+    {
+      "id": "p3",
+      "name": "Phase 3: Community-Level",
+      "short": "Phase 3",
+      "color": "#E67E22",
+      "order": 4,
+      "description": "Community-level design including Master Plan and MPPP"
+    },
+    {
+      "id": "p4",
+      "name": "Phase 4: Compliance",
+      "short": "Phase 4",
+      "color": "#7F77DD",
+      "order": 3,
+      "description": "Compliance and security self-paced courses"
+    }
   ]
 }
