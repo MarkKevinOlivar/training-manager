@@ -92,12 +92,12 @@
     },
     {
       "id": "ipermit-ess",
-      "phase": "p2",
+      "order": 2,
       "name": "IPermit ESS",
+      "phase": "p2",
       "duration": 1,
       "required": 4,
-      "description": "IPermit with energy storage",
-      "order": 2
+      "description": "IPermit with energy storage"
     },
     {
       "id": "mp-sf",
