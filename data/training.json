@@ -448,11 +448,11 @@
           "courseId": "iplot",
           "startDate": "2026-04-28",
           "endDate": "2026-04-30",
-          "result": "none",
+          "result": "pass",
           "score": "",
-          "completionDate": "",
+          "completionDate": "2026-04-29",
           "notes": "",
-          "trainer": ""
+          "trainer": "Ronnel Gozon"
         }
       ],
       "blocks": [
