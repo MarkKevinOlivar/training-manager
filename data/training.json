@@ -138,8 +138,8 @@
     },
     {
       "id": "mppp-sf",
-      "phase": "p3",
       "name": "MPPP (SF)",
+      "phase": "p2",
       "duration": 2,
       "required": 4,
       "description": "Master plan permit package SF"
