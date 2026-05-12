@@ -43,7 +43,7 @@
       "duration": 2,
       "required": 4,
       "description": "SF/MF plot plan with BOM and PV Calc",
-      "order": 3
+      "order": 8
     },
     {
       "id": "ipermit",
@@ -97,7 +97,7 @@
       "duration": 1,
       "required": 3,
       "description": "Preliminary sales document MF",
-      "order": 8
+      "order": 9
     },
     {
       "id": "ssp",
@@ -169,7 +169,7 @@
       "duration": 1,
       "required": 4,
       "description": "",
-      "order": 9
+      "order": 3
     }
   ],
   "trainees": [
