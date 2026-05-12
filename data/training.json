@@ -119,12 +119,12 @@
     },
     {
       "id": "mppp-sf",
-      "name": "MPPP (SF)",
+      "order": 5,
+      "name": "MPermit Training",
       "phase": "p2",
       "duration": 2,
       "required": 4,
-      "description": "Master plan permit package SF",
-      "order": 5
+      "description": "Community Master Permit Plans"
     },
     {
       "id": "fse",
