@@ -209,12 +209,12 @@
     },
     {
       "id": "c1778615899113",
+      "order": 11,
       "name": "Ignite | NH Albatross Training 2 - Assigning Homeowners",
       "phase": "p4",
       "duration": 1,
       "required": 2,
-      "description": "",
-      "order": 11
+      "description": "https://ignite.talentlms.com/plus/my/training/945/units/10019"
     },
     {
       "id": "c1778615917610",
