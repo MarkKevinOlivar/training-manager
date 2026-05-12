@@ -223,7 +223,7 @@ code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;b
   <input type="hidden" id="tm-eid">
   <div class="form-row">
     <div class="fg" style="flex:2"><label>Full name *</label><input id="tm-n" placeholder="e.g. Juan Cruz"></div>
-    <div class="fg" style="max-width:110px"><label>3-letter code</label><input id="tm-code" placeholder="JCX" maxlength="5" style="text-transform:uppercase"/></div>
+    <div class="fg" style="max-width:110px"><label>Code (e.g. JCX)</label><input id="tm-code" value="" placeholder="JCX" maxlength="5" style="text-transform:uppercase;font-weight:700;font-size:14px;letter-spacing:.08em"/></div>
     <div class="fg"><label>Role / ID</label><input id="tm-r" placeholder="e.g. NCG 6"></div>
   </div>
   <div class="form-row">
@@ -412,6 +412,7 @@ const cm=id=>g(id).style.display='none';
 const fmt=d=>d?new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
 const today=()=>new Date().toISOString().slice(0,10);
 const prog=t=>{const pl=t.plan||[],tot=pl.length,done=pl.filter(p=>p.result==='pass'||p.result==='fail').length;return{tot,done,pct:tot?Math.round(done/tot*100):0}};
+const getER=e=>(e.result&&e.result!=='none')?e.result:(e.startDate?'scheduled':'none');
 const sync=(msg,col)=>{g('sync').textContent=msg;g('sync').style.color=col||'rgba(255,255,255,.65)'};
 
 function bph(plan){
@@ -815,7 +816,6 @@ function detail(el){
     rows.forEach(function(row,i){
       const c=row.c,e=row.e;
       const last=i===rows.length-1;
-      const getER=e=>( e.result&&e.result!=='none')?e.result:(e.startDate?'scheduled':'none');
       const rcMap={pass:'rp',ip:'ri_',fail:'rf',scheduled:'rs_',none:'rn_'};
       const rlMap={pass:'&#10003; Passed',ip:'&#9203; In progress',fail:'&#10007; Failed',scheduled:'&#128197; Scheduled',none:'&#8212; Pending'};
       const rc=rcMap[getER(e)]||'rn_';
@@ -1801,7 +1801,7 @@ function openMemberModal(id){
   let html=`<div class="mt">${m?'Edit member':'Add team member'}</div>
   <div class="form-row">
     <div class="fg" style="flex:2"><label>Full name *</label><input id="mbr-n" value="${m?m.name:''}" placeholder="e.g. Maria Santos"/></div>
-    <div class="fg" style="max-width:110px"><label>3-letter code</label><input id="mbr-code" value="${m?m.code||'':''}" placeholder="JCX" maxlength="5" style="text-transform:uppercase"/></div>
+    <div class="fg" style="max-width:110px"><label>Code (e.g. JCX)</label><input id="mbr-code" value="${m?m.code||'':''}" placeholder="JCX" maxlength="5" style="text-transform:uppercase;font-weight:700;font-size:14px;letter-spacing:.08em"/></div>
     <div class="fg"><label>Role / ID</label><input id="mbr-r" value="${m?m.role||'':''}" placeholder="e.g. Senior DE"/></div>
   </div>
   <div class="form-row">
