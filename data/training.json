@@ -11,7 +11,7 @@
     },
     {
       "id": "nh",
-      "order": 7,
+      "order": 8,
       "name": "Classroom | Introduction to New Homes",
       "phase": "p4",
       "duration": 1,
@@ -128,7 +128,7 @@
     },
     {
       "id": "c1778609900411",
-      "order": 8,
+      "order": 9,
       "name": "Classroom | NEC Training",
       "phase": "p4",
       "duration": 1,
@@ -187,7 +187,7 @@
       "duration": 1,
       "required": 2,
       "description": "",
-      "order": 9
+      "order": 7
     }
   ],
   "trainees": [
