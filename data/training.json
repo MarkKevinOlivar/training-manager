@@ -10,10 +10,10 @@
     },
     {
       "id": "nh",
-      "phase": "p1",
       "name": "Introduction to New Homes",
+      "phase": "p1",
       "duration": 1,
-      "required": 4,
+      "required": 2,
       "description": "NH design types and CRM"
     },
     {
