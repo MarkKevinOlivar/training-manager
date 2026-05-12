@@ -152,6 +152,15 @@
       "required": 4,
       "description": "",
       "order": 3
+    },
+    {
+      "id": "c1778615616731",
+      "name": "Ignite | Phishing and Anti-Spam Software",
+      "phase": "p4",
+      "duration": 1,
+      "required": 2,
+      "description": "",
+      "order": 7
     }
   ],
   "trainees": [
