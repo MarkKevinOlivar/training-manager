@@ -335,10 +335,10 @@
     },
     {
       "id": "p2",
-      "name": "Phase 2: Lot-Level",
-      "short": "Phase 2",
-      "color": "#185FA5",
+      "name": "Phase 3: Residential (Permit) Design Training",
+      "short": "Phase 3",
       "order": 3,
+      "color": "#185fa5",
       "description": "Lot-level design courses including IPlot and IPermit"
     },
     {
