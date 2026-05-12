@@ -119,12 +119,12 @@
     },
     {
       "id": "c1778609275646",
-      "name": "Ignite | New Hire Training",
+      "order": 2,
+      "name": "Ignite | An Introduction to SPECSs & Memos",
       "phase": "p4",
       "duration": 3,
       "required": 2,
-      "description": "An Introduction to SPECSs & Memos \nPhishing and Anti-Spam Software\nSocial Engineering\nSocial Media Security Awareness\nIdentity Theft",
-      "order": 2
+      "description": ""
     },
     {
       "id": "c1778609900411",
