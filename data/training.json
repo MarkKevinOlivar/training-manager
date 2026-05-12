@@ -11,12 +11,12 @@
     },
     {
       "id": "nh",
-      "name": "Introduction to New Homes",
+      "order": 7,
+      "name": "Classroom | Introduction to New Homes",
       "phase": "p4",
       "duration": 1,
       "required": 2,
-      "description": "NH design types and CRM",
-      "order": 7
+      "description": "NH design types and CRM"
     },
     {
       "id": "sha",
