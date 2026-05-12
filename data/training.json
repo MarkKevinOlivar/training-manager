@@ -197,6 +197,15 @@
       "duration": 1,
       "required": 2,
       "description": ""
+    },
+    {
+      "id": "c1778615875869",
+      "name": "Ignite | NH Albatross Training 1 - Builders Communities, & Lots",
+      "phase": "p4",
+      "duration": 1,
+      "required": 2,
+      "description": "",
+      "order": 12
     }
   ],
   "trainees": [
