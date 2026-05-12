@@ -58,8 +58,8 @@
     },
     {
       "id": "cert-d",
-      "phase": "p2",
       "name": "Actual Design Certification",
+      "phase": "p1",
       "duration": 1,
       "required": 4,
       "description": "Practical design exam"
