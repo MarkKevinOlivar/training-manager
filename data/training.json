@@ -223,7 +223,8 @@
           "endDate": "2026-04-14",
           "completionDate": "2026-04-14"
         }
-      ]
+      ],
+      "startDate": ""
     }
   ]
 }
