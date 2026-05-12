@@ -11,7 +11,7 @@
     {
       "id": "nh",
       "name": "Introduction to New Homes",
-      "phase": "p1",
+      "phase": "p4",
       "duration": 1,
       "required": 2,
       "description": "NH design types and CRM"
