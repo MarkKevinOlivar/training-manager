@@ -2,7 +2,7 @@
   "courses": [
     {
       "id": "pv",
-      "order": 6,
+      "order": 7,
       "name": "Classroom | PV Fundamentals",
       "phase": "p4",
       "duration": 1,
@@ -12,7 +12,7 @@
     {
       "id": "nh",
       "order": 8,
-      "name": "Classroom | Introduction to New Homes",
+      "name": "Ignite | Albatross Training 1",
       "phase": "p4",
       "duration": 1,
       "required": 2,
@@ -187,7 +187,7 @@
       "duration": 1,
       "required": 2,
       "description": "",
-      "order": 7
+      "order": 6
     }
   ],
   "trainees": [
