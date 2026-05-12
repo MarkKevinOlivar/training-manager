@@ -190,15 +190,6 @@
       "order": 9
     },
     {
-      "id": "memo",
-      "phase": "p4",
-      "name": "Intro to SPECs & Memos",
-      "duration": 1,
-      "required": 3,
-      "description": "Insperity self-paced",
-      "order": 5
-    },
-    {
       "id": "c1778607151419",
       "name": "NEOP",
       "phase": "p4",
@@ -224,6 +215,15 @@
       "required": 4,
       "description": "",
       "order": 2
+    },
+    {
+      "id": "c1778609275646",
+      "name": "Ignite | New Hire Training",
+      "phase": "p4",
+      "duration": 3,
+      "required": 2,
+      "description": "An Introduction to SPECSs & Memos \nPhishing and Anti-Spam Software\nSocial Engineering\nSocial Media Security Awareness\nIdentity Theft",
+      "order": 4
     }
   ],
   "trainees": [
