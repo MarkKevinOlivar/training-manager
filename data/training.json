@@ -109,15 +109,6 @@
       "order": 2
     },
     {
-      "id": "nest-ipm",
-      "name": "iPermit Nesting",
-      "phase": "p2",
-      "duration": 4,
-      "required": 4,
-      "description": "",
-      "order": 4
-    },
-    {
       "id": "mp-sf",
       "order": 9,
       "name": "Master Plan",
