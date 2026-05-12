@@ -7,7 +7,7 @@
       "duration": 1,
       "required": 2,
       "description": "Intro to PV systems end-to-end",
-      "order": 1
+      "order": 2
     },
     {
       "id": "nh",
@@ -16,7 +16,7 @@
       "duration": 1,
       "required": 2,
       "description": "NH design types and CRM",
-      "order": 2
+      "order": 3
     },
     {
       "id": "sha",
@@ -232,7 +232,7 @@
       "duration": 2,
       "required": 2,
       "description": "New Employee Orientation Program",
-      "order": 3
+      "order": 1
     },
     {
       "id": "c1778607409920",
