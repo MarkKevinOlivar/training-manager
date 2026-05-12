@@ -146,12 +146,12 @@
     },
     {
       "id": "c1778610117208",
-      "name": "Bill of Materials (BOM) Training",
+      "order": 2,
+      "name": "Bill of Materials (BOM)",
       "phase": "p1",
       "duration": 1,
       "required": 4,
-      "description": "",
-      "order": 2
+      "description": ""
     },
     {
       "id": "c1778616031610",
