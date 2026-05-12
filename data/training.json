@@ -46,15 +46,6 @@
       "order": 3
     },
     {
-      "id": "cert-d",
-      "name": "Actual Design Certification",
-      "phase": "p1",
-      "duration": 1,
-      "required": 4,
-      "description": "Practical design exam",
-      "order": 6
-    },
-    {
       "id": "nest-ip",
       "name": "Nesting",
       "phase": "p1",
