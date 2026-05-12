@@ -20,12 +20,12 @@
     },
     {
       "id": "sha",
+      "order": 1,
       "name": "Aurora Solar Training",
       "phase": "p1",
       "duration": 1,
-      "required": 2,
-      "description": "Aurora Solar Model / PV & Storage System Configuration / Proposal / Share Report",
-      "order": 1
+      "required": 4,
+      "description": "Aurora Solar Model / PV & Storage System Configuration / Proposal / Share Report"
     },
     {
       "id": "iplot",
