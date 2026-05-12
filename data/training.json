@@ -133,15 +133,6 @@
       "duration": 1,
       "required": 4,
       "description": "Guided master plan practice",
-      "order": 10
-    },
-    {
-      "id": "mp-mf",
-      "name": "Master Plan (MF)",
-      "phase": "p1",
-      "duration": 1,
-      "required": 4,
-      "description": "Community master plan multi-family",
       "order": 11
     },
     {
