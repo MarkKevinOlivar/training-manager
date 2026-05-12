@@ -446,11 +446,11 @@
           "courseId": "c1778616099165",
           "startDate": "2026-03-31",
           "endDate": "2026-03-31",
-          "result": "none",
+          "result": "pass",
           "score": "",
-          "completionDate": "",
+          "completionDate": "2026-03-31",
           "notes": "",
-          "trainer": ""
+          "trainer": "Self-Directed"
         },
         {
           "courseId": "c1778616147826",
