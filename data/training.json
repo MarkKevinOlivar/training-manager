@@ -106,7 +106,7 @@
       "duration": 1,
       "required": 1,
       "description": "Optimal PV placement per community lot",
-      "order": 12
+      "order": 13
     },
     {
       "id": "c1778607151419",
@@ -169,7 +169,7 @@
       "duration": 1,
       "required": 4,
       "description": "",
-      "order": 13
+      "order": 12
     }
   ],
   "trainees": [
