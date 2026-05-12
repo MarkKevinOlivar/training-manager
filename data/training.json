@@ -163,31 +163,13 @@
       "description": "Ignite | What is Solar?\nIgnite | 2.1 What is a Site Survey.pptx\nIgnite | Structural Overview\nIgnite | How Electricity Works (clone)\nIgnite | Aurora Practice Neighborhoods"
     },
     {
-      "id": "c1778616099165",
-      "order": 6,
-      "name": "Ignite Design Training 3 | Structural Overview",
-      "phase": "p4",
-      "duration": 1,
-      "required": 2,
-      "description": "https://ignite.talentlms.com/plus/my/training/439/units/6637"
-    },
-    {
-      "id": "c1778616147826",
-      "name": "Ignite Design Training 4 | How Electricity Works (clone)",
-      "phase": "p4",
-      "duration": 1,
-      "required": 2,
-      "description": "https://ignite.talentlms.com/plus/my/training/440/units/6696",
-      "order": 7
-    },
-    {
       "id": "c1778616187274",
       "name": "Ignite Design Training 5 | Aurora Practice Neighborhoods",
       "phase": "p4",
       "duration": 1,
       "required": 2,
       "description": "https://ignite.talentlms.com/plus/my/training/441/units/6657",
-      "order": 8
+      "order": 6
     }
   ],
   "trainees": [
@@ -249,26 +231,6 @@
           "result": "pass",
           "score": "",
           "completionDate": "2026-03-30",
-          "notes": "",
-          "trainer": "Self-Directed"
-        },
-        {
-          "courseId": "c1778616099165",
-          "startDate": "2026-03-31",
-          "endDate": "2026-03-31",
-          "result": "pass",
-          "score": "",
-          "completionDate": "2026-03-31",
-          "notes": "",
-          "trainer": "Self-Directed"
-        },
-        {
-          "courseId": "c1778616147826",
-          "startDate": "2026-04-01",
-          "endDate": "2026-04-01",
-          "result": "pass",
-          "score": "",
-          "completionDate": "2026-04-01",
           "notes": "",
           "trainer": "Self-Directed"
         },
@@ -449,26 +411,6 @@
           "result": "none",
           "score": "",
           "completionDate": "",
-          "notes": "",
-          "trainer": ""
-        },
-        {
-          "courseId": "c1778616099165",
-          "startDate": "2026-04-24",
-          "endDate": "2026-04-27",
-          "result": "none",
-          "score": "",
-          "completionDate": "",
-          "notes": "",
-          "trainer": ""
-        },
-        {
-          "courseId": "c1778616147826",
-          "startDate": "2026-04-24",
-          "endDate": "2026-04-27",
-          "result": "ip",
-          "score": "",
-          "completionDate": "2026-05-12",
           "notes": "",
           "trainer": ""
         },
