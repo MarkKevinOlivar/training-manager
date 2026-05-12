@@ -12,11 +12,11 @@
     {
       "id": "nh",
       "order": 4,
-      "name": "Ignite | Albatross Training 1",
+      "name": "Ignite | Albatross Training",
       "phase": "p4",
-      "duration": 1,
+      "duration": 2,
       "required": 2,
-      "description": "https://ignite.talentlms.com/plus/my/training/897/units/9430"
+      "description": "Albatross Training 1\nAlbatross Training 2\nNH Albatross Training 1 - Builders Communities, & Lots\nNH Albatross Training 2 - Assigning Homeowners\nNH Albatross Training 3 - Creating Cash Proposals \nNH Albatross Training 4 - Smartlists"
     },
     {
       "id": "sha",
