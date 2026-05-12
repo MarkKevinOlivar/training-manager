@@ -199,6 +199,14 @@
       "duration": 1,
       "required": 3,
       "description": "Insperity self-paced"
+    },
+    {
+      "id": "c1778607151419",
+      "name": "NEOP",
+      "phase": "p4",
+      "duration": 2,
+      "required": 2,
+      "description": "New Employee Orientation Program"
     }
   ],
   "trainees": [
