@@ -128,7 +128,7 @@
     },
     {
       "id": "c1778609900411",
-      "order": 12,
+      "order": 13,
       "name": "Classroom | NEC Training",
       "phase": "p4",
       "duration": 1,
@@ -223,7 +223,16 @@
       "duration": 1,
       "required": 2,
       "description": "",
-      "order": 13
+      "order": 12
+    },
+    {
+      "id": "c1778615939564",
+      "name": "Ignite | NH Albatross Training 4 - Smartlists",
+      "phase": "p4",
+      "duration": 1,
+      "required": 2,
+      "description": "",
+      "order": 15
     }
   ],
   "trainees": [
