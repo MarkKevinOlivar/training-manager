@@ -299,34 +299,64 @@ const getPhases=()=>(S.phases||DP).slice().sort((a,b)=>a.order-b.order);
 const getPhase=id=>(S.phases||DP).find(p=>p.id===id)||{id,name:id,short:id,color:'#888',order:99,description:''};
 // PC/PL/PS kept for any remaining references but getPhase() is preferred
 const PC={};const PL={};const PS={};
+
+// Ensure all courses have an order field within their phase
+function ensureOrder(){
+  (S.phases||DP).forEach(function(ph){
+    const pc=(S.courses||[]).filter(c=>c.phase===ph.id);
+    pc.forEach(function(c,i){ if(c.order===undefined) c.order=i+1; });
+  });
+}
+
+// Get courses sorted by phase order
+function getSortedCourses(phaseId){
+  return (S.courses||[]).filter(c=>c.phase===phaseId).slice().sort((a,b)=>(a.order||0)-(b.order||0));
+}
+
+function moveCourse(cid, dir){
+  const c=S.courses.find(x=>x.id===cid);
+  if(!c) return;
+  ensureOrder();
+  const siblings=getSortedCourses(c.phase);
+  const idx=siblings.findIndex(x=>x.id===cid);
+  const swapIdx=idx+dir;
+  if(swapIdx<0||swapIdx>=siblings.length) return;
+  const swapC=siblings[swapIdx];
+  // Swap orders
+  const tmp=c.order;
+  c.order=swapC.order;
+  swapC.order=tmp;
+  push('Reorder course: '+c.name);
+  render();
+}
 const PC_LIGHT={p1:PC.p1+'22',p2:PC.p2+'22',p3:PC.p3+'22',p4:PC.p4+'22'};
 
 const DC=[
-  {id:'pv',phase:'p1',name:'PV Fundamentals',duration:5,required:4,description:'Intro to PV systems end-to-end'},
-  {id:'nh',phase:'p1',name:'Introduction to New Homes',duration:5,required:4,description:'NH design types and CRM'},
-  {id:'sha',phase:'p1',name:'Shading Analysis Training',duration:5,required:4,description:'Aurora Solar shading reports'},
-  {id:'sha-p',phase:'p1',name:'Shading Analysis Practice',duration:5,required:4,description:'2–5 reports/day progression'},
-  {id:'iplot',phase:'p2',name:'IPlot Training + FM Path',duration:10,required:4,description:'SF/MF plot plan with BOM and PV Calc'},
-  {id:'iplot-p',phase:'p2',name:'IPlot/Shading Practice',duration:5,required:4,description:'2–6 designs/day practice'},
-  {id:'cert-w',phase:'p2',name:'Written Certification',duration:1,required:4,description:'Written knowledge exam'},
-  {id:'cert-d',phase:'p2',name:'Actual Design Certification',duration:1,required:4,description:'Practical design exam'},
-  {id:'nest-ip',phase:'p2',name:'Nesting — IPlot (Wks 1–4)',duration:20,required:4,description:'3–7 designs/day progression'},
-  {id:'ipermit',phase:'p2',name:'IPermit Training',duration:5,required:4,description:'1D classroom — Individual permit SF'},
-  {id:'ipermit-ex',phase:'p2',name:'IPermit Exercises 1–10',duration:10,required:4,description:'1–3 days each exercise'},
-  {id:'ipermit-ess',phase:'p2',name:'IPermit ESS',duration:5,required:4,description:'IPermit with energy storage'},
-  {id:'nest-ipm',phase:'p2',name:'Nesting — IPermit (Wks 1–4)',duration:20,required:4,description:'1–2 permits/week progression'},
-  {id:'mp-sf',phase:'p3',name:'Master Plan (SF)',duration:5,required:4,description:'Community master plan single-family'},
-  {id:'mp-ex',phase:'p3',name:'Master Plan Exercises 1–3',duration:5,required:4,description:'Guided master plan practice'},
-  {id:'mp-mf',phase:'p3',name:'Master Plan (MF)',duration:5,required:4,description:'Community master plan multi-family'},
-  {id:'mp-ess',phase:'p3',name:'Master Plan ESS',duration:5,required:4,description:'Master plan with energy storage'},
-  {id:'mppp-sf',phase:'p3',name:'MPPP (SF)',duration:10,required:4,description:'Master plan permit package SF'},
-  {id:'mppp-mf',phase:'p3',name:'MPPP (MF)',duration:10,required:4,description:'Master plan permit package MF'},
-  {id:'fse',phase:'p3',name:'Future Solar Exhibit',duration:5,required:3,description:'Preliminary sales document MF'},
-  {id:'ssp',phase:'p3',name:'Solar Site Plan',duration:5,required:1,description:'Optimal PV placement per lot'},
-  {id:'memo',phase:'p4',name:'Intro to SPECs & Memos',duration:5,required:3,description:'Insperity self-paced'},
-  {id:'phish',phase:'p4',name:'Phishing & Anti-Spam',duration:5,required:3,description:'Insperity self-paced'},
-  {id:'idtheft',phase:'p4',name:'Identity Theft Awareness',duration:5,required:3,description:'Insperity self-paced'},
-  {id:'social',phase:'p4',name:'Social Engineering',duration:5,required:3,description:'Insperity self-paced'},
+  {id:'pv',order:1,phase:'p1',name:'PV Fundamentals',duration:5,required:4,description:'Intro to PV systems end-to-end'},
+  {id:'nh',order:2,phase:'p1',name:'Introduction to New Homes',duration:5,required:4,description:'NH design types and CRM'},
+  {id:'sha',order:3,phase:'p1',name:'Shading Analysis Training',duration:5,required:4,description:'Aurora Solar shading reports'},
+  {id:'sha-p',order:4,phase:'p1',name:'Shading Analysis Practice',duration:5,required:4,description:'2–5 reports/day progression'},
+  {id:'iplot',order:1,phase:'p2',name:'IPlot Training + FM Path',duration:10,required:4,description:'SF/MF plot plan with BOM and PV Calc'},
+  {id:'iplot-p',order:2,phase:'p2',name:'IPlot/Shading Practice',duration:5,required:4,description:'2–6 designs/day practice'},
+  {id:'cert-w',order:3,phase:'p2',name:'Written Certification',duration:1,required:4,description:'Written knowledge exam'},
+  {id:'cert-d',order:4,phase:'p2',name:'Actual Design Certification',duration:1,required:4,description:'Practical design exam'},
+  {id:'nest-ip',order:5,phase:'p2',name:'Nesting — IPlot (Wks 1–4)',duration:20,required:4,description:'3–7 designs/day progression'},
+  {id:'ipermit',order:6,phase:'p2',name:'IPermit Training',duration:5,required:4,description:'1D classroom — Individual permit SF'},
+  {id:'ipermit-ex',order:7,phase:'p2',name:'IPermit Exercises 1–10',duration:10,required:4,description:'1–3 days each exercise'},
+  {id:'ipermit-ess',order:8,phase:'p2',name:'IPermit ESS',duration:5,required:4,description:'IPermit with energy storage'},
+  {id:'nest-ipm',order:9,phase:'p2',name:'Nesting — IPermit (Wks 1–4)',duration:20,required:4,description:'1–2 permits/week progression'},
+  {id:'mp-sf',order:1,phase:'p3',name:'Master Plan (SF)',duration:5,required:4,description:'Community master plan single-family'},
+  {id:'mp-ex',order:2,phase:'p3',name:'Master Plan Exercises 1–3',duration:5,required:4,description:'Guided master plan practice'},
+  {id:'mp-mf',order:3,phase:'p3',name:'Master Plan (MF)',duration:5,required:4,description:'Community master plan multi-family'},
+  {id:'mp-ess',order:4,phase:'p3',name:'Master Plan ESS',duration:5,required:4,description:'Master plan with energy storage'},
+  {id:'mppp-sf',order:5,phase:'p3',name:'MPPP (SF)',duration:10,required:4,description:'Master plan permit package SF'},
+  {id:'mppp-mf',order:6,phase:'p3',name:'MPPP (MF)',duration:10,required:4,description:'Master plan permit package MF'},
+  {id:'fse',order:7,phase:'p3',name:'Future Solar Exhibit',duration:5,required:3,description:'Preliminary sales document MF'},
+  {id:'ssp',order:8,phase:'p3',name:'Solar Site Plan',duration:5,required:1,description:'Optimal PV placement per lot'},
+  {id:'memo',order:1,phase:'p4',name:'Intro to SPECs & Memos',duration:5,required:3,description:'Insperity self-paced'},
+  {id:'phish',order:2,phase:'p4',name:'Phishing & Anti-Spam',duration:5,required:3,description:'Insperity self-paced'},
+  {id:'idtheft',order:3,phase:'p4',name:'Identity Theft Awareness',duration:5,required:3,description:'Insperity self-paced'},
+  {id:'social',order:4,phase:'p4',name:'Social Engineering',duration:5,required:3,description:'Insperity self-paced'},
 ];
 
 let S={phases:JSON.parse(JSON.stringify(DP)),courses:JSON.parse(JSON.stringify(DC)),trainees:[]};
@@ -799,7 +829,7 @@ function saveAssign(){
     if(!ca||!cb)return 0;
     const po=getPhases().map(p=>p.id);
     if(po.indexOf(ca.phase)!==po.indexOf(cb.phase))return po.indexOf(ca.phase)-po.indexOf(cb.phase);
-    return S.courses.indexOf(ca)-S.courses.indexOf(cb);
+    return (ca.order||0)-(cb.order||0);
   });
   t.plan=newPlan;
   cm('m-assign');push('Assign courses: '+t.name);render();
@@ -883,18 +913,26 @@ function courses(el){
   else h+='<span class="lh">&#128274; Unlock to edit</span>';
   h+='</div>';
 
+  ensureOrder();
   getPhases().forEach(function(ph){
-    const pc=bph_[ph.id]||[];
+    const pc=getSortedCourses(ph.id);
     if(!pc.length) return;
     h+='<div class="card"><div class="chd">';
     h+='<span style="font-size:13px;font-weight:700;color:'+ph.color+'">'+ph.name+'</span>';
     h+='<span style="font-size:11px;color:var(--text3)">'+pc.length+' courses</span>';
     h+='</div>';
-    pc.forEach(function(c){
+    pc.forEach(function(c,ci){
       h+='<div class="lrow"><div class="pd" style="background:'+ph.color+'"></div>';
       h+='<div class="ri"><div class="rn">'+c.name+'</div>';
       h+='<div class="rs">'+(c.description||'&mdash;')+' &middot; '+c.duration+' days &middot; Required: '+c.required+'/5</div></div>';
       if(editMode){
+        // Move up/down within phase
+        h+='<div style="display:flex;flex-direction:column;gap:1px;flex-shrink:0">';
+        if(ci>0) h+='<button class="btn" style="height:14px;padding:0 4px;font-size:9px;line-height:1;border-radius:3px" data-cid="'+c.id+'" data-dir="-1" onclick="moveCourse(this.dataset.cid,parseInt(this.dataset.dir))" title="Move up">&#9650;</button>';
+        else h+='<span style="height:14px;display:block"></span>';
+        if(ci<pc.length-1) h+='<button class="btn" style="height:14px;padding:0 4px;font-size:9px;line-height:1;border-radius:3px" data-cid="'+c.id+'" data-dir="1" onclick="moveCourse(this.dataset.cid,parseInt(this.dataset.dir))" title="Move down">&#9660;</button>';
+        else h+='<span style="height:14px;display:block"></span>';
+        h+='</div>';
         h+='<button class="btn ic sm" title="Edit" data-cid="'+c.id+'" onclick="openCm(this.dataset.cid)">&#9998;</button>';
         h+='<button class="btn ic sm bd" title="Delete" data-cid="'+c.id+'" onclick="delC(this.dataset.cid)">&#10005;</button>';
       }
@@ -972,7 +1010,14 @@ function openCm(id){
 function saveCourse(){
   const name=g('cm-n').value.trim();if(!name)return alert('Course name is required.');
   const c={id:editCid||'c'+Date.now(),name,phase:g('cm-p').value,duration:parseInt(g('cm-d').value)||5,required:Math.min(5,Math.max(1,parseInt(g('cm-r').value)||4)),description:g('cm-desc').value.trim()};
-  if(editCid){const i=S.courses.findIndex(x=>x.id===editCid);if(i>=0)S.courses[i]=c;}else S.courses.push(c);
+  if(editCid){const i=S.courses.findIndex(x=>x.id===editCid);if(i>=0)S.courses[i]=c;}
+  else{
+    // Set order to end of phase
+    ensureOrder();
+    const existing=getSortedCourses(c.phase);
+    c.order=existing.length>0?Math.max(...existing.map(x=>x.order||0))+1:1;
+    S.courses.push(c);
+  }
   cm('m-course');push(editCid?'Update course: '+name:'Add course: '+name);render();
 }
 function delC(id){const c=S.courses.find(x=>x.id===id);if(!c||!confirm('Delete "'+c.name+'"?\nRemoved from all training plans.'))return;S.courses=S.courses.filter(x=>x.id!==id);S.trainees.forEach(t=>{if(t.plan)t.plan=t.plan.filter(p=>p.courseId!==id)});push('Delete course: '+c.name);render()}
