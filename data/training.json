@@ -119,12 +119,12 @@
     },
     {
       "id": "mp-sf",
-      "name": "Master Plan (SF)",
+      "order": 9,
+      "name": "Master Plan",
       "phase": "p1",
       "duration": 1,
       "required": 4,
-      "description": "Community master plan single-family",
-      "order": 9
+      "description": "Community master plan for singe and muti-family dwellings"
     },
     {
       "id": "mp-ex",
