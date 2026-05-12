@@ -200,12 +200,12 @@
     },
     {
       "id": "c1778615875869",
+      "order": 10,
       "name": "Ignite | NH Albatross Training 1 - Builders Communities, & Lots",
       "phase": "p4",
       "duration": 1,
       "required": 2,
-      "description": "",
-      "order": 10
+      "description": "https://ignite.talentlms.com/plus/my/training/911/units/9575"
     },
     {
       "id": "c1778615899113",
