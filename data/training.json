@@ -30,7 +30,7 @@
       "name": "Shading Analysis Practice",
       "duration": 1,
       "required": 4,
-      "description": "2–5 reports/day progression"
+      "description": "2â5 reports/day progression"
     },
     {
       "id": "iplot",
@@ -46,7 +46,7 @@
       "name": "IPlot/Shading Practice",
       "duration": 1,
       "required": 4,
-      "description": "2–6 designs/day practice"
+      "description": "2â6 designs/day practice"
     },
     {
       "id": "cert-w",
@@ -67,10 +67,10 @@
     {
       "id": "nest-ip",
       "phase": "p2",
-      "name": "Nesting — IPlot (Wks 1–4)",
+      "name": "Nesting â IPlot (Wks 1â4)",
       "duration": 4,
       "required": 4,
-      "description": "3–7 designs/day progression"
+      "description": "3â7 designs/day progression"
     },
     {
       "id": "ipermit",
@@ -78,15 +78,15 @@
       "name": "IPermit Training",
       "duration": 1,
       "required": 4,
-      "description": "1D classroom — Individual permit SF"
+      "description": "1D classroom â Individual permit SF"
     },
     {
       "id": "ipermit-ex",
       "phase": "p2",
-      "name": "IPermit Exercises 1–10",
+      "name": "IPermit Exercises 1â10",
       "duration": 2,
       "required": 4,
-      "description": "1–3 days each exercise"
+      "description": "1â3 days each exercise"
     },
     {
       "id": "ipermit-ess",
@@ -99,10 +99,10 @@
     {
       "id": "nest-ipm",
       "phase": "p2",
-      "name": "Nesting — IPermit (Wks 1–4)",
+      "name": "Nesting â IPermit (Wks 1â4)",
       "duration": 4,
       "required": 4,
-      "description": "1–2 permits/week progression"
+      "description": "1â2 permits/week progression"
     },
     {
       "id": "mp-sf",
@@ -115,7 +115,7 @@
     {
       "id": "mp-ex",
       "phase": "p3",
-      "name": "Master Plan Exercises 1–3",
+      "name": "Master Plan Exercises 1â3",
       "duration": 1,
       "required": 4,
       "description": "Guided master plan practice"
@@ -201,5 +201,266 @@
       "description": "Insperity self-paced"
     }
   ],
-  "trainees": []
+  "trainees": [
+    {
+      "id": "t1778547908580",
+      "name": "Jonna Calabia",
+      "role": "",
+      "trainer": "Mark Kevin Olivar",
+      "startWW": 23,
+      "notes": "",
+      "plan": [
+        {
+          "courseId": "pv",
+          "startWW": 23,
+          "endWW": 23,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "nh",
+          "startWW": 24,
+          "endWW": 24,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "sha",
+          "startWW": 25,
+          "endWW": 25,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "sha-p",
+          "startWW": 26,
+          "endWW": 26,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "iplot",
+          "startWW": 27,
+          "endWW": 28,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "iplot-p",
+          "startWW": 29,
+          "endWW": 29,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "cert-w",
+          "startWW": 30,
+          "endWW": 30,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "cert-d",
+          "startWW": 31,
+          "endWW": 31,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "nest-ip",
+          "startWW": 32,
+          "endWW": 35,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "ipermit",
+          "startWW": 36,
+          "endWW": 36,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "ipermit-ex",
+          "startWW": 37,
+          "endWW": 38,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "ipermit-ess",
+          "startWW": 39,
+          "endWW": 39,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "nest-ipm",
+          "startWW": 40,
+          "endWW": 43,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "mp-sf",
+          "startWW": 44,
+          "endWW": 44,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "mp-ex",
+          "startWW": 45,
+          "endWW": 45,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "mp-mf",
+          "startWW": 46,
+          "endWW": 46,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "mp-ess",
+          "startWW": 47,
+          "endWW": 47,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "mppp-sf",
+          "startWW": 48,
+          "endWW": 49,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "mppp-mf",
+          "startWW": 50,
+          "endWW": 51,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "fse",
+          "startWW": 52,
+          "endWW": 52,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "ssp",
+          "startWW": 52,
+          "endWW": 52,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "memo",
+          "startWW": 52,
+          "endWW": 52,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "phish",
+          "startWW": 52,
+          "endWW": 52,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "idtheft",
+          "startWW": 52,
+          "endWW": 52,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "social",
+          "startWW": 52,
+          "endWW": 52,
+          "result": "none",
+          "score": "",
+          "date": "",
+          "notes": "",
+          "trainer": ""
+        }
+      ]
+    }
+  ]
 }
