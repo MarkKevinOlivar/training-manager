@@ -133,7 +133,7 @@
       "duration": 1,
       "required": 2,
       "description": "National Electric Code Training | Solar & ESS",
-      "order": 7
+      "order": 8
     },
     {
       "id": "c1778609963787",
@@ -142,7 +142,7 @@
       "duration": 1,
       "required": 2,
       "description": "International Fire Code Training | Fire Setback",
-      "order": 8
+      "order": 9
     },
     {
       "id": "c1778610117208",
@@ -178,7 +178,7 @@
       "duration": 1,
       "required": 2,
       "description": "",
-      "order": 9
+      "order": 7
     }
   ],
   "trainees": [
