@@ -573,6 +573,125 @@
           "trainer": ""
         }
       ]
+    },
+    {
+      "id": "t1778623725569",
+      "name": "Engr. Jose Pio Roman Castro",
+      "role": "",
+      "startDate": "2026-04-15",
+      "notes": "",
+      "plan": [
+        {
+          "courseId": "c1778607151419",
+          "startDate": "2026-04-15",
+          "endDate": "2026-04-16",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "pv",
+          "startDate": "2026-04-15",
+          "endDate": "2026-04-16",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "c1778609275646",
+          "startDate": "2026-04-17",
+          "endDate": "2026-04-20",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "nh",
+          "startDate": "2026-04-17",
+          "endDate": "2026-04-20",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "c1778616031610",
+          "startDate": "2026-04-17",
+          "endDate": "2026-04-20",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "sha",
+          "startDate": "2026-04-21",
+          "endDate": "2026-04-23",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "c1778610117208",
+          "startDate": "2026-04-21",
+          "endDate": "2026-04-23",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "iplot",
+          "startDate": "2026-04-21",
+          "endDate": "2026-04-23",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "fse",
+          "startDate": "2026-05-05",
+          "endDate": "2026-05-08",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "mp-sf",
+          "startDate": "2026-05-05",
+          "endDate": "2026-05-08",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "c1778609963787",
+          "startDate": "2026-05-05",
+          "endDate": "2026-05-08",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        }
+      ]
     }
   ],
   "members": [
