@@ -83,12 +83,12 @@
     },
     {
       "id": "fse",
-      "name": "Future Solar Exhibit",
+      "order": 9,
+      "name": "Future Solar Exhibit | Solar Site Plan Training",
       "phase": "p1",
       "duration": 1,
       "required": 3,
-      "description": "Preliminary sales document MF",
-      "order": 9
+      "description": ""
     },
     {
       "id": "ssp",
