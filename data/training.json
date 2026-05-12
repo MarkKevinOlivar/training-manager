@@ -269,6 +269,15 @@
       "required": 2,
       "description": "https://ignite.talentlms.com/plus/my/training/440/units/6696",
       "order": 19
+    },
+    {
+      "id": "c1778616187274",
+      "name": "Ignite Design Training 5 | Aurora Practice Neighborhoods",
+      "phase": "p4",
+      "duration": 1,
+      "required": 2,
+      "description": "https://ignite.talentlms.com/plus/my/training/441/units/6657",
+      "order": 20
     }
   ],
   "trainees": [
