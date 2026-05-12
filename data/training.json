@@ -73,15 +73,6 @@
       "description": "Community master plan for singe and muti-family dwellings"
     },
     {
-      "id": "mp-ex",
-      "name": "Master Plan Exercises",
-      "phase": "p1",
-      "duration": 1,
-      "required": 4,
-      "description": "Guided master plan practice",
-      "order": 12
-    },
-    {
       "id": "mppp-sf",
       "order": 5,
       "name": "MPermit Training",
