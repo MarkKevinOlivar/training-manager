@@ -327,10 +327,10 @@
   "phases": [
     {
       "id": "p1",
-      "name": "Phase 1: NH Onboarding",
-      "short": "Phase 1",
-      "color": "#1D9E75",
+      "name": "Phase 1: Residential (Non-permit) Design Training",
+      "short": "Phase 2",
       "order": 2,
+      "color": "#1d9e75",
       "description": "Foundational onboarding training for new hires"
     },
     {
