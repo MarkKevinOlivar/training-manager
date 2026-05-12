@@ -83,12 +83,12 @@
     },
     {
       "id": "ssp",
+      "order": 6,
       "name": "Solar Site Plan",
       "phase": "p1",
       "duration": 1,
-      "required": 1,
-      "description": "Optimal PV placement per community lot",
-      "order": 6
+      "required": 4,
+      "description": "Optimal PV placement per community lot"
     },
     {
       "id": "c1778607151419",
