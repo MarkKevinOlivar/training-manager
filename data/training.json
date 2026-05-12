@@ -122,8 +122,8 @@
     },
     {
       "id": "mp-mf",
-      "phase": "p3",
       "name": "Master Plan (MF)",
+      "phase": "p1",
       "duration": 1,
       "required": 4,
       "description": "Community master plan multi-family"
