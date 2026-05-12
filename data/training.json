@@ -155,12 +155,12 @@
     },
     {
       "id": "c1778615616731",
+      "order": 3,
       "name": "Ignite | Phishing and Anti-Spam Software",
       "phase": "p4",
       "duration": 1,
       "required": 2,
-      "description": "",
-      "order": 3
+      "description": "https://ignite.talentlms.com/plus/my/training/897/units/9430"
     },
     {
       "id": "c1778615648502",
