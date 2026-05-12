@@ -180,12 +180,7 @@ code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;b
   <div class="mt" id="cm-t">Add course</div>
   <div class="form-row">
     <div class="fg" style="flex:2"><label>Course name *</label><input id="cm-n" placeholder="e.g. IPlot Training"/></div>
-    <div class="fg"><label>Phase</label><select id="cm-p">
-      <option value="p1">Phase 1 — NH Onboarding</option>
-      <option value="p2">Phase 2 — Lot-Level</option>
-      <option value="p3">Phase 3 — Community-Level</option>
-      <option value="p4">Phase 4 — Compliance</option>
-    </select></div>
+    <div class="fg"><label>Phase</label><select id="cm-p" id="cm-p"></select></div>
   </div>
   <div class="form-row">
     <div class="fg"><label>Duration (days)</label><input id="cm-d" type="number" min="1" max="90" value="5"/></div>
@@ -292,9 +287,18 @@ code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;b
 </div></div>
 
 <script>
-const PC={p1:'#1D9E75',p2:'#185FA5',p3:'#E67E22',p4:'#7F77DD'};
-const PL={p1:'Phase 1: NH Onboarding',p2:'Phase 2: Lot-Level',p3:'Phase 3: Community-Level',p4:'Phase 4: Compliance'};
-const PS={p1:'Phase 1',p2:'Phase 2',p3:'Phase 3',p4:'Phase 4'};
+const DP=[
+  {id:'p1',name:'Phase 1: NH Onboarding',short:'Phase 1',color:'#1D9E75',order:1,description:'Foundational onboarding training for new hires'},
+  {id:'p2',name:'Phase 2: Lot-Level',short:'Phase 2',color:'#185FA5',order:2,description:'Lot-level design courses including IPlot and IPermit'},
+  {id:'p3',name:'Phase 3: Community-Level',short:'Phase 3',color:'#E67E22',order:3,description:'Community-level design including Master Plan and MPPP'},
+  {id:'p4',name:'Phase 4: Compliance',short:'Phase 4',color:'#7F77DD',order:4,description:'Compliance and security self-paced courses'},
+];
+
+// Dynamic phase helpers — always read from S.phases
+const getPhases=()=>(S.phases||DP).slice().sort((a,b)=>a.order-b.order);
+const getPhase=id=>(S.phases||DP).find(p=>p.id===id)||{id,name:id,short:id,color:'#888',order:99,description:''};
+// PC/PL/PS kept for any remaining references but getPhase() is preferred
+const PC={};const PL={};const PS={};
 const PC_LIGHT={p1:PC.p1+'22',p2:PC.p2+'22',p3:PC.p3+'22',p4:PC.p4+'22'};
 
 const DC=[
@@ -325,7 +329,7 @@ const DC=[
   {id:'social',phase:'p4',name:'Social Engineering',duration:5,required:3,description:'Insperity self-paced'},
 ];
 
-let S={courses:JSON.parse(JSON.stringify(DC)),trainees:[]};
+let S={phases:JSON.parse(JSON.stringify(DP)),courses:JSON.parse(JSON.stringify(DC)),trainees:[]};
 let GH={owner:'',repo:'',path:'data/training.json',token:'',sha:''};
 let editMode=false,tab='trainees',trainee=null,editCid=null,saving=false;
 let assignTid=null, selectedCourses=new Set();
@@ -339,7 +343,8 @@ const prog=t=>{const pl=t.plan||[],tot=pl.length,done=pl.filter(p=>p.result==='p
 const sync=(msg,col)=>{g('sync').textContent=msg;g('sync').style.color=col||'rgba(255,255,255,.65)'};
 
 function bph(plan){
-  const m={p1:[],p2:[],p3:[],p4:[]};
+  const m={};
+  getPhases().forEach(ph=>m[ph.id]=[]);
   plan.forEach(e=>{const c=S.courses.find(x=>x.id===e.courseId);if(c)(m[c.phase]=m[c.phase]||[]).push({c,e})});
   return m;
 }
@@ -453,36 +458,40 @@ function render(){const el=g('ct');if(tab==='trainees')trainee?detail(el):traine
 function trainees(el){
   const ts=S.trainees||[];
   const td=ts.reduce((a,t)=>a+prog(t).done,0),tp=ts.reduce((a,t)=>a+prog(t).tot,0);
-  let h=`<div class="metrics">
-    <div class="metric"><div class="ml">Trainees</div><div class="mv">${ts.length}</div></div>
-    <div class="metric"><div class="ml">Sessions logged</div><div class="mv">${td}</div><div class="ms">of ${tp} planned</div></div>
-    <div class="metric"><div class="ml">Team completion</div><div class="mv">${tp?Math.round(td/tp*100):0}%</div></div>
-  </div>
-  <div class="sh"><span class="st">All trainees</span>
-    ${editMode?`<button class="btn bp sm" onclick="openTm()">+ Add trainee</button>`:`<span class="lh">&#128274; Unlock to add</span>`}
-  </div>`;
+  let h='';
+  h+='<div class="metrics">';
+  h+='<div class="metric"><div class="ml">Trainees</div><div class="mv">'+ts.length+'</div></div>';
+  h+='<div class="metric"><div class="ml">Sessions logged</div><div class="mv">'+td+'</div><div class="ms">of '+tp+' planned</div></div>';
+  h+='<div class="metric"><div class="ml">Team completion</div><div class="mv">'+(tp?Math.round(td/tp*100):0)+'%</div></div>';
+  h+='</div>';
+  h+='<div class="sh"><span class="st">All trainees</span>';
+  if(editMode) h+='<button class="btn bp sm" onclick="openTm()">+ Add trainee</button>';
+  else h+='<span class="lh">&#128274; Unlock to add</span>';
+  h+='</div>';
   if(!ts.length){
-    h+=`<div class="card"><div class="empty"><div class="ei">&#128100;</div>No trainees yet.<br>${editMode?'Click "+ Add trainee" to get started.':'Unlock editing to add trainees.'}</div></div>`;
+    h+='<div class="card"><div class="empty"><div class="ei">&#128100;</div>No trainees yet.<br>';
+    h+=editMode?'Click "+ Add trainee" to get started.':'Unlock editing to add trainees.';
+    h+='</div></div>';
   } else {
-    h+=`<div class="card">`;
-    ts.forEach(t=>{
+    h+='<div class="card">';
+    ts.forEach(function(t){
       const p=prog(t),pa=(t.plan||[]).filter(x=>x.result==='pass').length,fa=(t.plan||[]).filter(x=>x.result==='fail').length;
       const inRoster=!!(S.members||[]).find(x=>x.id===t.id);
-      h+=`<div class="lrow">
-        <div class="av av-m">${ini(t.name)}</div>
-        <div class="ri">
-          <div class="rn">${t.name} ${inRoster?`<span style="font-size:10px;padding:1px 6px;border-radius:99px;background:var(--ltgreen);color:var(--dkgreen);font-weight:600;vertical-align:middle">&#10003; Roster</span>`:''}</div>
-          <div class="rs">${[t.role,t.trainer?'Trainer: '+t.trainer:'',t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' · ')}
-            ${pa?`<span class="tag tpass" style="margin-left:6px">&#10003; ${pa} passed</span>`:''}
-            ${fa?`<span class="tag tfail" style="margin-left:4px">&#10007; ${fa} failed</span>`:''}
-          </div>
-        </div>
-        <div class="pr"><div class="pp">${p.pct}%</div><div class="pt"><div class="pf" style="width:${p.pct}%"></div></div></div>
-        <button class="btn sm" onclick="openT('${t.id}')">Open &#8250;</button>
-        ${editMode?`<button class="btn ic sm bd" title="Remove" onclick="delT('${t.id}')">&#10005;</button>`:''}
-      </div>`;
+      h+='<div class="lrow">';
+      h+='<div class="av av-m">'+ini(t.name)+'</div>';
+      h+='<div class="ri"><div class="rn">'+t.name;
+      if(inRoster) h+=' <span style="font-size:10px;padding:1px 6px;border-radius:99px;background:var(--ltgreen);color:var(--dkgreen);font-weight:600;vertical-align:middle">&#10003; Roster</span>';
+      h+='</div>';
+      h+='<div class="rs">'+[t.role,t.trainer?'Trainer: '+t.trainer:'',t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' &middot; ');
+      if(pa) h+=' <span class="tag tpass" style="margin-left:6px">&#10003; '+pa+' passed</span>';
+      if(fa) h+=' <span class="tag tfail" style="margin-left:4px">&#10007; '+fa+' failed</span>';
+      h+='</div></div>';
+      h+='<div class="pr"><div class="pp">'+p.pct+'%</div><div class="pt"><div class="pf" style="width:'+p.pct+'%"></div></div></div>';
+      h+='<button class="btn sm" data-tid="'+t.id+'" onclick="openT(this.dataset.tid)">Open &#8250;</button>';
+      if(editMode) h+='<button class="btn ic sm bd" title="Remove" data-tid="'+t.id+'" onclick="delT(this.dataset.tid)">&#10005;</button>';
+      h+='</div>';
     });
-    h+=`</div>`;
+    h+='</div>';
   }
   el.innerHTML=h;
 }
@@ -492,126 +501,134 @@ function detail(el){
   const t=S.trainees.find(x=>x.id===trainee);
   if(!t){trainee=null;return trainees(el)}
   const p=prog(t),plan=t.plan||[],bph_=bph(plan);
-
-  // Build date-based gantt
   const allDates=plan.flatMap(e=>[e.startDate,e.endDate]).filter(Boolean).sort();
   const ganttStart=allDates[0]||today();
   const ganttEnd=allDates[allDates.length-1]||today();
+  let h='';
 
-  let h=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
-    <button class="btn sm bg_" onclick="back()">&#8592; All trainees</button>
-    <div class="av av-l">${ini(t.name)}</div>
-    <div style="flex:1;min-width:0">
-      <div style="font-size:18px;font-weight:700;color:var(--text)">${t.name}</div>
-      <div style="font-size:12px;color:var(--text3)">${[t.role,t.trainer?'Trainer: '+t.trainer:'',t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' · ')}</div>
-    </div>
-    <div style="text-align:right">
-      <div style="font-size:12px;color:var(--text3);margin-bottom:4px">${p.done}/${p.tot} sessions · ${p.pct}% complete</div>
-      <div class="pt" style="width:140px;margin-left:auto"><div class="pf" style="width:${p.pct}%"></div></div>
-    </div>
-    ${editMode?`<button class="btn sm" onclick="openTmEdit('${t.id}')">Edit info</button>`:''}
-    <button class="btn sm bs" onclick="exportMemo('${t.id}')">&#8595; Export memo</button>
-  </div>`;
+  // Header
+  h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">';
+  h+='<button class="btn sm bg_" onclick="back()">&#8592; All trainees</button>';
+  h+='<div class="av av-l">'+ini(t.name)+'</div>';
+  h+='<div style="flex:1;min-width:0">';
+  h+='<div style="font-size:18px;font-weight:700;color:var(--text)">'+t.name+'</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">'+[t.role,t.trainer?'Trainer: '+t.trainer:'',t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' &middot; ')+'</div>';
+  h+='</div>';
+  h+='<div style="text-align:right">';
+  h+='<div style="font-size:12px;color:var(--text3);margin-bottom:4px">'+p.done+'/'+p.tot+' sessions &middot; '+p.pct+'% complete</div>';
+  h+='<div class="pt" style="width:140px;margin-left:auto"><div class="pf" style="width:'+p.pct+'%"></div></div>';
+  h+='</div>';
+  if(editMode) h+='<button class="btn sm" data-tid="'+t.id+'" onclick="openTmEdit(this.dataset.tid)">Edit info</button>';
+  h+='<button class="btn sm bs" data-tid="'+t.id+'" onclick="exportMemo(this.dataset.tid)">&#8595; Export memo</button>';
+  h+='</div>';
 
   // Action bar
   if(editMode){
     const inRoster=!!(S.members||[]).find(x=>x.id===t.id);
-    h+=`<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-      <button class="btn bp sm" onclick="openAssign('${t.id}')">+ Assign courses &amp; dates</button>
-      ${plan.length?`<button class="btn sm" onclick="clearPlan('${t.id}')">&#128465; Clear plan</button>`:''}
-      ${inRoster
-        ?`<button class="btn sm" style="background:var(--ltgreen);color:var(--dkgreen);border-color:#97C459" onclick="go('roster')">&#10003; In team roster</button>`
-        :`<button class="btn sm" onclick="promoteToRoster('${t.id}')" title="Move this trainee to the Team Roster with their skill levels">&#11014; Promote to roster</button>`}
-    </div>`;
+    h+='<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">';
+    h+='<button class="btn bp sm" data-tid="'+t.id+'" onclick="openAssign(this.dataset.tid)">+ Assign courses &amp; dates</button>';
+    if(plan.length) h+='<button class="btn sm" data-tid="'+t.id+'" onclick="clearPlan(this.dataset.tid)">&#128465; Clear plan</button>';
+    if(inRoster) h+='<button class="btn sm" style="background:var(--ltgreen);color:var(--dkgreen);border-color:#97C459" onclick="go(\'roster\')">&#10003; In team roster</button>';
+    else h+='<button class="btn sm" data-tid="'+t.id+'" onclick="promoteToRoster(this.dataset.tid)" title="Move this trainee to the Team Roster">&#11014; Promote to roster</button>';
+    h+='</div>';
   }
 
   if(!plan.length){
-    h+=`<div class="card"><div class="empty"><div class="ei">&#128197;</div>No courses assigned yet.<br>${editMode?'Click "+ Assign courses & dates" to build this trainee\'s schedule.':'No training plan set up yet.'}</div></div>`;
+    h+='<div class="card"><div class="empty"><div class="ei">&#128197;</div>No courses assigned yet.<br>';
+    h+=editMode?'Click "+ Assign courses &amp; dates" to build this trainee\'s schedule.':'No training plan set up yet.';
+    h+='</div></div>';
     el.innerHTML=h; return;
   }
 
-  // ── Gantt (date-based, show weeks as columns) ──
-  // Build week columns between start and end
+  // Gantt
   const gStart=new Date(ganttStart+'T12:00:00');
   const gEnd=new Date(ganttEnd+'T12:00:00');
-  // Get Monday of start week
   const dayOfWeek=gStart.getDay();
   const monday=new Date(gStart);monday.setDate(gStart.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
   const weeks=[];let cur=new Date(monday);
   while(cur<=gEnd){weeks.push(new Date(cur));cur.setDate(cur.getDate()+7)}
   if(weeks.length>52) weeks.splice(52);
-
   const d2t=d=>d?new Date(d+'T12:00:00').getTime():null;
   const wkLabel=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
 
-  h+=`<div class="card" style="padding:14px 16px;margin-bottom:12px">
-    <div class="chd"><span class="ct">Training schedule — Gantt</span></div>
-    <div class="go"><table class="gt">
-      <thead><tr><th class="nc">Course</th>${weeks.map(w=>`<th>${wkLabel(w)}</th>`).join('')}</tr></thead>
-      <tbody>`;
+  h+='<div class="card" style="padding:14px 16px;margin-bottom:12px">';
+  h+='<div class="chd"><span class="ct">Training schedule &mdash; Gantt</span></div>';
+  h+='<div class="go"><table class="gt"><thead><tr><th class="nc">Course</th>';
+  weeks.forEach(function(w){ h+='<th>'+wkLabel(w)+'</th>'; });
+  h+='</tr></thead><tbody>';
 
-  ['p1','p2','p3','p4'].forEach(ph=>{
-    const rows=bph_[ph]||[];if(!rows.length)return;
-    h+=`<tr class="gph"><td class="nc" colspan="${weeks.length+1}" style="color:${PC[ph]};padding-left:10px">${PL[ph]}</td></tr>`;
-    rows.forEach(({c,e})=>{
-      const bc=e.result==='pass'?'#1D9E75':e.result==='fail'?'#E24B4A':e.result==='ip'?'#EF9F27':PC[ph];
-      const st=d2t(e.startDate),en=d2t(e.endDate||e.startDate);
-      h+=`<tr><td class="nc" title="${c.name}">${c.name}</td>`;
-      weeks.forEach((wk,wi)=>{
+  getPhases().forEach(function(ph){
+    const rows=bph_[ph.id]||[];if(!rows.length)return;
+    h+='<tr class="gph"><td class="nc" colspan="'+(weeks.length+1)+'" style="color:'+ph.color+';padding-left:10px">'+ph.name+'</td></tr>';
+    rows.forEach(function(row){
+      const c=row.c,e=row.e;
+      const bc=e.result==='pass'?'#1D9E75':e.result==='fail'?'#E24B4A':e.result==='ip'?'#EF9F27':ph.color;
+      const sW=d2t(e.startDate),eW=d2t(e.endDate||e.startDate);
+      h+='<tr><td class="nc" title="'+c.name+'">'+c.name+'</td>';
+      weeks.forEach(function(wk,wi){
         const wkS=wk.getTime(),wkE=wkS+6*86400000;
-        const inRange=st&&en&&!(en<wkS||st>wkE);
+        const inRange=sW&&eW&&!(eW<wkS||sW>wkE);
         if(inRange){
-          const isFirst=wi===0||d2t(e.startDate)>=wk.getTime(),isLast=wi===weeks.length-1||d2t(e.endDate||e.startDate)<weeks[wi+1]?.getTime();
+          const isFirst=wi===0||sW>=wk.getTime();
+          const isLast=wi===weeks.length-1||!weeks[wi+1]||d2t(e.endDate||e.startDate)<weeks[wi+1].getTime();
           const r=isFirst&&isLast?'3px':isFirst?'3px 0 0 3px':isLast?'0 3px 3px 0':'0';
-          h+=`<td class="bc"><div class="bar" style="background:${bc};border-radius:${r};opacity:.88"></div></td>`;
-        } else h+=`<td></td>`;
+          h+='<td class="bc"><div class="bar" style="background:'+bc+';border-radius:'+r+';opacity:.88"></div></td>';
+        } else h+='<td></td>';
       });
-      h+=`</tr>`;
+      h+='</tr>';
     });
   });
 
-  h+=`</tbody></table></div>
-  <div style="display:flex;gap:14px;margin-top:10px;flex-wrap:wrap">
-    ${[['#1D9E75','Passed'],['#EF9F27','In progress'],['#E24B4A','Failed'],['#185FA5','Scheduled']].map(([c,l])=>`<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:14px;height:8px;border-radius:2px;background:${c};display:inline-block"></span>${l}</span>`).join('')}
-  </div></div>`;
+  h+='</tbody></table></div>';
+  h+='<div style="display:flex;gap:14px;margin-top:10px;flex-wrap:wrap">';
+  [['#1D9E75','Passed'],['#EF9F27','In progress'],['#E24B4A','Failed'],['#185FA5','Scheduled']].forEach(function(pair){
+    h+='<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3)"><span style="width:14px;height:8px;border-radius:2px;background:'+pair[0]+';display:inline-block"></span>'+pair[1]+'</span>';
+  });
+  h+='</div></div>';
 
-  // ── Results table ──
-  h+=`<div class="sh" style="margin-bottom:12px"><span class="st">Training results</span>${editMode?'':`<span class="lh">&#128274; Unlock to record</span>`}</div>`;
+  // Results
+  h+='<div class="sh" style="margin-bottom:12px"><span class="st">Training results</span>';
+  if(!editMode) h+='<span class="lh">&#128274; Unlock to record</span>';
+  h+='</div>';
 
-  ['p1','p2','p3','p4'].forEach(ph=>{
-    const rows=bph_[ph]||[];if(!rows.length)return;
-    h+=`<div class="card" style="margin-bottom:10px"><div class="chd"><span class="ct" style="color:${PC[ph]}">${PL[ph]}</span></div>`;
-    rows.forEach(({c,e},i)=>{
+  getPhases().forEach(function(ph){
+    const rows=bph_[ph.id]||[];if(!rows.length)return;
+    h+='<div class="card" style="margin-bottom:10px">';
+    h+='<div class="chd"><span class="ct" style="color:'+ph.color+'">'+ph.name+'</span></div>';
+    rows.forEach(function(row,i){
+      const c=row.c,e=row.e;
       const last=i===rows.length-1;
-      const rc={pass:'rp',ip:'ri_',fail:'rf',none:'rn_'}[e.result||'none'];
-      const rl={pass:'&#10003; Passed',ip:'&#9203; In progress',fail:'&#10007; Failed',none:'&#8212; Pending'}[e.result||'none'];
-      h+=`<div style="padding:10px 0;border-bottom:${last?'none':'1px solid var(--border)'}">
-        <div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap">
-          <div style="flex:1;min-width:150px">
-            <div style="font-size:13px;font-weight:500;color:var(--text)">${c.name}</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-              ${e.startDate||e.endDate?`<span>&#128197; ${fmt(e.startDate)}${e.endDate&&e.endDate!==e.startDate?' – '+fmt(e.endDate):''}</span>`:''}
-              <span>Required: ${c.required}/5</span>
-              ${e.trainer?`<span style="color:var(--blue)">&#128100; ${e.trainer}</span>`:''}
-              ${editMode?`<button class="btn sm bg_" style="height:20px;font-size:11px;padding:0 6px" onclick="openEditDate('${t.id}','${c.id}')">edit dates</button>`:''}
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex-shrink:0">
-            <span class="rb ${rc}">${rl}</span>
-            ${e.score?`<span style="font-size:11px;color:var(--text2)">Score: ${e.score}</span>`:''}
-            ${e.completionDate?`<span style="font-size:11px;color:var(--text3)">${fmt(e.completionDate)}</span>`:''}
-            ${editMode?`<button class="btn sm" onclick="openRm('${t.id}','${c.id}')">Record &#8250;</button>`:''}
-          </div>
-        </div>
-        ${e.notes?`<div style="font-size:11px;color:var(--text3);margin-top:6px;padding-left:10px;border-left:2px solid var(--border2)">${e.notes}</div>`:''}
-      </div>`;
+      const rcMap={pass:'rp',ip:'ri_',fail:'rf',none:'rn_'};
+      const rlMap={pass:'&#10003; Passed',ip:'&#9203; In progress',fail:'&#10007; Failed',none:'&#8212; Pending'};
+      const rc=rcMap[e.result||'none']||'rn_';
+      const rl=rlMap[e.result||'none']||'&#8212; Pending';
+      h+='<div style="padding:10px 0;border-bottom:'+(last?'none':'1px solid var(--border)'+'">'
+);
+      h+='<div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap">';
+      h+='<div style="flex:1;min-width:150px">';
+      h+='<div style="font-size:13px;font-weight:500;color:var(--text)">'+c.name+'</div>';
+      h+='<div style="font-size:11px;color:var(--text3);margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">';
+      if(e.startDate||e.endDate) h+='<span>&#128197; '+fmt(e.startDate)+(e.endDate&&e.endDate!==e.startDate?' &ndash; '+fmt(e.endDate):'')+'</span>';
+      h+='<span>Required: '+c.required+'/5</span>';
+      if(e.trainer) h+='<span style="color:var(--blue)">&#128100; '+e.trainer+'</span>';
+      if(editMode) h+='<button class="btn sm bg_" style="height:20px;font-size:11px;padding:0 6px" data-tid="'+t.id+'" data-cid="'+c.id+'" onclick="openEditDate(this.dataset.tid,this.dataset.cid)">edit dates</button>';
+      h+='</div></div>';
+      h+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex-shrink:0">';
+      h+='<span class="rb '+rc+'">'+rl+'</span>';
+      if(e.score) h+='<span style="font-size:11px;color:var(--text2)">Score: '+e.score+'</span>';
+      if(e.completionDate) h+='<span style="font-size:11px;color:var(--text3)">'+fmt(e.completionDate)+'</span>';
+      if(editMode) h+='<button class="btn sm" data-tid="'+t.id+'" data-cid="'+c.id+'" onclick="openRm(this.dataset.tid,this.dataset.cid)">Record &#8250;</button>';
+      h+='</div></div>';
+      if(e.notes) h+='<div style="font-size:11px;color:var(--text3);margin-top:6px;padding-left:10px;border-left:2px solid var(--border2)">'+e.notes+'</div>';
+      h+='</div>';
     });
-    h+=`</div>`;
+    h+='</div>';
   });
 
-  if(t.notes)h+=`<div class="card"><div class="ct" style="margin-bottom:6px">Onboarding notes</div><div style="font-size:13px;color:var(--text)">${t.notes}</div></div>`;
+  if(t.notes) h+='<div class="card"><div class="ct" style="margin-bottom:6px">Onboarding notes</div><div style="font-size:13px;color:var(--text)">'+t.notes+'</div></div>';
   el.innerHTML=h;
 }
+
 
 function openT(id){trainee=id;render()}
 function back(){trainee=null;render()}
@@ -669,17 +686,17 @@ function enrollMember(mid){
   selectedCourses=new Set((t.plan||[]).map(e=>e.courseId));
   const grid=g('course-pick-grid');
   let html='';
-  ['p1','p2','p3','p4'].forEach(ph=>{
-    const pc=S.courses.filter(c=>c.phase===ph);
-    html+=`<div style="grid-column:1/-1;font-size:11px;font-weight:700;color:${PC[ph]};text-transform:uppercase;letter-spacing:.05em;padding:8px 0 4px;border-bottom:1px solid var(--border);margin-bottom:4px">${PL[ph]}</div>`;
+  getPhases().forEach(ph=>{
+    const pc=S.courses.filter(c=>c.phase===ph.id);
+    html+=`<div style="grid-column:1/-1;font-size:11px;font-weight:700;color:${ph.color};text-transform:uppercase;letter-spacing:.05em;padding:8px 0 4px;border-bottom:1px solid var(--border);margin-bottom:4px">${ph.name}</div>`;
     pc.forEach(c=>{
       const alreadyPassed=(m.skills||{})[c.id]>=4;
       const sel=selectedCourses.has(c.id);
-      const label=alreadyPassed?`${c.name} <span style="color:var(--dkamber);font-size:10px">(refresher)</span>`:c.name;
+      const label=alreadyPassed?c.name+' <span style="color:var(--dkamber);font-size:10px">(refresher)</span>':c.name;
       html+=`<div class="course-pick-item${sel?' selected':''}" onclick="toggleCourse('${c.id}',this)">
         <input type="checkbox" ${sel?'checked':''} onclick="event.stopPropagation();toggleCourse('${c.id}',this.parentElement)"/>
         <span class="course-pick-label" title="${c.name}">${alreadyPassed?'↻ ':''}<b>${c.name}</b>${alreadyPassed?' <small style=\'color:var(--dkamber)\'>(refresher)</small>':''}</span>
-        <span class="course-pick-phase" style="background:${PC[ph]}22;color:${PC[ph]}">${PS[ph]}</span>
+        <span class="course-pick-phase" style="background:${ph.color}22;color:${ph.color}">${ph.short}</span>
       </div>`;
     });
   });
@@ -702,15 +719,15 @@ function openAssign(tid){
   // Render course picker
   const grid=g('course-pick-grid');
   let html='';
-  ['p1','p2','p3','p4'].forEach(ph=>{
-    const pc=S.courses.filter(c=>c.phase===ph);
-    html+=`<div style="grid-column:1/-1;font-size:11px;font-weight:700;color:${PC[ph]};text-transform:uppercase;letter-spacing:.05em;padding:8px 0 4px;border-bottom:1px solid var(--border);margin-bottom:4px">${PL[ph]}</div>`;
+  getPhases().forEach(ph=>{
+    const pc=S.courses.filter(c=>c.phase===ph.id);
+    html+=`<div style="grid-column:1/-1;font-size:11px;font-weight:700;color:${ph.color};text-transform:uppercase;letter-spacing:.05em;padding:8px 0 4px;border-bottom:1px solid var(--border);margin-bottom:4px">${ph.name}</div>`;
     pc.forEach(c=>{
       const sel=selectedCourses.has(c.id);
       html+=`<div class="course-pick-item${sel?' selected':''}" onclick="toggleCourse('${c.id}',this)">
         <input type="checkbox" ${sel?'checked':''} onclick="event.stopPropagation();toggleCourse('${c.id}',this.parentElement)"/>
         <span class="course-pick-label" title="${c.name}">${c.name}</span>
-        <span class="course-pick-phase" style="background:${PC[ph]}22;color:${PC[ph]}">${PS[ph]}</span>
+        <span class="course-pick-phase" style="background:${ph.color}22;color:${ph.color}">${ph.short}</span>
       </div>`;
     });
   });
@@ -740,14 +757,14 @@ function goStep2(){
 
   // Build schedule list grouped by phase
   let html='';
-  ['p1','p2','p3','p4'].forEach(ph=>{
-    const pc=S.courses.filter(c=>c.phase===ph&&selectedCourses.has(c.id));
+  getPhases().forEach(ph=>{
+    const pc=S.courses.filter(c=>c.phase===ph.id&&selectedCourses.has(c.id));
     if(!pc.length)return;
-    html+=`<div style="font-size:11px;font-weight:700;color:${PC[ph]};text-transform:uppercase;letter-spacing:.05em;padding:10px 0 4px;border-bottom:1px solid var(--border);margin-bottom:2px">${PL[ph]}</div>`;
+    html+=`<div style="font-size:11px;font-weight:700;color:${ph.color};text-transform:uppercase;letter-spacing:.05em;padding:10px 0 4px;border-bottom:1px solid var(--border);margin-bottom:2px">${ph.name}</div>`;
     pc.forEach(c=>{
       const ex=existingMap[c.id]||{};
       html+=`<div class="sched-row">
-        <div><div class="sched-name" title="${c.name}">${c.name}</div><div class="sched-phase" style="color:${PC[ph]}">${c.duration} days</div></div>
+        <div><div class="sched-name" title="${c.name}">${c.name}</div><div class="sched-phase" style="color:${ph.color}">${c.duration} days</div></div>
         <input type="date" class="date-input" id="sd-${c.id}" value="${ex.startDate||t.startDate||''}" placeholder="Start"/>
         <input type="date" class="date-input" id="ed-${c.id}" value="${ex.endDate||''}" placeholder="End"/>
       </div>`;
@@ -780,7 +797,7 @@ function saveAssign(){
   newPlan.sort((a,b)=>{
     const ca=S.courses.find(x=>x.id===a.courseId),cb=S.courses.find(x=>x.id===b.courseId);
     if(!ca||!cb)return 0;
-    const po=['p1','p2','p3','p4'];
+    const po=getPhases().map(p=>p.id);
     if(po.indexOf(ca.phase)!==po.indexOf(cb.phase))return po.indexOf(ca.phase)-po.indexOf(cb.phase);
     return S.courses.indexOf(ca)-S.courses.indexOf(cb);
   });
@@ -848,48 +865,106 @@ function saveResult(){
 
 // ── COURSES TAB ───────────────────────────────────────────────────
 function courses(el){
-  const cs=S.courses||[],bph_={p1:[],p2:[],p3:[],p4:[]};
+  const cs=S.courses||[];
+  const bph_={};
+  getPhases().forEach(p=>bph_[p.id]=[]);
   cs.forEach(c=>(bph_[c.phase]=bph_[c.phase]||[]).push(c));
   const avg=cs.length?(cs.reduce((a,c)=>a+c.required,0)/cs.length).toFixed(1):'-';
-  let h=`<div class="metrics">
-    <div class="metric"><div class="ml">Total courses</div><div class="mv">${cs.length}</div></div>
-    <div class="metric"><div class="ml">Avg duration</div><div class="mv">${cs.length?Math.round(cs.reduce((a,c)=>a+c.duration,0)/cs.length):0}</div><div class="ms">days per course</div></div>
-    <div class="metric"><div class="ml">Avg required level</div><div class="mv">${avg}<span style="font-size:14px">/5</span></div></div>
-  </div>
-  <div class="sh"><span class="st">Course library</span>
-    ${editMode?`<button class="btn bp sm" onclick="openCm()">+ Add course</button>`:`<span class="lh">&#128274; Unlock to edit</span>`}
-  </div>`;
-  ['p1','p2','p3','p4'].forEach(ph=>{
-    const pc=bph_[ph]||[];if(!pc.length)return;
-    h+=`<div class="card"><div class="chd"><span style="font-size:13px;font-weight:700;color:${PC[ph]}">${PL[ph]}</span><span style="font-size:11px;color:var(--text3)">${pc.length} courses</span></div>`;
-    pc.forEach(c=>{
-      h+=`<div class="lrow"><div class="pd" style="background:${PC[c.phase]}"></div>
-        <div class="ri"><div class="rn">${c.name}</div><div class="rs">${c.description||'—'} · ${c.duration} days · Required: ${c.required}/5</div></div>
-        ${editMode?`<button class="btn ic sm" title="Edit" onclick="openCm('${c.id}')">&#9998;</button><button class="btn ic sm bd" title="Delete" onclick="delC('${c.id}')">&#10005;</button>`:''}
-      </div>`;
-    });h+=`</div>`;
+  let h='';
+
+  h+='<div class="metrics">';
+  h+='<div class="metric"><div class="ml">Total courses</div><div class="mv">'+cs.length+'</div></div>';
+  h+='<div class="metric"><div class="ml">Avg duration</div><div class="mv">'+(cs.length?Math.round(cs.reduce((a,c)=>a+c.duration,0)/cs.length):0)+'</div><div class="ms">days per course</div></div>';
+  h+='<div class="metric"><div class="ml">Avg required level</div><div class="mv">'+avg+'<span style="font-size:14px">/5</span></div></div>';
+  h+='</div>';
+
+  h+='<div class="sh"><span class="st">Course library</span>';
+  if(editMode) h+='<button class="btn bp sm" onclick="openCm()">+ Add course</button>';
+  else h+='<span class="lh">&#128274; Unlock to edit</span>';
+  h+='</div>';
+
+  getPhases().forEach(function(ph){
+    const pc=bph_[ph.id]||[];
+    if(!pc.length) return;
+    h+='<div class="card"><div class="chd">';
+    h+='<span style="font-size:13px;font-weight:700;color:'+ph.color+'">'+ph.name+'</span>';
+    h+='<span style="font-size:11px;color:var(--text3)">'+pc.length+' courses</span>';
+    h+='</div>';
+    pc.forEach(function(c){
+      h+='<div class="lrow"><div class="pd" style="background:'+ph.color+'"></div>';
+      h+='<div class="ri"><div class="rn">'+c.name+'</div>';
+      h+='<div class="rs">'+(c.description||'&mdash;')+' &middot; '+c.duration+' days &middot; Required: '+c.required+'/5</div></div>';
+      if(editMode){
+        h+='<button class="btn ic sm" title="Edit" data-cid="'+c.id+'" onclick="openCm(this.dataset.cid)">&#9998;</button>';
+        h+='<button class="btn ic sm bd" title="Delete" data-cid="'+c.id+'" onclick="delC(this.dataset.cid)">&#10005;</button>';
+      }
+      h+='</div>';
+    });
+    h+='</div>';
   });
-  h+=`<div class="div"></div><div class="sh" style="margin-bottom:12px"><span class="st">Skill matrix — required proficiency by phase</span></div>
-  <div class="card" style="padding:14px 16px"><div class="mw"><table class="mx">
-    <thead><tr><th style="text-align:left;min-width:180px">Course</th>${['p1','p2','p3','p4'].map(p=>`<th style="color:${PC[p]}">${PS[p]}</th>`).join('')}</tr></thead>
-    <tbody>`;
-  const mx={};cs.forEach(c=>{if(!mx[c.name])mx[c.name]={};mx[c.name][c.phase]=c.required});
-  Object.entries(mx).forEach(([name,phases])=>{
-    h+=`<tr><td style="text-align:left;color:var(--text);font-size:12px">${name}</td>`;
-    ['p1','p2','p3','p4'].forEach(ph=>{const lv=phases[ph];if(lv!==undefined)h+=`<td><div class="lv l${lv}">${lv}</div></td>`;else h+=`<td style="color:var(--border)">—</td>`});
-    h+=`</tr>`;
+
+  h+='<div class="div"></div>';
+  h+='<div class="sh" style="margin-bottom:12px"><span class="st">Phases</span>';
+  if(editMode) h+='<button class="btn bp sm" onclick="openPhaseModal()">+ Add phase</button>';
+  else h+='<span class="lh">&#128274; Unlock to edit</span>';
+  h+='</div>';
+  h+='<div class="card" style="margin-bottom:12px">';
+  const phs=getPhases();
+  phs.forEach(function(ph,i){
+    h+='<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:'+(i<phs.length-1?'1px solid var(--border)':'none')+'">';
+    h+='<div style="width:14px;height:14px;border-radius:3px;background:'+ph.color+';flex-shrink:0"></div>';
+    h+='<div style="flex:1;min-width:0">';
+    h+='<div style="font-size:13px;font-weight:500;color:var(--text)">'+ph.name+'</div>';
+    h+='<div style="font-size:11px;color:var(--text3);margin-top:2px">'+(ph.description||'&mdash;')+' &middot; Order: '+ph.order+'</div>';
+    h+='</div>';
+    if(editMode){
+      h+='<div style="display:flex;gap:4px">';
+      if(i>0) h+='<button class="btn ic sm bg_" title="Move up" data-pid="'+ph.id+'" data-dir="-1" onclick="movePhase(this.dataset.pid,parseInt(this.dataset.dir))">&#8593;</button>';
+      else h+='<span style="width:30px"></span>';
+      if(i<phs.length-1) h+='<button class="btn ic sm bg_" title="Move down" data-pid="'+ph.id+'" data-dir="1" onclick="movePhase(this.dataset.pid,parseInt(this.dataset.dir))">&#8595;</button>';
+      else h+='<span style="width:30px"></span>';
+      h+='<button class="btn ic sm" title="Edit" data-pid="'+ph.id+'" onclick="openPhaseModal(this.dataset.pid)">&#9998;</button>';
+      h+='<button class="btn ic sm bd" title="Delete" data-pid="'+ph.id+'" onclick="delPhase(this.dataset.pid)">&#10005;</button>';
+      h+='</div>';
+    }
+    h+='</div>';
   });
-  h+=`</tbody></table></div>
-  <div style="display:flex;gap:14px;margin-top:12px;flex-wrap:wrap">
-    ${[1,2,3,4,5].map(n=>`<span style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2)"><div class="lv l${n}" style="width:26px;height:26px;font-size:11px">${n}</div>${['','Not acquired','Foundational','Guided','Independent','Expert'][n]}</span>`).join('')}
-  </div></div>`;
+  h+='</div>';
+
+  h+='<div class="sh" style="margin-bottom:12px"><span class="st">Skill matrix &mdash; required proficiency by phase</span></div>';
+  h+='<div class="card" style="padding:14px 16px"><div class="mw"><table class="mx">';
+  h+='<thead><tr><th style="text-align:left;min-width:180px">Course</th>';
+  getPhases().forEach(function(p){ h+='<th style="color:'+p.color+'">'+p.short+'</th>'; });
+  h+='</tr></thead><tbody>';
+  const mx={};
+  cs.forEach(function(c){ if(!mx[c.name])mx[c.name]={}; mx[c.name][c.phase]=c.required; });
+  Object.entries(mx).forEach(function(entry){
+    const name=entry[0],phmap=entry[1];
+    h+='<tr><td style="text-align:left;color:var(--text);font-size:12px">'+name+'</td>';
+    getPhases().forEach(function(ph){
+      const lv=phmap[ph.id];
+      if(lv!==undefined) h+='<td><div class="lv l'+lv+'">'+lv+'</div></td>';
+      else h+='<td style="color:var(--border)">&#8212;</td>';
+    });
+    h+='</tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<div style="display:flex;gap:14px;margin-top:12px;flex-wrap:wrap">';
+  [['1','Not acquired'],['2','Foundational'],['3','Guided'],['4','Independent'],['5','Expert']].forEach(function(pair){
+    h+='<span style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2)"><div class="lv l'+pair[0]+'" style="width:26px;height:26px;font-size:11px">'+pair[0]+'</div>'+pair[1]+'</span>';
+  });
+  h+='</div></div>';
   el.innerHTML=h;
 }
+
 
 function openCm(id){
   editCid=id||null;const c=id?S.courses.find(x=>x.id===id):null;
   g('cm-t').textContent=c?'Edit course':'Add course';
-  g('cm-n').value=c?c.name:'';g('cm-p').value=c?c.phase:'p1';
+  // Populate phase dropdown dynamically
+  const sel=g('cm-p');
+  sel.innerHTML=getPhases().map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  g('cm-n').value=c?c.name:'';sel.value=c?c.phase:(getPhases()[0]?.id||'p1');
   g('cm-d').value=c?c.duration:5;g('cm-r').value=c?c.required:4;
   g('cm-desc').value=c?c.description:'';
   g('m-course').style.display='flex';setTimeout(()=>g('cm-n').focus(),80);
@@ -936,7 +1011,7 @@ function reports(el){
     let passed=0,failed=0,ip=0,pending=0;
     ts.forEach(t=>{const e=(t.plan||[]).find(x=>x.courseId===c.id);if(!e)return;if(e.result==='pass')passed++;else if(e.result==='fail')failed++;else if(e.result==='ip')ip++;else pending++;});
     const total=passed+failed+ip+pending;
-    return{name:c.name,phase:c.phase,passed,failed,ip,pending,total,rate:total?Math.round(passed/total*100):0};
+    return{name:c.name,phase:c.phase,phColor:getPhase(c.phase).color,passed,failed,ip,pending,total,rate:total?Math.round(passed/total*100):0};
   }).filter(c=>c.total>0).sort((a,b)=>b.rate-a.rate);
 
   // ── Render layout ──────────────────────────────────────────────
@@ -987,8 +1062,9 @@ function reports(el){
       ${ts.map((t,ti)=>{
         const activeCourses=cs.filter(c=>ts.some(x=>(x.plan||[]).find(e=>e.courseId===c.id)));
         const p=prog(t);
-        return`<tr style="background:${ti%2?'var(--bg2)':'var(--bg)'}">
-          <td style="padding:6px 8px;font-weight:500;color:var(--text);position:sticky;left:0;background:${ti%2?'var(--bg2)':'var(--bg)'};border-right:1px solid var(--border)">${t.name}</td>
+        const rowBg=ti%2?'var(--bg2)':'var(--bg)';
+        return`<tr style="background:${rowBg}">
+          <td style="padding:6px 8px;font-weight:500;color:var(--text);position:sticky;left:0;background:${rowBg};border-right:1px solid var(--border)">${t.name}</td>
           ${activeCourses.map(c=>{
             const e=(t.plan||[]).find(x=>x.courseId===c.id);
             if(!e) return`<td style="text-align:center;color:var(--border)">—</td>`;
@@ -1034,7 +1110,7 @@ function reports(el){
       type:'bar',
       data:{
         labels:courseStats.map(x=>x.name.length>30?x.name.slice(0,28)+'…':x.name),
-        datasets:[{label:'Pass rate %',data:courseStats.map(x=>x.rate),backgroundColor:courseStats.map(x=>PC[x.phase]+'CC'),borderRadius:4}]
+        datasets:[{label:'Pass rate %',data:courseStats.map(x=>x.rate),backgroundColor:courseStats.map(x=>x.phColor+'CC'),borderRadius:4}]
       },
       options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const s=courseStats[ctx.dataIndex];return[`Pass rate: ${ctx.raw}%`,`Passed: ${s.passed}  Failed: ${s.failed}  IP: ${s.ip}  Pending: ${s.pending}`]}}}},scales:{x:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.06)'}},y:{ticks:{font:{size:10}}}}}
     });
@@ -1060,62 +1136,43 @@ function reports(el){
 function settings(el){
   const ok=GH.owner&&GH.repo&&GH.token;
   const hasPw=!!getEditPw();
-  let h=`<div class="st" style="margin-bottom:16px">Settings</div>`;
-
-  // Status banner
-  if(ok&&hasPw){
-    h+=`<div class="al ao">&#10003; All configured — app is ready. Share the URL and edit password with your team.</div>`;
-  } else {
-    h+=`<div class="al aw">&#9888; Complete the setup below before using the app.</div>`;
-  }
-
-  // GitHub config
-  h+=`<div class="card">
-    <div class="ct" style="margin-bottom:12px">GitHub repository</div>
-    <div class="form-row">
-      <div class="fg"><label>GitHub username or org *</label><input id="so" value="${GH.owner}" placeholder="e.g. markkevinolivar"/></div>
-      <div class="fg"><label>Repository name *</label><input id="sr" value="${GH.repo}" placeholder="e.g. training-manager"/></div>
-    </div>
-    <div class="form-row">
-      <div class="fg" style="max-width:280px"><label>Data file path</label><input id="sp" value="${GH.path}" placeholder="data/training.json"/></div>
-    </div>
-    <div class="ct" style="margin-bottom:8px;margin-top:14px">GitHub Personal Access Token</div>
-    <div style="font-size:12px;color:var(--text3);margin-bottom:8px">Stored securely in your browser. Needed to save data to GitHub. Generate one at github.com → Settings → Developer settings → Personal access tokens → Tokens (classic) → with <strong>repo</strong> scope.</div>
-    <div class="form-row">
-      <div class="fg"><label>${GH.token?'Token (saved — paste new one to replace)':'Token *'}</label>
-        <input type="password" id="st" placeholder="${GH.token?'••••••••••••••••••••••••••  (already saved)':'ghp_xxxxxxxxxxxxxxxxxxxx'}" autocomplete="off"/>
-      </div>
-    </div>
-    <div class="ct" style="margin-bottom:8px;margin-top:14px">Edit password</div>
-    <div style="font-size:12px;color:var(--text3);margin-bottom:8px">A simple password that trainers enter to unlock editing. Share this with your team. Stored in browser only.</div>
-    <div class="form-row">
-      <div class="fg" style="max-width:260px">
-        <label>${hasPw?'Change password':'Set edit password *'}</label>
-        <input type="password" id="spw" placeholder="${hasPw?'Enter new password to change':'Set a password...'}"/>
-      </div>
-      <div class="fg" style="max-width:260px" id="spw2-wrap">
-        <label>Confirm password</label>
-        <input type="password" id="spw2" placeholder="Repeat password"/>
-      </div>
-    </div>
-    ${hasPw?`<div style="font-size:12px;color:var(--dkgreen);margin-bottom:8px">&#10003; Edit password is set. Leave blank to keep current password.</div>`:''}
-    <div id="settings-err" class="al ae" style="display:none;margin-bottom:8px"></div>
-    <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
-      <button class="btn bp sm" onclick="saveGH()">Save settings</button>
-      ${ok?`<button class="btn sm" onclick="reload()">&#8635; Reload data from GitHub</button>`:''}
-    </div>
-  </div>
-
-  <div class="card" style="margin-top:4px">
-    <div class="ct" style="margin-bottom:10px">Data backup &amp; restore</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn sm" onclick="exportD()">&#8595; Export JSON backup</button>
-      <button class="btn sm" onclick="g('imp').click()">&#8593; Import JSON</button>
-      <input type="file" id="imp" accept=".json" style="display:none" onchange="importD(this)"/>
-      ${editMode?`<button class="btn sm bd" onclick="resetD()">&#9888; Reset to defaults</button>`:''}
-    </div>
-    <div style="font-size:11px;color:var(--text3);margin-top:8px">Export a JSON backup anytime. Import on another device to restore all data.</div>
-  </div>`;
+  let h='';
+  h+='<div class="st" style="margin-bottom:16px">Settings</div>';
+  if(ok&&hasPw) h+='<div class="al ao">&#10003; All configured &mdash; app is ready. Share the URL and edit password with your team.</div>';
+  else h+='<div class="al aw">&#9888; Complete the setup below before using the app.</div>';
+  h+='<div class="card">';
+  h+='<div class="ct" style="margin-bottom:12px">GitHub repository</div>';
+  h+='<div class="form-row">';
+  h+='<div class="fg"><label>GitHub username or org *</label><input id="so" value="'+GH.owner+'" placeholder="e.g. markkevinolivar"/></div>';
+  h+='<div class="fg"><label>Repository name *</label><input id="sr" value="'+GH.repo+'" placeholder="e.g. training-manager"/></div>';
+  h+='</div>';
+  h+='<div class="form-row"><div class="fg" style="max-width:280px"><label>Data file path</label><input id="sp" value="'+GH.path+'" placeholder="data/training.json"/></div></div>';
+  h+='<div class="ct" style="margin-bottom:8px;margin-top:14px">GitHub Personal Access Token</div>';
+  h+='<div style="font-size:12px;color:var(--text3);margin-bottom:8px">Stored in your browser. Needed to save data to GitHub. Generate one with <strong>repo</strong> scope.</div>';
+  h+='<div class="form-row"><div class="fg"><label>'+(GH.token?'Token (saved &mdash; paste new to replace)':'Token *')+'</label>';
+  h+='<input type="password" id="st" placeholder="'+(GH.token?'Already saved &mdash; paste new token to replace':'ghp_xxxxxxxxxxxxxxxxxxxx')+'" autocomplete="off"/></div></div>';
+  h+='<div class="ct" style="margin-bottom:8px;margin-top:14px">Edit password</div>';
+  h+='<div style="font-size:12px;color:var(--text3);margin-bottom:8px">Simple password trainers enter to unlock editing. Share with your team.</div>';
+  h+='<div class="form-row">';
+  h+='<div class="fg" style="max-width:260px"><label>'+(hasPw?'Change password':'Set edit password *')+'</label><input type="password" id="spw" placeholder="'+(hasPw?'Enter new password to change':'Set a password...')+'"/></div>';
+  h+='<div class="fg" style="max-width:260px"><label>Confirm password</label><input type="password" id="spw2" placeholder="Repeat password"/></div>';
+  h+='</div>';
+  if(hasPw) h+='<div style="font-size:12px;color:var(--dkgreen);margin-bottom:8px">&#10003; Edit password is set. Leave blank to keep current password.</div>';
+  h+='<div id="settings-err" class="al ae" style="display:none;margin-bottom:8px"></div>';
+  h+='<div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">';
+  h+='<button class="btn bp sm" onclick="saveGH()">Save settings</button>';
+  if(ok) h+='<button class="btn sm" onclick="reload()">&#8635; Reload data from GitHub</button>';
+  h+='</div></div>';
+  h+='<div class="card" style="margin-top:4px">';
+  h+='<div class="ct" style="margin-bottom:10px">Data backup &amp; restore</div>';
+  h+='<div style="display:flex;gap:8px;flex-wrap:wrap">';
+  h+='<button class="btn sm" onclick="exportD()">&#8595; Export JSON backup</button>';
+  h+='<button class="btn sm" onclick="g(\'imp\').click()">&#8593; Import JSON</button>';
+  h+='<input type="file" id="imp" accept=".json" style="display:none" onchange="importD(this)"/>';
+  if(editMode) h+='<button class="btn sm bd" onclick="resetD()">&#9888; Reset to defaults</button>';
+  h+='</div>';
+  h+='<div style="font-size:11px;color:var(--text3);margin-top:8px">Export a JSON backup anytime. Import on another device to restore all data.</div>';
+  h+='</div>';
   el.innerHTML=h;
 }
 
@@ -1148,6 +1205,86 @@ function exportD(){const b=new Blob([JSON.stringify(S,null,2)],{type:'applicatio
 function importD(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(!d.courses||!d.trainees)return alert('Invalid file.');if(!confirm('Replace all current data?'))return;S=d;if(editMode)push('Import from JSON backup');render()}catch{alert('Invalid JSON file.')}};r.readAsText(f);input.value=''}
 function resetD(){if(!confirm('Reset ALL data to defaults?\nDeletes all trainees. Cannot be undone.'))return;S={courses:JSON.parse(JSON.stringify(DC)),trainees:[]};push('Reset to defaults');render()}
 
+
+// ══════════════════════════════════════════════════════════════════
+// PHASE MANAGEMENT
+// ══════════════════════════════════════════════════════════════════
+let editPhaseId=null;
+
+function syncColorHex(inp){
+  const hex=inp.value.trim();
+  if(/^#[0-9A-Fa-f]{6}$/.test(hex)) g('pm-c').value=hex;
+}
+
+function openPhaseModal(id){
+  editPhaseId=id||null;
+  const ph=id?getPhase(id):null;
+  g('pm-t').textContent=ph&&id?'Edit phase':'Add phase';
+  g('pm-eid').value=id||'';
+  g('pm-n').value=ph?ph.name:'';
+  g('pm-s').value=ph?ph.short:'';
+  g('pm-o').value=ph?ph.order:(getPhases().length+1);
+  const col=ph?ph.color:'#1D9E75';
+  g('pm-c').value=col; g('pm-ch').value=col;
+  g('pm-d').value=ph?ph.description:'';
+  g('m-phase').style.display='flex';
+  setTimeout(()=>g('pm-n').focus(),80);
+  // Sync color picker -> hex field
+  g('pm-c').oninput=function(){g('pm-ch').value=this.value};
+}
+
+function savePhase(){
+  const name=g('pm-n').value.trim();
+  if(!name) return alert('Phase name is required.');
+  const color=g('pm-c').value||'#1D9E75';
+  const ph={
+    id:editPhaseId||'ph'+Date.now(),
+    name,
+    short:g('pm-s').value.trim()||name.split(':')[0].trim()||name,
+    order:parseInt(g('pm-o').value)||1,
+    color,
+    description:g('pm-d').value.trim()
+  };
+  if(!S.phases) S.phases=JSON.parse(JSON.stringify(DP));
+  if(editPhaseId){
+    const i=S.phases.findIndex(x=>x.id===editPhaseId);
+    if(i>=0) S.phases[i]=ph; else S.phases.push(ph);
+  } else {
+    S.phases.push(ph);
+  }
+  cm('m-phase');
+  push(editPhaseId?'Update phase: '+name:'Add phase: '+name);
+  render();
+}
+
+function delPhase(id){
+  const ph=getPhase(id);
+  const coursesInPhase=(S.courses||[]).filter(c=>c.phase===id).length;
+  let msg='Delete phase "'+ph.name+'"?';
+  if(coursesInPhase>0) msg+='\n\nWarning: '+coursesInPhase+' course(s) are in this phase. They will remain but lose their phase assignment.';
+  if(!confirm(msg)) return;
+  if(coursesInPhase>0) S.courses.forEach(c=>{if(c.phase===id)c.phase='unassigned'});
+  if(!S.phases) S.phases=JSON.parse(JSON.stringify(DP));
+  S.phases=S.phases.filter(x=>x.id!==id);
+  push('Delete phase: '+ph.name);
+  render();
+}
+
+function movePhase(id,dir){
+  if(!S.phases) S.phases=JSON.parse(JSON.stringify(DP));
+  const phases=getPhases();
+  const idx=phases.findIndex(p=>p.id===id);
+  const newIdx=idx+dir;
+  if(newIdx<0||newIdx>=phases.length) return;
+  // Swap orders
+  const tmp=phases[idx].order;
+  const phaseA=S.phases.find(p=>p.id===phases[idx].id);
+  const phaseB=S.phases.find(p=>p.id===phases[newIdx].id);
+  if(phaseA&&phaseB){phaseA.order=phaseB.order;phaseB.order=tmp;}
+  push('Reorder phases');
+  render();
+}
+
 g('ai').addEventListener('keydown',e=>{if(e.key==='Enter')doAuth()});
 
 loadLs();render();
@@ -1158,104 +1295,104 @@ if(GH.owner&&GH.repo){sync('Loading...','#FAC775');reload()}
 // ══════════════════════════════════════════════════════════════════
 function roster(el){
   const members=S.members||[];
-  let h=`<div class="metrics">
-    <div class="metric"><div class="ml">Members</div><div class="mv">${members.length}</div></div>
-    <div class="metric"><div class="ml">Avg skills</div><div class="mv">${members.length?Math.round(members.reduce((a,m)=>a+(Object.keys(m.skills||{}).length),0)/members.length):0}</div><div class="ms">courses per member</div></div>
-    <div class="metric"><div class="ml">Expert members</div><div class="mv">${members.filter(m=>Object.values(m.skills||{}).some(v=>v>=5)).length}</div><div class="ms">with level 5 skills</div></div>
-  </div>
-  <div class="sh"><span class="st">Existing team members</span>
-    ${editMode?`<button class="btn bp sm" onclick="openMemberModal()">+ Add member</button>`:`<span class="lh">&#128274; Unlock to add</span>`}
-  </div>`;
+  let h='';
+  h+='<div class="metrics">';
+  h+='<div class="metric"><div class="ml">Members</div><div class="mv">'+members.length+'</div></div>';
+  const avgSkills=members.length?Math.round(members.reduce((a,m)=>a+(Object.keys(m.skills||{}).length),0)/members.length):0;
+  h+='<div class="metric"><div class="ml">Avg skills</div><div class="mv">'+avgSkills+'</div><div class="ms">courses per member</div></div>';
+  const expertCount=members.filter(m=>Object.values(m.skills||{}).some(v=>v>=5)).length;
+  h+='<div class="metric"><div class="ml">Expert members</div><div class="mv">'+expertCount+'</div><div class="ms">with level 5 skills</div></div>';
+  h+='</div>';
+  h+='<div class="sh"><span class="st">Existing team members</span>';
+  if(editMode) h+='<button class="btn bp sm" onclick="openMemberModal()">+ Add member</button>';
+  else h+='<span class="lh">&#128274; Unlock to add</span>';
+  h+='</div>';
 
   if(!members.length){
-    h+=`<div class="card"><div class="empty"><div class="ei">&#128101;</div>No members added yet.<br>${editMode?'Add existing team members and their current skill levels, or promote a trainee from the Trainees tab.':'Unlock editing to add members.'}</div></div>`;
+    h+='<div class="card"><div class="empty"><div class="ei">&#128101;</div>No members added yet.<br>';
+    h+=editMode?'Add existing team members and their current skill levels, or promote a trainee from the Trainees tab.':'Unlock editing to add members.';
+    h+='</div></div>';
   } else {
-    members.forEach(m=>{
+    members.forEach(function(m){
       const skillCount=Object.keys(m.skills||{}).length;
-      const expertCount=Object.values(m.skills||{}).filter(v=>v>=5).length;
+      const expCount=Object.values(m.skills||{}).filter(v=>v>=5).length;
       const avgLvl=skillCount?(Object.values(m.skills||{}).reduce((a,v)=>a+v,0)/skillCount).toFixed(1):'-';
-      // Check if this member has an active training plan
       const activePlan=S.trainees?S.trainees.find(x=>x.id===m.id):null;
       const activeProgress=activePlan?prog(activePlan):null;
 
-      h+=`<div class="card" style="margin-bottom:10px">
-        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
-          <div class="av av-l">${ini(m.name)}</div>
-          <div style="flex:1;min-width:0">
-            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-              <span style="font-size:15px;font-weight:700;color:var(--text)">${m.name}</span>
-              ${activePlan?`<span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--ltamber);color:var(--dkamber);font-weight:600;border:1px solid var(--amber)">&#128218; In training · ${activeProgress.pct}%</span>`:''}
-            </div>
-            <div style="font-size:12px;color:var(--text3);margin-top:2px">${[m.role,m.team,m.years?m.years+' yrs exp':''].filter(Boolean).join(' · ')}</div>
-            <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap">
-              <span style="font-size:12px;color:var(--text2)">&#128218; ${skillCount} skills</span>
-              <span style="font-size:12px;color:var(--text2)">&#11088; Avg: ${avgLvl}/5</span>
-              ${expertCount?`<span style="font-size:12px;color:var(--dkgreen)">&#127775; ${expertCount} expert</span>`:''}
-            </div>
-          </div>
-          ${editMode?`<div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">
-            ${activePlan
-              ?`<button class="btn sm" onclick="trainee='${m.id}';go('trainees')" style="background:var(--ltamber);color:var(--dkamber);border-color:var(--amber)">View training &#8250;</button>`
-              :`<button class="btn sm bp" onclick="enrollMember('${m.id}')">+ Enroll for training</button>`}
-            <button class="btn sm" onclick="openMemberModal('${m.id}')">&#9998; Edit</button>
-            <button class="btn sm bd ic" onclick="delMember('${m.id}')">&#10005;</button>
-          </div>`:''}
-        </div>`;
+      h+='<div class="card" style="margin-bottom:10px">';
+      h+='<div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">';
+      h+='<div class="av av-l">'+ini(m.name)+'</div>';
+      h+='<div style="flex:1;min-width:0">';
+      h+='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">';
+      h+='<span style="font-size:15px;font-weight:700;color:var(--text)">'+m.name+'</span>';
+      if(activePlan) h+='<span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--ltamber);color:var(--dkamber);font-weight:600;border:1px solid var(--amber)">&#128218; In training &middot; '+activeProgress.pct+'%</span>';
+      h+='</div>';
+      h+='<div style="font-size:12px;color:var(--text3);margin-top:2px">'+[m.role,m.team,m.years?m.years+' yrs exp':''].filter(Boolean).join(' &middot; ')+'</div>';
+      h+='<div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap">';
+      h+='<span style="font-size:12px;color:var(--text2)">&#128218; '+skillCount+' skills</span>';
+      h+='<span style="font-size:12px;color:var(--text2)">&#11088; Avg: '+avgLvl+'/5</span>';
+      if(expCount) h+='<span style="font-size:12px;color:var(--dkgreen)">&#127775; '+expCount+' expert</span>';
+      h+='</div></div>';
+      if(editMode){
+        h+='<div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">';
+        if(activePlan) h+='<button class="btn sm" data-mid="'+m.id+'" onclick="trainee=this.dataset.mid;go(\'trainees\')" style="background:var(--ltamber);color:var(--dkamber);border-color:var(--amber)">View training &#8250;</button>';
+        else h+='<button class="btn sm bp" data-mid="'+m.id+'" onclick="enrollMember(this.dataset.mid)">+ Enroll for training</button>';
+        h+='<button class="btn sm" data-mid="'+m.id+'" onclick="openMemberModal(this.dataset.mid)">&#9998; Edit</button>';
+        h+='<button class="btn sm bd ic" data-mid="'+m.id+'" onclick="delMember(this.dataset.mid)">&#10005;</button>';
+        h+='</div>';
+      }
+      h+='</div>';
 
-      // Skills grouped by phase
-      ['p1','p2','p3','p4'].forEach(ph=>{
-        const phaseCourses=S.courses.filter(c=>c.phase===ph&&m.skills&&m.skills[c.id]!==undefined);
+      getPhases().forEach(function(ph){
+        const phaseCourses=S.courses.filter(c=>c.phase===ph.id&&m.skills&&m.skills[c.id]!==undefined);
         if(!phaseCourses.length) return;
-        h+=`<div style="margin-bottom:8px">
-          <div style="font-size:10px;font-weight:700;color:${PC[ph]};text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">${PL[ph]}</div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px">`;
-        phaseCourses.forEach(c=>{
+        h+='<div style="margin-bottom:8px">';
+        h+='<div style="font-size:10px;font-weight:700;color:'+ph.color+';text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">'+ph.name+'</div>';
+        h+='<div style="display:flex;flex-wrap:wrap;gap:6px">';
+        phaseCourses.forEach(function(c){
           const lv=m.skills[c.id];
-          const lvLabel=['','Not acquired','Foundational','Guided','Independent','Expert'][lv]||lv;
-          h+=`<span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:99px;background:${PC[ph]}15;color:${PC[ph]};border:1px solid ${PC[ph]}40">
-            <strong>${lv}</strong> ${c.name}
-          </span>`;
+          h+='<span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:99px;background:'+ph.color+'15;color:'+ph.color+';border:1px solid '+ph.color+'40">';
+          h+='<strong>'+lv+'</strong> '+c.name+'</span>';
         });
-        h+=`</div></div>`;
+        h+='</div></div>';
       });
 
       const unset=S.courses.filter(c=>!m.skills||m.skills[c.id]===undefined);
-      if(unset.length&&editMode){
-        h+=`<div style="font-size:11px;color:var(--text3);margin-top:4px">${unset.length} courses not yet rated — click Edit to set levels</div>`;
-      }
-      h+=`</div>`;
+      if(unset.length&&editMode) h+='<div style="font-size:11px;color:var(--text3);margin-top:4px">'+unset.length+' courses not yet rated &mdash; click Edit to set levels</div>';
+      h+='</div>';
     });
   }
 
-  // Team skill summary matrix
   if(members.length){
-    h+=`<div class="div"></div>
-    <div class="sh" style="margin-bottom:12px"><span class="st">Team skill overview</span></div>
-    <div class="card" style="padding:14px 16px"><div class="mw"><table class="mx">
-      <thead><tr><th style="text-align:left;min-width:180px">Course</th>${members.map(m=>`<th style="font-size:10px;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${m.name}">${m.name.split(' ')[0]}</th>`).join('')}<th>Team avg</th></tr></thead>
-      <tbody>`;
-    ['p1','p2','p3','p4'].forEach(ph=>{
-      const pc=S.courses.filter(c=>c.phase===ph);
+    h+='<div class="div"></div>';
+    h+='<div class="sh" style="margin-bottom:12px"><span class="st">Team skill overview</span></div>';
+    h+='<div class="card" style="padding:14px 16px"><div class="mw"><table class="mx">';
+    h+='<thead><tr><th style="text-align:left;min-width:180px">Course</th>';
+    members.forEach(function(m){ h+='<th style="font-size:10px;max-width:80px" title="'+m.name+'">'+m.name.split(' ')[0]+'</th>'; });
+    h+='<th>Team avg</th></tr></thead><tbody>';
+    getPhases().forEach(function(ph){
+      const pc=S.courses.filter(c=>c.phase===ph.id);
       if(!pc.length) return;
-      h+=`<tr><td colspan="${members.length+2}" style="background:var(--bg3);font-size:10px;font-weight:700;color:${PC[ph]};text-transform:uppercase;letter-spacing:.04em;padding:5px 10px">${PL[ph]}</td></tr>`;
-      pc.forEach(c=>{
+      h+='<tr><td colspan="'+(members.length+2)+'" style="background:var(--bg3);font-size:10px;font-weight:700;color:'+ph.color+';text-transform:uppercase;letter-spacing:.04em;padding:5px 10px">'+ph.name+'</td></tr>';
+      pc.forEach(function(c){
         const lvls=members.map(m=>(m.skills||{})[c.id]);
         const set=lvls.filter(v=>v!==undefined);
         const avg=set.length?(set.reduce((a,v)=>a+v,0)/set.length).toFixed(1):'-';
-        h+=`<tr><td style="text-align:left;color:var(--text);font-size:12px">${c.name}</td>`;
-        members.forEach(m=>{
+        h+='<tr><td style="text-align:left;color:var(--text);font-size:12px">'+c.name+'</td>';
+        members.forEach(function(m){
           const lv=(m.skills||{})[c.id];
-          if(lv!==undefined) h+=`<td><div class="lv l${lv}" style="font-size:11px;width:26px;height:26px">${lv}</div></td>`;
-          else h+=`<td style="color:var(--border);font-size:12px">—</td>`;
+          if(lv!==undefined) h+='<td><div class="lv l'+lv+'" style="font-size:11px;width:26px;height:26px">'+lv+'</div></td>';
+          else h+='<td style="color:var(--border);font-size:12px">&#8212;</td>';
         });
-        h+=`<td style="font-weight:600;color:var(--text2);font-size:12px">${avg}</td></tr>`;
+        h+='<td style="font-weight:600;color:var(--text2);font-size:12px">'+avg+'</td></tr>';
       });
     });
-    h+=`</tbody></table></div></div>`;
+    h+='</tbody></table></div></div>';
   }
-
   el.innerHTML=h;
 }
+
 
 // ── MEMBER MODAL ──────────────────────────────────────────────────
 let editMemberId=null;
@@ -1278,10 +1415,10 @@ function openMemberModal(id){
     <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Skill proficiency levels</div>
     <div style="font-size:12px;color:var(--text3);margin-bottom:10px">Set the current proficiency level for each course. Leave at 0 if not yet trained.</div>`;
 
-  ['p1','p2','p3','p4'].forEach(ph=>{
-    const pc=S.courses.filter(c=>c.phase===ph);
+  getPhases().forEach(ph=>{
+    const pc=S.courses.filter(c=>c.phase===ph.id);
     if(!pc.length) return;
-    html+=`<div style="font-size:11px;font-weight:700;color:${PC[ph]};text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px">${PL[ph]}</div>`;
+    html+=`<div style="font-size:11px;font-weight:700;color:${ph.color};text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px">${ph.name}</div>`;
     pc.forEach(c=>{
       const cur=m?(m.skills||{})[c.id]||0:0;
       html+=`<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border)">
@@ -1333,7 +1470,7 @@ function setSkillBtn(btn){
     const isOn=parseInt(b.dataset.val)===val;
     // Find phase color — find course
     const c=S.courses.find(x=>x.id===cid);
-    const color=c?PC[c.phase]:'#1E3A5F';
+    const color=c?getPhase(c.phase).color:'#1E3A5F';
     b.style.borderColor=isOn?color:'var(--border2)';
     b.style.background=isOn?color+'22':'var(--bg)';
     b.style.color=isOn?color:'var(--text3)';
@@ -1474,11 +1611,11 @@ async function exportMemo(tid){
 
     // Group by phase
     let rowIdx=0;
-    ['p1','p2','p3','p4'].forEach(ph=>{
-      const rows=plan.filter(e=>{const c=S.courses.find(x=>x.id===e.courseId);return c&&c.phase===ph});
+    getPhases().forEach(ph=>{
+      const rows=plan.filter(e=>{const c=S.courses.find(x=>x.id===e.courseId);return c&&c.phase===ph.id});
       if(!rows.length) return;
       // Phase subheader row
-      const phLabel=PL[ph];
+      const phLabel=ph.name;
       body+=`<w:tr><w:tc><w:tcPr><w:gridSpan w:val="${W.length}"/><w:shd w:val="clear" w:color="auto" w:fill="1E3A5F"/><w:tcMar><w:top w:w="60" w:type="dxa"/><w:left w:w="120" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/></w:tcMar></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:sz w:val="16"/><w:color w:val="FFFFFF"/></w:rPr><w:t>${esc(phLabel)}</w:t></w:r></w:p></w:tc></w:tr>`;
       rows.forEach(e=>{
         const c=S.courses.find(x=>x.id===e.courseId);
@@ -1600,5 +1737,30 @@ async function exportMemo(tid){
 loadLs();render();
 if(GH.owner&&GH.repo){sync('Loading...','#FAC775');reload()}
 </script>
+
+<!-- PHASE MODAL -->
+<div class="modal-bg" id="m-phase" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal" style="max-width:480px">
+  <div class="mt" id="pm-t">Add phase</div>
+  <input type="hidden" id="pm-eid"/>
+  <div class="form-row">
+    <div class="fg" style="flex:2"><label>Phase name *</label><input id="pm-n" placeholder="e.g. Phase 1: NH Onboarding"/></div>
+    <div class="fg" style="max-width:100px"><label>Order</label><input id="pm-o" type="number" min="1" max="99" value="1"/></div>
+  </div>
+  <div class="form-row">
+    <div class="fg" style="max-width:160px"><label>Short name</label><input id="pm-s" placeholder="e.g. Phase 1"/></div>
+    <div class="fg" style="max-width:120px"><label>Color</label>
+      <div style="display:flex;gap:6px;align-items:center;margin-top:4px">
+        <input type="color" id="pm-c" value="#1D9E75" style="width:40px;height:34px;padding:2px;border:1px solid var(--border2);border-radius:var(--r);cursor:pointer"/>
+        <input id="pm-ch" placeholder="#1D9E75" style="flex:1;height:34px;font-size:13px;padding:0 8px;border:1px solid var(--border2);border-radius:var(--r);font-family:monospace" oninput="syncColorHex(this)"/>
+      </div>
+    </div>
+  </div>
+  <div class="fg"><label>Description</label><textarea id="pm-d" rows="2" style="height:52px" placeholder="Brief description of this phase..."></textarea></div>
+  <div class="mf">
+    <button class="btn sm" onclick="cm('m-phase')">Cancel</button>
+    <button class="btn bp sm" onclick="savePhase()">Save phase</button>
+  </div>
+</div></div>
 </body>
 </html>
