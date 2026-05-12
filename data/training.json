@@ -154,26 +154,8 @@
       "order": 2
     },
     {
-      "id": "c1778615844808",
-      "order": 5,
-      "name": "Ignite | Albatross Training 2",
-      "phase": "p4",
-      "duration": 1,
-      "required": 2,
-      "description": "https://ignite.talentlms.com/plus/my/training/902/units/9466"
-    },
-    {
-      "id": "c1778615875869",
-      "order": 6,
-      "name": "Ignite | NH Albatross Training 1 - Builders Communities, & Lots",
-      "phase": "p4",
-      "duration": 1,
-      "required": 2,
-      "description": "https://ignite.talentlms.com/plus/my/training/911/units/9575"
-    },
-    {
       "id": "c1778615899113",
-      "order": 7,
+      "order": 5,
       "name": "Ignite | NH Albatross Training 2 - Assigning Homeowners",
       "phase": "p4",
       "duration": 1,
@@ -182,7 +164,7 @@
     },
     {
       "id": "c1778615917610",
-      "order": 8,
+      "order": 6,
       "name": "Ignite | NH Albatross Training 3 - Creating Cash Proposals",
       "phase": "p4",
       "duration": 1,
@@ -191,7 +173,7 @@
     },
     {
       "id": "c1778615939564",
-      "order": 9,
+      "order": 7,
       "name": "Ignite | NH Albatross Training 4 - Smartlists",
       "phase": "p4",
       "duration": 1,
@@ -200,7 +182,7 @@
     },
     {
       "id": "c1778616031610",
-      "order": 10,
+      "order": 8,
       "name": "Ignite Design Training 1 | What is Solar?",
       "phase": "p4",
       "duration": 1,
@@ -209,7 +191,7 @@
     },
     {
       "id": "c1778616058064",
-      "order": 11,
+      "order": 9,
       "name": "Ignite Design Training 2 | What is a Site Survey.pptx",
       "phase": "p4",
       "duration": 1,
@@ -218,7 +200,7 @@
     },
     {
       "id": "c1778616099165",
-      "order": 12,
+      "order": 10,
       "name": "Ignite Design Training 3 | Structural Overview",
       "phase": "p4",
       "duration": 1,
@@ -232,7 +214,7 @@
       "duration": 1,
       "required": 2,
       "description": "https://ignite.talentlms.com/plus/my/training/440/units/6696",
-      "order": 13
+      "order": 11
     },
     {
       "id": "c1778616187274",
@@ -241,7 +223,7 @@
       "duration": 1,
       "required": 2,
       "description": "https://ignite.talentlms.com/plus/my/training/441/units/6657",
-      "order": 14
+      "order": 12
     }
   ],
   "trainees": [
@@ -293,26 +275,6 @@
           "result": "pass",
           "score": "",
           "completionDate": "2026-03-27",
-          "notes": "",
-          "trainer": "Self-Directed"
-        },
-        {
-          "courseId": "c1778615844808",
-          "startDate": "2026-03-27",
-          "endDate": "2026-03-27",
-          "result": "pass",
-          "score": "",
-          "completionDate": "2026-03-27",
-          "notes": "",
-          "trainer": "Self-Directed"
-        },
-        {
-          "courseId": "c1778615875869",
-          "startDate": "2026-03-30",
-          "endDate": "2026-03-30",
-          "result": "pass",
-          "score": "",
-          "completionDate": "2026-03-30",
           "notes": "",
           "trainer": "Self-Directed"
         },
@@ -548,26 +510,6 @@
         },
         {
           "courseId": "nh",
-          "startDate": "2026-04-24",
-          "endDate": "2026-04-27",
-          "result": "none",
-          "score": "",
-          "completionDate": "",
-          "notes": "",
-          "trainer": ""
-        },
-        {
-          "courseId": "c1778615844808",
-          "startDate": "2026-04-24",
-          "endDate": "2026-04-27",
-          "result": "none",
-          "score": "",
-          "completionDate": "",
-          "notes": "",
-          "trainer": ""
-        },
-        {
-          "courseId": "c1778615875869",
           "startDate": "2026-04-24",
           "endDate": "2026-04-27",
           "result": "none",
