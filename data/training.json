@@ -388,11 +388,11 @@
           "courseId": "pv",
           "startDate": "2026-04-22",
           "endDate": "2026-04-23",
-          "result": "none",
+          "result": "pass",
           "score": "",
-          "completionDate": "",
+          "completionDate": "2026-04-23",
           "notes": "",
-          "trainer": ""
+          "trainer": "John Mars Venus"
         },
         {
           "courseId": "nh",
