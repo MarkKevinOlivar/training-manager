@@ -343,10 +343,10 @@
     },
     {
       "id": "p3",
-      "name": "Phase 3: Community-Level",
-      "short": "Phase 3",
-      "color": "#E67E22",
+      "name": "Phase 4: Commercial Design Training",
+      "short": "Phase 4",
       "order": 4,
+      "color": "#e67e22",
       "description": "Community-level design including Master Plan and MPPP"
     },
     {
