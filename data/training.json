@@ -207,6 +207,14 @@
       "duration": 2,
       "required": 2,
       "description": "New Employee Orientation Program"
+    },
+    {
+      "id": "c1778607409920",
+      "name": "Commercial Helioscope Design",
+      "phase": "p3",
+      "duration": 5,
+      "required": 4,
+      "description": ""
     }
   ],
   "trainees": [
