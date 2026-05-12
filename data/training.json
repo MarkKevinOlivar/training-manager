@@ -317,7 +317,18 @@
       "trainer": "",
       "startDate": "2026-05-12",
       "notes": "",
-      "plan": []
+      "plan": [
+        {
+          "courseId": "c1778607429695",
+          "startDate": "2026-05-12",
+          "endDate": "2026-05-12",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        }
+      ]
     }
   ],
   "members": [
