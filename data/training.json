@@ -28,15 +28,6 @@
       "order": 1
     },
     {
-      "id": "sha-p",
-      "name": "Shading Analysis Practice",
-      "phase": "p1",
-      "duration": 1,
-      "required": 4,
-      "description": "",
-      "order": 2
-    },
-    {
       "id": "iplot",
       "order": 8,
       "name": "IPlot Training",
@@ -204,16 +195,6 @@
           "completionDate": "2026-04-01",
           "notes": "",
           "trainer": "John Patrick Salazar"
-        },
-        {
-          "courseId": "sha-p",
-          "startDate": "",
-          "endDate": "",
-          "result": "none",
-          "score": "",
-          "completionDate": "",
-          "notes": "",
-          "trainer": ""
         },
         {
           "courseId": "iplot",
