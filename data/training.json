@@ -29,7 +29,7 @@
     },
     {
       "id": "iplot",
-      "order": 8,
+      "order": 3,
       "name": "IPlot Training",
       "phase": "p1",
       "duration": 2,
@@ -56,7 +56,7 @@
     },
     {
       "id": "mp-sf",
-      "order": 11,
+      "order": 5,
       "name": "Master Plan",
       "phase": "p1",
       "duration": 1,
@@ -65,7 +65,7 @@
     },
     {
       "id": "mppp-sf",
-      "order": 5,
+      "order": 3,
       "name": "MPermit Training",
       "phase": "p2",
       "duration": 2,
@@ -74,7 +74,7 @@
     },
     {
       "id": "fse",
-      "order": 9,
+      "order": 4,
       "name": "Future Solar Exhibit | Solar Site Plan Training",
       "phase": "p1",
       "duration": 1,
@@ -88,7 +88,7 @@
       "duration": 1,
       "required": 1,
       "description": "Optimal PV placement per community lot",
-      "order": 13
+      "order": 6
     },
     {
       "id": "c1778607151419",
@@ -128,7 +128,7 @@
     },
     {
       "id": "c1778609900411",
-      "order": 6,
+      "order": 4,
       "name": "Classroom | NEC Training",
       "phase": "p2",
       "duration": 1,
@@ -137,7 +137,7 @@
     },
     {
       "id": "c1778609963787",
-      "order": 14,
+      "order": 7,
       "name": "Classroom | IFC Training",
       "phase": "p1",
       "duration": 1,
@@ -151,7 +151,7 @@
       "duration": 1,
       "required": 4,
       "description": "",
-      "order": 3
+      "order": 2
     },
     {
       "id": "c1778615616731",
@@ -227,7 +227,7 @@
     },
     {
       "id": "c1778615939564",
-      "order": 15,
+      "order": 13,
       "name": "Ignite | NH Albatross Training 4 - Smartlists",
       "phase": "p4",
       "duration": 1,
@@ -236,7 +236,7 @@
     },
     {
       "id": "c1778616031610",
-      "order": 16,
+      "order": 14,
       "name": "Ignite Design Training 1 | What is Solar?",
       "phase": "p4",
       "duration": 1,
@@ -245,7 +245,7 @@
     },
     {
       "id": "c1778616058064",
-      "order": 17,
+      "order": 15,
       "name": "Ignite Design Training 2 | What is a Site Survey.pptx",
       "phase": "p4",
       "duration": 1,
@@ -254,7 +254,7 @@
     },
     {
       "id": "c1778616099165",
-      "order": 18,
+      "order": 16,
       "name": "Ignite Design Training 3 | Structural Overview",
       "phase": "p4",
       "duration": 1,
@@ -268,7 +268,7 @@
       "duration": 1,
       "required": 2,
       "description": "https://ignite.talentlms.com/plus/my/training/440/units/6696",
-      "order": 19
+      "order": 17
     },
     {
       "id": "c1778616187274",
@@ -277,7 +277,7 @@
       "duration": 1,
       "required": 2,
       "description": "https://ignite.talentlms.com/plus/my/training/441/units/6657",
-      "order": 20
+      "order": 18
     }
   ],
   "trainees": [
@@ -592,18 +592,7 @@
       "trainer": "",
       "startDate": "2026-05-12",
       "notes": "",
-      "plan": [
-        {
-          "courseId": "c1778607429695",
-          "startDate": "2026-05-12",
-          "endDate": "2026-05-12",
-          "result": "ip",
-          "score": "",
-          "completionDate": "2026-05-12",
-          "notes": "",
-          "trainer": ""
-        }
-      ]
+      "plan": []
     }
   ],
   "members": [
