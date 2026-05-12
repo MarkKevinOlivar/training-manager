@@ -260,6 +260,15 @@
       "required": 2,
       "description": "",
       "order": 18
+    },
+    {
+      "id": "c1778616147826",
+      "name": "Ignite Design Training 4 | How Electricity Works (clone)",
+      "phase": "p4",
+      "duration": 1,
+      "required": 2,
+      "description": "https://ignite.talentlms.com/plus/my/training/440/units/6696",
+      "order": 19
     }
   ],
   "trainees": [
