@@ -226,7 +226,6 @@ code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;b
     <div class="fg"><label>Role / ID</label><input id="tm-r" placeholder="e.g. NCG 6"></div>
   </div>
   <div class="form-row">
-    <div class="fg"><label>Trainer name</label><input id="tm-tr" placeholder="Your name"></div>
     <div class="fg"><label>Start date</label><input id="tm-sd" type="date"></div>
   </div>
   <div class="fg" style="margin-bottom:4px"><label>Onboarding notes</label><textarea id="tm-no" rows="2" style="height:50px" placeholder="Optional..."></textarea></div>
@@ -543,13 +542,16 @@ function trainees(el){
       h+='<div class="ri"><div class="rn">'+t.name;
       if(inRoster) h+=' <span style="font-size:10px;padding:1px 6px;border-radius:99px;background:var(--ltgreen);color:var(--dkgreen);font-weight:600;vertical-align:middle">&#10003; Roster</span>';
       h+='</div>';
-      h+='<div class="rs">'+[t.role,t.trainer?'Trainer: '+t.trainer:'',t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' &middot; ');
+      h+='<div class="rs">'+[t.role,t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' &middot; ');
       if(pa) h+=' <span class="tag tpass" style="margin-left:6px">&#10003; '+pa+' passed</span>';
       if(fa) h+=' <span class="tag tfail" style="margin-left:4px">&#10007; '+fa+' failed</span>';
       h+='</div></div>';
       h+='<div class="pr"><div class="pp">'+p.pct+'%</div><div class="pt"><div class="pf" style="width:'+p.pct+'%"></div></div></div>';
       h+='<button class="btn sm" data-tid="'+t.id+'" onclick="openT(this.dataset.tid)">Open &#8250;</button>';
-      if(editMode) h+='<button class="btn ic sm bd" title="Remove" data-tid="'+t.id+'" onclick="delT(this.dataset.tid)">&#10005;</button>';
+      if(editMode){
+        h+='<button class="btn sm bg_" data-tid="'+t.id+'" title="Duplicate plan" onclick="openDuplicate(this.dataset.tid)" style="font-size:18px;width:30px;height:30px;padding:0;justify-content:center">&#x2398;</button>';
+        h+='<button class="btn ic sm bd" title="Remove" data-tid="'+t.id+'" onclick="delT(this.dataset.tid)">&#10005;</button>';
+      }
       h+='</div>';
     });
     h+='</div>';
@@ -573,7 +575,7 @@ function detail(el){
   h+='<div class="av av-l">'+ini(t.name)+'</div>';
   h+='<div style="flex:1;min-width:0">';
   h+='<div style="font-size:18px;font-weight:700;color:var(--text)">'+t.name+'</div>';
-  h+='<div style="font-size:12px;color:var(--text3)">'+[t.role,t.trainer?'Trainer: '+t.trainer:'',t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' &middot; ')+'</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">'+[t.role,t.startDate?'Started: '+fmt(t.startDate):''].filter(Boolean).join(' &middot; ')+'</div>';
   h+='</div>';
   h+='<div style="text-align:right">';
   h+='<div style="font-size:12px;color:var(--text3);margin-bottom:4px">'+p.done+'/'+p.tot+' sessions &middot; '+p.pct+'% complete</div>';
@@ -588,7 +590,10 @@ function detail(el){
     const inRoster=!!(S.members||[]).find(x=>x.id===t.id);
     h+='<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">';
     h+='<button class="btn bp sm" data-tid="'+t.id+'" onclick="openAssign(this.dataset.tid)">+ Assign courses &amp; dates</button>';
-    if(plan.length) h+='<button class="btn sm" data-tid="'+t.id+'" onclick="clearPlan(this.dataset.tid)">&#128465; Clear plan</button>';
+    if(plan.length){
+      h+='<button class="btn sm" data-tid="'+t.id+'" onclick="openDuplicate(this.dataset.tid)">&#x2398; Duplicate plan</button>';
+      h+='<button class="btn sm" data-tid="'+t.id+'" onclick="clearPlan(this.dataset.tid)">&#128465; Clear plan</button>';
+    }
     if(inRoster) h+='<button class="btn sm" style="background:var(--ltgreen);color:var(--dkgreen);border-color:#97C459" onclick="go(\'roster\')">&#10003; In team roster</button>';
     else h+='<button class="btn sm" data-tid="'+t.id+'" onclick="promoteToRoster(this.dataset.tid)" title="Move this trainee to the Team Roster">&#11014; Promote to roster</button>';
     h+='</div>';
@@ -886,24 +891,95 @@ function saveEditDate(){
 // ── TRAINEE MODAL ─────────────────────────────────────────────────
 function openTm(){
   g('tm-t').textContent='Add new trainee';g('tm-eid').value='';g('tm-n').value='';g('tm-r').value='';
-  g('tm-tr').value='';g('tm-sd').value=today();g('tm-no').value='';g('tm-ok').textContent='Add trainee';
+  g('tm-sd').value=today();g('tm-no').value='';g('tm-ok').textContent='Add trainee';
   g('m-trainee').style.display='flex';setTimeout(()=>g('tm-n').focus(),80);
 }
 function openTmEdit(id){
   const t=S.trainees.find(x=>x.id===id);if(!t)return;
   g('tm-t').textContent='Edit trainee info';g('tm-eid').value=id;g('tm-n').value=t.name;g('tm-r').value=t.role||'';
-  g('tm-tr').value=t.trainer||'';g('tm-sd').value=t.startDate||'';g('tm-no').value=t.notes||'';g('tm-ok').textContent='Save changes';
+  g('tm-sd').value=t.startDate||'';g('tm-no').value=t.notes||'';g('tm-ok').textContent='Save changes';
   g('m-trainee').style.display='flex';setTimeout(()=>g('tm-n').focus(),80);
 }
 function saveTrainee(){
   const name=g('tm-n').value.trim();if(!name)return alert('Name is required.');
   const eid=g('tm-eid').value;
-  const data={name,role:g('tm-r').value.trim(),trainer:g('tm-tr').value.trim(),startDate:g('tm-sd').value,notes:g('tm-no').value.trim()};
+  const data={name,role:g('tm-r').value.trim(),startDate:g('tm-sd').value,notes:g('tm-no').value.trim()};
   if(eid){const t=S.trainees.find(x=>x.id===eid);if(t){Object.assign(t,data);cm('m-trainee');push('Update trainee: '+name);render();return}}
   const t={id:'t'+Date.now(),...data,plan:[]};
   if(!S.trainees)S.trainees=[];S.trainees.push(t);
   cm('m-trainee');push('Add trainee: '+name);trainee=t.id;render();
 }
+// ── DUPLICATE TRAINEE ────────────────────────────────────────────────
+function openDuplicate(tid){
+  const t=S.trainees.find(x=>x.id===tid);
+  if(!t) return;
+  g('dup-src-id').value=tid;
+  g('dup-src-name').textContent='Copying plan from: '+t.name+' ('+( t.plan||[]).length+' courses)';
+  g('dup-name').value='';
+  g('dup-role').value='';
+  g('dup-sd').value=t.startDate||today();
+  g('dup-shift').value=0;
+  g('dup-no').value='';
+  g('m-dup').style.display='flex';
+  setTimeout(()=>g('dup-name').focus(),80);
+}
+
+function saveDuplicate(){
+  const name=g('dup-name').value.trim();
+  if(!name) return alert('New trainee name is required.');
+  const srcId=g('dup-src-id').value;
+  const src=S.trainees.find(x=>x.id===srcId);
+  if(!src) return;
+  const shiftDays=parseInt(g('dup-shift').value)||0;
+  const newStartDate=g('dup-sd').value||today();
+
+  // Determine date offset from source start date
+  // If shift given, offset all dates by shiftDays
+  // If new start date given and no shift, calculate offset from old start to new start
+  let offsetMs=0;
+  if(shiftDays!==0){
+    offsetMs=shiftDays*86400000;
+  } else if(newStartDate&&src.startDate&&newStartDate!==src.startDate){
+    const oldMs=new Date(src.startDate+'T12:00:00').getTime();
+    const newMs=new Date(newStartDate+'T12:00:00').getTime();
+    offsetMs=newMs-oldMs;
+  }
+
+  const shiftDate=d=>{
+    if(!d) return '';
+    const ms=new Date(d+'T12:00:00').getTime()+offsetMs;
+    return new Date(ms).toISOString().slice(0,10);
+  };
+
+  // Deep copy the plan, shift dates, clear results/scores
+  const newPlan=(src.plan||[]).map(e=>({
+    courseId:e.courseId,
+    startDate:shiftDate(e.startDate),
+    endDate:shiftDate(e.endDate),
+    result:'none',
+    score:'',
+    completionDate:'',
+    notes:'',
+    trainer:''
+  }));
+
+  const newTrainee={
+    id:'t'+Date.now(),
+    name,
+    role:g('dup-role').value.trim(),
+    startDate:newStartDate,
+    notes:g('dup-no').value.trim(),
+    plan:newPlan
+  };
+
+  if(!S.trainees) S.trainees=[];
+  S.trainees.push(newTrainee);
+  cm('m-dup');
+  push('Duplicate plan: '+src.name+' → '+name);
+  trainee=newTrainee.id;
+  render();
+}
+
 function delT(id){const t=S.trainees.find(x=>x.id===id);if(!t||!confirm('Remove "'+t.name+'" and all their records?\nThis cannot be undone.'))return;S.trainees=S.trainees.filter(x=>x.id!==id);push('Remove trainee: '+t.name);render()}
 
 // ── RESULT MODAL ──────────────────────────────────────────────────
@@ -1633,160 +1709,326 @@ function delMember(id){
 async function exportMemo(tid){
   const t=S.trainees.find(x=>x.id===tid);
   if(!t){ alert('Trainee not found.'); return; }
-
-  if(typeof JSZip==='undefined'){
-    alert('JSZip library not loaded. Please check your internet connection and try again.');
-    return;
-  }
+  if(typeof JSZip==='undefined'){ alert('JSZip library not loaded. Please check your internet connection and try again.'); return; }
 
   const plan=t.plan||[];
   const dateStr=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   const fileDate=new Date().toISOString().slice(0,10).replace(/-/g,'');
   const safeName=t.name.replace(/[^a-zA-Z0-9]/g,'-');
-  const filename=`Training-Plan-${safeName}-${fileDate}.docx`;
+  const filename='Training-Plan-'+safeName+'-'+fileDate+'.docx';
 
-  // ── Helpers ──────────────────────────────────────────────────────
   const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const fmtD=d=>d?new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
+
+  // ── Build week columns from plan dates ────────────────────────────
+  const allDates=plan.flatMap(e=>[e.startDate,e.endDate]).filter(Boolean).sort();
+  const hasGantt=allDates.length>0;
+  let weeks=[];
+  if(hasGantt){
+    const gStart=new Date(allDates[0]+'T12:00:00');
+    const gEnd=new Date(allDates[allDates.length-1]+'T12:00:00');
+    const dow=gStart.getDay();
+    const monday=new Date(gStart);
+    monday.setDate(gStart.getDate()-(dow===0?6:dow-1));
+    let cur=new Date(monday);
+    while(cur<=gEnd&&weeks.length<30){
+      weeks.push(new Date(cur));
+      cur.setDate(cur.getDate()+7);
+    }
+  }
+  const wkLbl=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  const d2t=d=>d?new Date(d+'T12:00:00').getTime():null;
+
+  // ── Result colors/labels ──────────────────────────────────────────
+  const resultFill={pass:'D5F5E3',ip:'FFF3CD',fail:'FADBD8',none:'F0F0F0'};
+  const resultColor={pass:'145A32',ip:'7D4800',fail:'641E16',none:'888888'};
+  const resultLabel={pass:'Passed',ip:'In Progress',fail:'Failed',none:'Pending'};
+
+  // ── Shared XML helpers ────────────────────────────────────────────
+  const tcPr=(w,fill,vMerge)=>`<w:tcPr><w:tcW w:w="${w}" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="${fill}"/>${vMerge?`<w:vMerge w:val="${vMerge}"/>`:''}${vMerge==='continue'?'<w:vMerge/>':''}<w:tcMar><w:top w:w="60" w:type="dxa"/><w:left w:w="80" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tcMar></w:tcPr>`;
+
+  const rPr=(bold,color,sz)=>`<w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/>${bold?'<w:b/>':''}<w:sz w:val="${sz||18}"/><w:color w:val="${color||'000000'}"/></w:rPr>`;
+
+  const cell=(text,w,fill,opts={})=>{
+    const {bold=false,color='000000',center=false,sz=18,vMerge=''}=opts;
+    const jc=center?'<w:jc w:val="center"/>':'';
+    return `<w:tc>${tcPr(w,fill,vMerge||undefined)}<w:p><w:pPr>${jc}<w:spacing w:after="0"/></w:pPr><w:r>${rPr(bold,color,sz)}<w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p></w:tc>`;
+  };
+
+  const barCell=(w,filled,barColor)=>{
+    if(!filled) return `<w:tc>${tcPr(w,'F8F8F8')}<w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r>${rPr(false,'F8F8F8',14)}<w:t> </w:t></w:r></w:p></w:tc>`;
+    return `<w:tc>${tcPr(w,barColor)}<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="0"/></w:pPr><w:r>${rPr(true,'FFFFFF',14)}<w:t>&#x25A0;</w:t></w:r></w:p></w:tc>`;
+  };
+
+  const hdrCell=(text,w)=>cell(text,w,'1E3A5F',{bold:true,color:'FFFFFF',center:true,sz:16});
+  const spacerPara=()=>`<w:p><w:pPr><w:spacing w:before="0" w:after="120"/></w:pPr></w:p>`;
+  const dividerPara=()=>`<w:p><w:pPr><w:pBdr><w:bottom w:val="single" w:sz="4" w:space="1" w:color="CCCCCC"/></w:pBdr><w:spacing w:before="0" w:after="160"/></w:pPr></w:p>`;
 
   const para=(text,opts={})=>{
-    const {bold=false,size=20,color='000000',before=0,after=80,center=false,indent=0}=opts;
-    const b=bold?'<w:b/>':'';
+    const {bold=false,sz=20,color='000000',center=false,before=0,after=80}=opts;
     const jc=center?'<w:jc w:val="center"/>':'';
-    const ind=indent?`<w:ind w:left="${indent}"/>`:'';
-    const sp=`<w:spacing w:before="${before}" w:after="${after}"/>`;
-    return `<w:p><w:pPr>${sp}${jc}${ind}<w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/>${b}<w:sz w:val="${size}"/></w:rPr></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/>${b}<w:sz w:val="${size}"/><w:color w:val="${color}"/></w:rPr><w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p>`;
+    return `<w:p><w:pPr>${jc}<w:spacing w:before="${before}" w:after="${after}"/></w:pPr><w:r>${rPr(bold,color,sz)}<w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p>`;
   };
 
-  const spacer=()=>`<w:p><w:pPr><w:spacing w:after="0"/></w:pPr></w:p>`;
+  const fieldRow=(label,value)=>`<w:p><w:pPr><w:spacing w:before="0" w:after="60"/></w:pPr>
+    <w:r>${rPr(true,'1E3A5F',19)}<w:t xml:space="preserve">${esc(label)}\t</w:t></w:r>
+    <w:r>${rPr(false,'000000',19)}<w:t xml:space="preserve">${esc(value)}</w:t></w:r></w:p>`;
 
-  const cell=(text,wDxa,fill,opts={})=>{
-    const {bold=false,color='000000',center=false,sz=18}=opts;
-    const b=bold?'<w:b/>':'';
-    const jc=center?'<w:jc w:val="center"/>':'';
-    return `<w:tc><w:tcPr><w:tcW w:w="${wDxa}" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="${fill}"/><w:tcMar><w:top w:w="80" w:type="dxa"/><w:left w:w="120" w:type="dxa"/><w:bottom w:w="80" w:type="dxa"/><w:right w:w="120" w:type="dxa"/></w:tcMar></w:tcPr><w:p><w:pPr>${jc}<w:spacing w:after="0"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/>${b}<w:sz w:val="${sz}"/><w:color w:val="${color}"/></w:rPr><w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p></w:tc>`;
-  };
+  // ── Progress stats ────────────────────────────────────────────────
+  const passed=plan.filter(e=>e.result==='pass').length;
+  const failed=plan.filter(e=>e.result==='fail').length;
+  const ip=plan.filter(e=>e.result==='ip').length;
+  const pct=plan.length?Math.round(passed/plan.length*100):0;
 
-  const hCell=(text,w)=>cell(text,w,'1E3A5F',{bold:true,color:'FFFFFF',center:true,sz:17});
-  const dCell=(text,w,alt)=>cell(text,w,alt?'EDF2F9':'FFFFFF',{sz:18});
-  const statusCell=(result,w,alt)=>{
-    const fills={pass:'D5F5E3',ip:'FDEBD0',fail:'FADBD8',none:'F0F2F4'};
-    const colors={pass:'145A32',ip:'784212',fail:'641E16',none:'888888'};
-    const labels={pass:'Passed',ip:'In Progress',fail:'Failed',none:'Pending'};
-    return cell(labels[result]||'Pending',w,fills[result]||fills.none,{color:colors[result]||colors.none,center:true,sz:17});
-  };
-
-  // ── Build document body ───────────────────────────────────────────
+  // ── Build body ────────────────────────────────────────────────────
   let body='<w:body>';
 
-  // Title block
-  body+=spacer();
-  body+=para('TRAINING PLAN MEMO',{bold:true,size:28,color:'1E3A5F',center:true,before:0,after:60});
-  body+=para('New Homes Design Team — NH Training Manager',{size:18,color:'888888',center:true,before:0,after:40});
-  body+=`<w:p><w:pPr><w:pBdr><w:bottom w:val="single" w:sz="8" w:space="4" w:color="1E3A5F"/></w:pBdr><w:spacing w:after="160"/></w:pPr></w:p>`;
+  // Title
+  body+=spacerPara();
+  body+=para('TRAINING PLAN MEMO',{bold:true,sz:30,color:'1E3A5F',center:true,before:0,after:60});
+  body+=para('New Homes Design Team — NH Training Manager',{sz:18,color:'888888',center:true,before:0,after:160});
+  body+=dividerPara();
 
-  // Memo header fields
-  const field=(label,val)=>`<w:p><w:pPr><w:spacing w:after="60"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:sz w:val="20"/><w:color w:val="1E3A5F"/></w:rPr><w:t xml:space="preserve">${esc(label)}</w:t></w:r><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">  ${esc(val)}</w:t></w:r></w:p>`;
-  body+=field('Date:',dateStr);
-  body+=field('Trainee:',t.name+(t.role?' — '+t.role:''));
-  body+=field('Trainer:',t.trainer||'—');
-  body+=field('Start Date:',fmt(t.startDate)||'—');
-  body+=field('Status:',prog(t).pct+'% complete ('+prog(t).done+'/'+prog(t).tot+' sessions)');
-  if(t.notes) body+=field('Notes:',t.notes);
-  body+=`<w:p><w:pPr><w:pBdr><w:bottom w:val="single" w:sz="4" w:space="4" w:color="C8C8C8"/></w:pBdr><w:spacing w:after="160"/></w:pPr></w:p>`;
+  // Header fields
+  body+=fieldRow('Date:',dateStr);
+  body+=fieldRow('Trainee:',t.name+(t.role?' — '+t.role:''));
+  // Trainers are per-course — listed in the results table below
+  body+=fieldRow('Start Date:',fmtD(t.startDate)||'—');
+  body+=fieldRow('Completion:',pct+'% complete ('+passed+' passed, '+ip+' in progress, '+failed+' failed, '+(plan.length-passed-ip-failed)+' pending)');
+  if(t.notes) body+=fieldRow('Notes:',t.notes);
+  body+=dividerPara();
 
-  // Training plan table
-  body+=para('Training Plan',{bold:true,size:22,color:'1E3A5F',before:0,after:120});
+  // ── GANTT SECTION ─────────────────────────────────────────────────
+  if(hasGantt){
+    body+=para('Training Schedule — Gantt View',{bold:true,sz:22,color:'1E3A5F',before:0,after:120});
 
-  if(!plan.length){
-    body+=para('No courses have been assigned to this trainee yet.',{size:18,color:'888888',before:0,after:80});
-  } else {
-    // Table: Course | Start | End | Duration | Result | Score | Completion | Trainer | Notes
-    const W=[2600,900,900,700,1000,800,900,1000,600]; // total ~9400
-    const heads=['Course','Start','End','Days','Result','Score','Completed','Assessed by','Notes'];
-    body+=`<w:tbl><w:tblPr><w:tblW w:w="${W.reduce((a,v)=>a+v,0)}" w:type="dxa"/><w:tblBorders><w:top w:val="single" w:sz="4" w:color="BBCCE0"/><w:left w:val="single" w:sz="4" w:color="BBCCE0"/><w:bottom w:val="single" w:sz="4" w:color="BBCCE0"/><w:right w:val="single" w:sz="4" w:color="BBCCE0"/><w:insideH w:val="single" w:sz="4" w:color="BBCCE0"/><w:insideV w:val="single" w:sz="4" w:color="BBCCE0"/></w:tblBorders><w:tblLook w:val="0000"/></w:tblPr><w:tblGrid>${W.map(w=>`<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>`;
-    // Header row
-    body+=`<w:tr>${heads.map((h,i)=>hCell(h,W[i])).join('')}</w:tr>`;
+    // Calculate column widths
+    // Course name col + week cols
+    // Total page width ~8900 dxa (within margins)
+    const NAME_W=2000;
+    const DETAIL_COLS=[
+      {label:'Start',w:780},{label:'End',w:780},{label:'Result',w:900},
+      {label:'Score',w:700},{label:'Trainer',w:900}
+    ];
+    const detailTotal=DETAIL_COLS.reduce((a,c)=>a+c.w,0);
+    const availForWeeks=8900-NAME_W-detailTotal;
+    const WK_W=Math.max(300,Math.floor(availForWeeks/Math.max(weeks.length,1)));
+    const actualWeeks=Math.floor(availForWeeks/WK_W);
+    const displayWeeks=weeks.slice(0,actualWeeks);
+    const totalW=NAME_W+detailTotal+displayWeeks.length*WK_W;
 
-    // Group by phase
-    let rowIdx=0;
-    getPhases().forEach(ph=>{
-      const rows=plan.filter(e=>{const c=S.courses.find(x=>x.id===e.courseId);return c&&c.phase===ph.id});
+    const gridCols=`<w:tblGrid><w:gridCol w:w="${NAME_W}"/>${DETAIL_COLS.map(c=>`<w:gridCol w:w="${c.w}"/>`).join('')}${displayWeeks.map(()=>`<w:gridCol w:w="${WK_W}"/>`).join('')}</w:tblGrid>`;
+
+    const tblPr=`<w:tblPr><w:tblW w:w="${totalW}" w:type="dxa"/>
+      <w:tblBorders>
+        <w:top w:val="single" w:sz="4" w:color="BBCCE0"/>
+        <w:left w:val="single" w:sz="4" w:color="BBCCE0"/>
+        <w:bottom w:val="single" w:sz="4" w:color="BBCCE0"/>
+        <w:right w:val="single" w:sz="4" w:color="BBCCE0"/>
+        <w:insideH w:val="single" w:sz="4" w:color="BBCCE0"/>
+        <w:insideV w:val="single" w:sz="4" w:color="BBCCE0"/>
+      </w:tblBorders>
+      <w:tblLook w:val="0000"/>
+    </w:tblPr>`;
+
+    body+=`<w:tbl>${tblPr}${gridCols}`;
+
+    // Header row — Course | detail cols | week labels
+    body+=`<w:tr>`;
+    body+=hdrCell('Course',NAME_W);
+    DETAIL_COLS.forEach(c=>body+=hdrCell(c.label,c.w));
+    displayWeeks.forEach(w=>body+=hdrCell(wkLbl(w),WK_W));
+    body+=`</w:tr>`;
+
+    // Rows by phase
+    const phases=getPhases();
+    phases.forEach(ph=>{
+      const rows=plan.filter(e=>{
+        const c=S.courses.find(x=>x.id===e.courseId);
+        return c&&c.phase===ph.id;
+      });
       if(!rows.length) return;
-      // Phase subheader row
-      const phLabel=ph.name;
-      body+=`<w:tr><w:tc><w:tcPr><w:gridSpan w:val="${W.length}"/><w:shd w:val="clear" w:color="auto" w:fill="1E3A5F"/><w:tcMar><w:top w:w="60" w:type="dxa"/><w:left w:w="120" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/></w:tcMar></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:sz w:val="16"/><w:color w:val="FFFFFF"/></w:rPr><w:t>${esc(phLabel)}</w:t></w:r></w:p></w:tc></w:tr>`;
-      rows.forEach(e=>{
+
+      // Phase subheader
+      const phColSpan=1+DETAIL_COLS.length+displayWeeks.length;
+      body+=`<w:tr><w:tc><w:tcPr>
+        <w:gridSpan w:val="${phColSpan}"/>
+        <w:shd w:val="clear" w:color="auto" w:fill="${ph.color.replace('#','')}"/>
+        <w:tcMar><w:top w:w="60" w:type="dxa"/><w:left w:w="120" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/></w:tcMar>
+      </w:tcPr>
+      <w:p><w:pPr><w:spacing w:after="0"/></w:pPr>
+        <w:r>${rPr(true,'FFFFFF',16)}<w:t>${esc(ph.name)}</w:t></w:r>
+      </w:p></w:tc></w:tr>`;
+
+      // Course rows
+      rows.forEach((e,ri)=>{
         const c=S.courses.find(x=>x.id===e.courseId);
         if(!c) return;
-        const alt=rowIdx%2===1;
-        const dur=e.startDate&&e.endDate?Math.ceil((new Date(e.endDate)-new Date(e.startDate))/(86400000))+1:c.duration;
-        body+=`<w:tr>
-          ${dCell(c.name,W[0],alt)}
-          ${dCell(fmt(e.startDate)||'—',W[1],alt)}
-          ${dCell(fmt(e.endDate)||'—',W[2],alt)}
-          ${dCell(String(dur),W[3],alt)}
-          ${statusCell(e.result||'none',W[4],alt)}
-          ${dCell(e.score||'—',W[5],alt)}
-          ${dCell(fmt(e.completionDate)||'—',W[6],alt)}
-          ${dCell(e.trainer||t.trainer||'—',W[7],alt)}
-          ${dCell(e.notes||'',W[8],alt)}
-        </w:tr>`;
-        rowIdx++;
+        const alt=ri%2===1;
+        const rowBg=alt?'F2F6FA':'FFFFFF';
+        const res=e.result||'none';
+        const resFill=resultFill[res];
+        const resColor=resultColor[res];
+        const resLbl=resultLabel[res];
+
+        // Bar color: passed=teal, ip=amber, fail=red, none=phase color
+        const barColors={pass:'1D9E75',ip:'EF9F27',fail:'E24B4A',none:ph.color.replace('#','')};
+        const barColor=barColors[res];
+
+        const st=d2t(e.startDate);
+        const en=d2t(e.endDate||e.startDate);
+
+        body+=`<w:tr>`;
+        // Course name
+        body+=cell(c.name,NAME_W,rowBg,{sz:17});
+        // Detail cols
+        body+=cell(fmtD(e.startDate),DETAIL_COLS[0].w,rowBg,{sz:16,center:true});
+        body+=cell(fmtD(e.endDate),DETAIL_COLS[1].w,rowBg,{sz:16,center:true});
+        body+=cell(resLbl,DETAIL_COLS[2].w,resFill,{bold:true,color:resColor,sz:16,center:true});
+        body+=cell(e.score||'—',DETAIL_COLS[3].w,rowBg,{sz:16,center:true});
+        body+=cell(e.trainer||t.trainer||'—',DETAIL_COLS[4].w,rowBg,{sz:16});
+        // Week bars
+        displayWeeks.forEach(wk=>{
+          const wkS=wk.getTime();
+          const wkE=wkS+6*86400000;
+          const inRange=st&&en&&!(en<wkS||st>wkE);
+          body+=barCell(WK_W,inRange,barColor);
+        });
+        body+=`</w:tr>`;
       });
     });
+
     body+=`</w:tbl>`;
+    body+=spacerPara();
+
+    // Legend
+    body+=`<w:p><w:pPr><w:spacing w:before="60" w:after="60"/></w:pPr>
+      ${[['1D9E75','Passed'],['EF9F27','In Progress'],['E24B4A','Failed'],['888888','Pending']].map(([c,l])=>
+        `<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="16"/><w:color w:val="${c}"/></w:rPr><w:t xml:space="preserve">&#x25A0; ${l}    </w:t></w:r>`
+      ).join('')}
+    </w:p>`;
+    body+=dividerPara();
   }
 
-  // Sign-off section
-  body+=spacer();body+=spacer();
-  body+=`<w:p><w:pPr><w:pBdr><w:bottom w:val="single" w:sz="4" w:space="4" w:color="1E3A5F"/></w:pBdr><w:spacing w:after="40"/></w:pPr></w:p>`;
-  body+=para('Sign-off',{bold:true,size:22,color:'1E3A5F',before:160,after:120});
-  body+=para('By signing below, the trainer and trainee confirm that the training plan above is accurate and has been reviewed.',{size:18,color:'555555',before:0,after:200});
+  // ── RESULTS DETAIL SECTION ────────────────────────────────────────
+  body+=para('Training Results — Detail',{bold:true,sz:22,color:'1E3A5F',before:0,after:120});
 
-  const sigLine=(label,name)=>`<w:tbl><w:tblPr><w:tblW w:w="9000" w:type="dxa"/><w:tblBorders><w:top w:val="none"/><w:left w:val="none"/><w:bottom w:val="none"/><w:right w:val="none"/><w:insideH w:val="none"/><w:insideV w:val="none"/></w:tblBorders></w:tblPr><w:tblGrid><w:gridCol w:w="4200"/><w:gridCol w:w="600"/><w:gridCol w:w="4200"/></w:tblGrid><w:tr>
-    <w:tc><w:tcPr><w:tcW w:w="4200" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:pBdr><w:bottom w:val="single" w:sz="6" w:space="1" w:color="1E3A5F"/></w:pBdr><w:spacing w:after="40"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="20"/><w:color w:val="FFFFFF"/></w:rPr><w:t>.</w:t></w:r></w:p></w:tc>
-    <w:tc><w:tcPr><w:tcW w:w="600" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr></w:p></w:tc>
-    <w:tc><w:tcPr><w:tcW w:w="4200" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:pBdr><w:bottom w:val="single" w:sz="6" w:space="1" w:color="1E3A5F"/></w:pBdr><w:spacing w:after="40"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="20"/><w:color w:val="FFFFFF"/></w:rPr><w:t>.</w:t></w:r></w:p></w:tc>
-  </w:tr><w:tr>
-    <w:tc><w:tcPr><w:tcW w:w="4200" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:sz w:val="17"/><w:color w:val="1E3A5F"/></w:rPr><w:t>${esc(label[0])}</w:t></w:r></w:p></w:tc>
-    <w:tc><w:tcPr><w:tcW w:w="600" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr></w:p></w:tc>
-    <w:tc><w:tcPr><w:tcW w:w="4200" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:sz w:val="17"/><w:color w:val="1E3A5F"/></w:rPr><w:t>${esc(label[1])}</w:t></w:r></w:p></w:tc>
-  </w:tr><w:tr>
-    <w:tc><w:tcPr><w:tcW w:w="4200" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="16"/><w:color w:val="888888"/></w:rPr><w:t>${esc(name[0])}</w:t></w:r></w:p></w:tc>
-    <w:tc><w:tcPr><w:tcW w:w="600" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr></w:p></w:tc>
-    <w:tc><w:tcPr><w:tcW w:w="4200" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="16"/><w:color w:val="888888"/></w:rPr><w:t>${esc(name[1])}</w:t></w:r></w:p></w:tc>
-  </w:tr></w:tbl>`;
+  const detailW=[2400,900,900,900,800,1000,2200];
+  const detailHdrs=['Course','Start','End','Result','Score','Completion Date','Trainer / Notes'];
+  const detailTotal2=detailW.reduce((a,v)=>a+v,0);
 
-  body+=sigLine(['Trainer Signature / Date','Trainee Signature / Date'],[t.trainer||'Trainer',t.name]);
-  body+=spacer();body+=spacer();
-  body+=sigLine(['Reviewed by (TL/Manager)','Date'],[' ',' ']);
+  body+=`<w:tbl><w:tblPr><w:tblW w:w="${detailTotal2}" w:type="dxa"/>
+    <w:tblBorders>
+      <w:top w:val="single" w:sz="4" w:color="BBCCE0"/>
+      <w:left w:val="single" w:sz="4" w:color="BBCCE0"/>
+      <w:bottom w:val="single" w:sz="4" w:color="BBCCE0"/>
+      <w:right w:val="single" w:sz="4" w:color="BBCCE0"/>
+      <w:insideH w:val="single" w:sz="4" w:color="BBCCE0"/>
+      <w:insideV w:val="single" w:sz="4" w:color="BBCCE0"/>
+    </w:tblBorders></w:tblPr>
+    <w:tblGrid>${detailW.map(w=>`<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>`;
 
-  // Footer note
-  body+=spacer();body+=spacer();
-  body+=para('Generated by NH Design Team Training Manager · '+dateStr,{size:16,color:'AAAAAA',center:true,before:200,after:0});
+  // Header
+  body+=`<w:tr>${detailHdrs.map((h,i)=>hdrCell(h,detailW[i])).join('')}</w:tr>`;
 
-  body+=`<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1080" w:right="1080" w:bottom="1080" w:left="1080" w:header="432" w:footer="288" w:gutter="0"/></w:sectPr></w:body>`;
+  // Rows by phase
+  getPhases().forEach(ph=>{
+    const rows=plan.filter(e=>{
+      const c=S.courses.find(x=>x.id===e.courseId);
+      return c&&c.phase===ph.id;
+    });
+    if(!rows.length) return;
 
-  // ── Assemble .docx via JSZip ─────────────────────────────────────
+    // Phase subheader
+    body+=`<w:tr><w:tc><w:tcPr>
+      <w:gridSpan w:val="${detailW.length}"/>
+      <w:shd w:val="clear" w:color="auto" w:fill="${ph.color.replace('#','')}"/>
+      <w:tcMar><w:top w:w="60" w:type="dxa"/><w:left w:w="120" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/></w:tcMar>
+    </w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr>
+      <w:r>${rPr(true,'FFFFFF',16)}<w:t>${esc(ph.name)}</w:t></w:r>
+    </w:p></w:tc></w:tr>`;
+
+    rows.forEach((e,ri)=>{
+      const c=S.courses.find(x=>x.id===e.courseId);
+      if(!c) return;
+      const alt=ri%2===1;
+      const rowBg=alt?'F2F6FA':'FFFFFF';
+      const res=e.result||'none';
+      body+=`<w:tr>`;
+      body+=cell(c.name,detailW[0],rowBg,{sz:17});
+      body+=cell(fmtD(e.startDate),detailW[1],rowBg,{sz:16,center:true});
+      body+=cell(fmtD(e.endDate),detailW[2],rowBg,{sz:16,center:true});
+      body+=cell(resultLabel[res],detailW[3],resultFill[res],{bold:true,color:resultColor[res],sz:16,center:true});
+      body+=cell(e.score||'—',detailW[4],rowBg,{sz:16,center:true});
+      body+=cell(fmtD(e.completionDate),detailW[5],rowBg,{sz:16,center:true});
+      // Trainer + notes combined
+      const trainerNotes=(e.trainer||t.trainer||'—')+(e.notes?' | '+e.notes:'');
+      body+=cell(trainerNotes,detailW[6],rowBg,{sz:15});
+      body+=`</w:tr>`;
+    });
+  });
+  body+=`</w:tbl>`;
+  body+=spacerPara();body+=spacerPara();
+
+  // ── SIGN-OFF ──────────────────────────────────────────────────────
+  body+=dividerPara();
+  body+=para('Sign-off',{bold:true,sz:22,color:'1E3A5F',before:100,after:80});
+  body+=para('By signing below, the trainer and trainee confirm that the training plan above is accurate and has been reviewed.',{sz:18,color:'555555',before:0,after:200});
+
+  const sigTable=(labels,names)=>{
+    const w=4200,gap=480;
+    return `<w:tbl><w:tblPr><w:tblW w:w="${w*2+gap}" w:type="dxa"/>
+      <w:tblBorders><w:top w:val="none"/><w:left w:val="none"/><w:bottom w:val="none"/><w:right w:val="none"/><w:insideH w:val="none"/><w:insideV w:val="none"/></w:tblBorders></w:tblPr>
+      <w:tblGrid><w:gridCol w:w="${w}"/><w:gridCol w:w="${gap}"/><w:gridCol w:w="${w}"/></w:tblGrid>
+      <w:tr>
+        <w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/></w:tcPr>
+          <w:p><w:pPr><w:pBdr><w:bottom w:val="single" w:sz="8" w:space="1" w:color="1E3A5F"/></w:pBdr><w:spacing w:after="40"/></w:pPr>
+          <w:r>${rPr(false,'FFFFFF',20)}<w:t>.</w:t></w:r></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="${gap}" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/></w:tcPr>
+          <w:p><w:pPr><w:pBdr><w:bottom w:val="single" w:sz="8" w:space="1" w:color="1E3A5F"/></w:pBdr><w:spacing w:after="40"/></w:pPr>
+          <w:r>${rPr(false,'FFFFFF',20)}<w:t>.</w:t></w:r></w:p></w:tc>
+      </w:tr>
+      <w:tr>
+        <w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/></w:tcPr>
+          <w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r>${rPr(true,'1E3A5F',17)}<w:t>${esc(labels[0])}</w:t></w:r></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="${gap}" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/></w:tcPr>
+          <w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r>${rPr(true,'1E3A5F',17)}<w:t>${esc(labels[1])}</w:t></w:r></w:p></w:tc>
+      </w:tr>
+      <w:tr>
+        <w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/></w:tcPr>
+          <w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r>${rPr(false,'888888',16)}<w:t>${esc(names[0])}</w:t></w:r></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="${gap}" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/></w:tcPr>
+          <w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r>${rPr(false,'888888',16)}<w:t>${esc(names[1])}</w:t></w:r></w:p></w:tc>
+      </w:tr></w:tbl>`;
+  };
+
+  body+=sigTable(['Trainer Signature / Date','Trainee Signature / Date'],[t.trainer||'Trainer',t.name]);
+  body+=spacerPara();body+=spacerPara();
+  body+=sigTable(['Reviewed by (TL / Manager)','Date'],[' ',' ']);
+  body+=spacerPara();
+  body+=para('Generated by NH Design Team Training Manager  ·  '+dateStr,{sz:16,color:'AAAAAA',center:true,before:160,after:0});
+
+  body+=`<w:sectPr>
+    <w:pgSz w:w="15840" w:h="12240" w:orient="landscape"/>
+    <w:pgMar w:top="720" w:right="720" w:bottom="720" w:left="720"/>
+  </w:sectPr></w:body>`;
+
+  // ── Assemble .docx ────────────────────────────────────────────────
   const docXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
-  xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:mv="urn:schemas-microsoft-com:mac:vml"
-  xmlns:o="urn:schemas-microsoft-com:office:office"
   xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
   xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
   xmlns:v="urn:schemas-microsoft-com:vml"
-  xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
   xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
   xmlns:w10="urn:schemas-microsoft-com:office:word"
   xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
   xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
-  xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
-  xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
   xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
-  xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
-  mc:Ignorable="w14 wp14">${body}</w:document>`;
+  mc:Ignorable="w14">${body}</w:document>`;
 
   const rels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
@@ -1794,8 +2036,7 @@ async function exportMemo(tid){
 </Relationships>`;
 
   const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
   <w:docDefaults><w:rPrDefault><w:rPr>
     <w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>
     <w:sz w:val="20"/><w:szCs w:val="20"/>
@@ -1862,4 +2103,34 @@ if(GH.owner&&GH.repo){sync('Loading...','#FAC775');reload()}
 </div></div>
 
 
+
+<!-- DUPLICATE TRAINEE MODAL -->
+<div class="modal-bg" id="m-dup" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal" style="max-width:420px">
+  <div class="mt">Duplicate training plan</div>
+  <input type="hidden" id="dup-src-id"/>
+  <div style="font-size:13px;color:var(--text2);margin-bottom:14px" id="dup-src-name"></div>
+  <div class="form-row">
+    <div class="fg" style="flex:2"><label>New trainee name *</label><input id="dup-name" placeholder="e.g. Maria Santos"/></div>
+    <div class="fg"><label>Role / ID</label><input id="dup-role" placeholder="e.g. NCG 7"/></div>
+  </div>
+  <div class="form-row">
+    <div class="fg"><label>Start date</label><input id="dup-sd" type="date"/></div>
+    <div class="fg">
+      <label>Shift dates by</label>
+      <div style="display:flex;gap:6px;align-items:center">
+        <input id="dup-shift" type="number" value="0" style="width:70px;height:34px;font-size:13px;padding:0 8px;border:1px solid var(--border2);border-radius:var(--r);font-family:inherit"/>
+        <span style="font-size:13px;color:var(--text2)">days</span>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:12px;color:var(--text3);margin-top:4px;margin-bottom:10px">
+    Copies all assigned courses and dates. Set a new start date or shift all dates forward/backward by N days. Results and scores are <strong>not</strong> copied.
+  </div>
+  <div class="fg" style="margin-bottom:4px"><label>Onboarding notes</label><textarea id="dup-no" rows="2" style="height:46px" placeholder="Optional..."></textarea></div>
+  <div class="mf">
+    <button class="btn sm" onclick="cm('m-dup')">Cancel</button>
+    <button class="btn bp sm" onclick="saveDuplicate()">Create duplicate</button>
+  </div>
+</div></div>
 </body></html>
