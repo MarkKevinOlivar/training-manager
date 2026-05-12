@@ -572,6 +572,14 @@
           "notes": "",
           "trainer": ""
         }
+      ],
+      "blocks": [
+        {
+          "label": "Lot-Level (Non-permit)",
+          "type": "Nesting",
+          "startDate": "2026-05-04",
+          "endDate": "2026-05-15"
+        }
       ]
     },
     {
