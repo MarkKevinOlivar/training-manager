@@ -34,8 +34,8 @@
     },
     {
       "id": "iplot",
-      "phase": "p2",
       "name": "IPlot Training + FM Path",
+      "phase": "p2",
       "duration": 2,
       "required": 4,
       "description": "SF/MF plot plan with BOM and PV Calc"
