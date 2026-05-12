@@ -56,7 +56,7 @@
     },
     {
       "id": "mp-sf",
-      "order": 5,
+      "order": 6,
       "name": "Master Plan (MP)",
       "phase": "p1",
       "duration": 1,
@@ -128,7 +128,7 @@
     },
     {
       "id": "c1778609963787",
-      "order": 6,
+      "order": 5,
       "name": "Classroom | IFC Training",
       "phase": "p1",
       "duration": 1,
