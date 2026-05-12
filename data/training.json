@@ -584,7 +584,7 @@
       "blocks": [
         {
           "label": "Lot-Level (Non-permit)",
-          "type": "Nesting",
+          "type": "Practice",
           "startDate": "2026-05-04",
           "endDate": "2026-05-15"
         }
