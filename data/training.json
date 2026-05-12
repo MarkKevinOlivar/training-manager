@@ -704,11 +704,11 @@
           "courseId": "sha",
           "startDate": "2026-05-12",
           "endDate": "2026-05-12",
-          "result": "none",
+          "result": "pass",
           "score": "",
-          "completionDate": "",
+          "completionDate": "2026-05-12",
           "notes": "",
-          "trainer": ""
+          "trainer": "John Patrick Salazar"
         },
         {
           "courseId": "c1778610117208",
