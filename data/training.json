@@ -222,6 +222,56 @@
           "startDate": "2026-04-14",
           "endDate": "2026-04-14",
           "completionDate": "2026-04-14"
+        },
+        {
+          "courseId": "nh",
+          "startDate": "",
+          "endDate": "",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "sha",
+          "startDate": "",
+          "endDate": "",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "sha-p",
+          "startDate": "",
+          "endDate": "",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "iplot",
+          "startDate": "",
+          "endDate": "",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "iplot-p",
+          "startDate": "",
+          "endDate": "",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
         }
       ],
       "startDate": ""
