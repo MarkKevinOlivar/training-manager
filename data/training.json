@@ -7,7 +7,7 @@
       "duration": 1,
       "required": 2,
       "description": "Intro to PV systems end-to-end",
-      "order": 3
+      "order": 4
     },
     {
       "id": "nh",
@@ -223,7 +223,7 @@
       "duration": 3,
       "required": 2,
       "description": "An Introduction to SPECSs & Memos \nPhishing and Anti-Spam Software\nSocial Engineering\nSocial Media Security Awareness\nIdentity Theft",
-      "order": 4
+      "order": 3
     }
   ],
   "trainees": [
