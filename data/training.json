@@ -182,12 +182,12 @@
     },
     {
       "id": "c1778615697746",
+      "order": 6,
       "name": "Ignite | Identity Theft",
       "phase": "p4",
       "duration": 1,
       "required": 2,
-      "description": "",
-      "order": 6
+      "description": "https://ignite.talentlms.com/plus/my/training/897/units/9430"
     },
     {
       "id": "c1778615844808",
