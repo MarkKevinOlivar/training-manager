@@ -106,8 +106,8 @@
     },
     {
       "id": "mp-sf",
-      "phase": "p3",
       "name": "Master Plan (SF)",
+      "phase": "p1",
       "duration": 1,
       "required": 4,
       "description": "Community master plan single-family"
