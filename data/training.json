@@ -16,7 +16,7 @@
       "duration": 1,
       "required": 2,
       "description": "NH design types and CRM",
-      "order": 4
+      "order": 5
     },
     {
       "id": "sha",
@@ -160,7 +160,7 @@
       "duration": 1,
       "required": 2,
       "description": "",
-      "order": 5
+      "order": 4
     }
   ],
   "trainees": [
