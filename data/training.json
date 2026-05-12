@@ -327,7 +327,7 @@
   "phases": [
     {
       "id": "p1",
-      "name": "Phase 1: Residential (Non-permit) Design Training",
+      "name": "Phase 2: Residential (Non-permit) Design Training",
       "short": "Phase 2",
       "order": 2,
       "color": "#1d9e75",
