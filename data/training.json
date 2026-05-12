@@ -21,7 +21,7 @@
     {
       "id": "sha",
       "order": 1,
-      "name": "Aurora Solar Training",
+      "name": "Aurora Solar",
       "phase": "p1",
       "duration": 1,
       "required": 4,
