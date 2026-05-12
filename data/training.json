@@ -236,12 +236,12 @@
     },
     {
       "id": "c1778616031610",
-      "name": "Ignite Design Training | Ignite | What is Solar?",
+      "order": 16,
+      "name": "Ignite Design Training 1 | What is Solar?",
       "phase": "p4",
       "duration": 1,
       "required": 2,
-      "description": "",
-      "order": 16
+      "description": ""
     },
     {
       "id": "c1778616058064",
