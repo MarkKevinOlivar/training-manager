@@ -130,8 +130,8 @@
     },
     {
       "id": "mp-ess",
-      "phase": "p3",
       "name": "Master Plan ESS",
+      "phase": "p1",
       "duration": 1,
       "required": 4,
       "description": "Master plan with energy storage"
