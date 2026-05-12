@@ -133,7 +133,7 @@
       "duration": 1,
       "required": 4,
       "description": "Guided master plan practice",
-      "order": 9
+      "order": 10
     },
     {
       "id": "mp-mf",
@@ -142,7 +142,7 @@
       "duration": 1,
       "required": 4,
       "description": "Community master plan multi-family",
-      "order": 10
+      "order": 11
     },
     {
       "id": "mp-ess",
@@ -178,7 +178,7 @@
       "duration": 1,
       "required": 3,
       "description": "Preliminary sales document MF",
-      "order": 11
+      "order": 9
     },
     {
       "id": "ssp",
