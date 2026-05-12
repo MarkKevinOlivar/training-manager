@@ -83,21 +83,12 @@
     },
     {
       "id": "ipermit",
+      "order": 1,
       "name": "IPermit Training",
       "phase": "p2",
       "duration": 1,
       "required": 4,
-      "description": "",
-      "order": 1
-    },
-    {
-      "id": "ipermit-ex",
-      "name": "IPermit Exercises",
-      "phase": "p2",
-      "duration": 2,
-      "required": 4,
-      "description": "",
-      "order": 3
+      "description": ""
     },
     {
       "id": "ipermit-ess",
