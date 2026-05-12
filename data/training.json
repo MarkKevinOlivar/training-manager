@@ -218,12 +218,12 @@
     },
     {
       "id": "social",
+      "name": "Ignite | New Hire Training",
       "phase": "p4",
-      "name": "Social Engineering",
-      "duration": 1,
-      "required": 3,
-      "description": "Insperity self-paced",
-      "order": 7
+      "duration": 2,
+      "required": 2,
+      "description": "An Introduction to SPECSs & Memos \nPhishing and Anti-Spam Software\nSocial Engineering\nSocial Media Security Awareness\nIdentity Theft",
+      "order": 6
     },
     {
       "id": "c1778607151419",
