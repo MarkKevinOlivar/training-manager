@@ -57,7 +57,7 @@
     {
       "id": "mp-sf",
       "order": 5,
-      "name": "Master Plan",
+      "name": "Master Plan (MP)",
       "phase": "p1",
       "duration": 1,
       "required": 4,
