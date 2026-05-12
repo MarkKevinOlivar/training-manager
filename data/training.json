@@ -375,16 +375,6 @@
           "trainer": "Leojen Perez"
         },
         {
-          "courseId": "c1778609275646",
-          "startDate": "2026-04-24",
-          "endDate": "2026-04-27",
-          "result": "pass",
-          "score": "",
-          "completionDate": "2026-04-27",
-          "notes": "",
-          "trainer": "Self-Directed"
-        },
-        {
           "courseId": "pv",
           "startDate": "2026-04-22",
           "endDate": "2026-04-23",
@@ -393,6 +383,16 @@
           "completionDate": "2026-04-23",
           "notes": "",
           "trainer": "John Mars Venus"
+        },
+        {
+          "courseId": "c1778609275646",
+          "startDate": "2026-04-24",
+          "endDate": "2026-04-27",
+          "result": "pass",
+          "score": "",
+          "completionDate": "2026-04-27",
+          "notes": "",
+          "trainer": "Self-Directed"
         },
         {
           "courseId": "nh",
@@ -453,6 +453,46 @@
           "completionDate": "2026-04-29",
           "notes": "",
           "trainer": "Ronnel Gozon"
+        },
+        {
+          "courseId": "fse",
+          "startDate": "2026-04-22",
+          "endDate": "2026-05-22",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "mp-sf",
+          "startDate": "2026-04-22",
+          "endDate": "2026-05-22",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "c1778609963787",
+          "startDate": "2026-04-22",
+          "endDate": "2026-05-22",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        },
+        {
+          "courseId": "c1778609900411",
+          "startDate": "2026-04-22",
+          "endDate": "2026-05-22",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
         }
       ],
       "blocks": [
