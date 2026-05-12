@@ -46,15 +46,6 @@
       "order": 3
     },
     {
-      "id": "iplot-p",
-      "name": "IPlot/Shading Practice",
-      "phase": "p1",
-      "duration": 1,
-      "required": 4,
-      "description": "2 to 6 designs/day practice",
-      "order": 4
-    },
-    {
       "id": "cert-w",
       "name": "Written Certification",
       "phase": "p1",
@@ -235,16 +226,6 @@
         },
         {
           "courseId": "iplot",
-          "startDate": "",
-          "endDate": "",
-          "result": "none",
-          "score": "",
-          "completionDate": "",
-          "notes": "",
-          "trainer": ""
-        },
-        {
-          "courseId": "iplot-p",
           "startDate": "",
           "endDate": "",
           "result": "none",
