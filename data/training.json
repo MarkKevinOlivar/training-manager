@@ -214,7 +214,7 @@
       "duration": 1,
       "required": 3,
       "description": "Insperity self-paced",
-      "order": 5
+      "order": 6
     },
     {
       "id": "social",
@@ -232,7 +232,7 @@
       "duration": 2,
       "required": 2,
       "description": "New Employee Orientation Program",
-      "order": 6
+      "order": 5
     },
     {
       "id": "c1778607409920",
