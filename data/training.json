@@ -29,7 +29,7 @@
     },
     {
       "id": "iplot",
-      "order": 3,
+      "order": 4,
       "name": "Individual Plot Plan (iPlot)",
       "phase": "p1",
       "duration": 2,
@@ -74,7 +74,7 @@
     },
     {
       "id": "fse",
-      "order": 4,
+      "order": 5,
       "name": "Future Solar Exhibit (FSE) | Solar Site Plan (SSP)",
       "phase": "p1",
       "duration": 1,
@@ -128,7 +128,7 @@
     },
     {
       "id": "c1778609963787",
-      "order": 5,
+      "order": 2,
       "name": "Classroom | IFC Training",
       "phase": "p1",
       "duration": 1,
@@ -137,7 +137,7 @@
     },
     {
       "id": "c1778610117208",
-      "order": 2,
+      "order": 3,
       "name": "Bill of Materials (BOM)",
       "phase": "p1",
       "duration": 1,
