@@ -30,7 +30,7 @@
       "name": "Shading Analysis Practice",
       "duration": 1,
       "required": 4,
-      "description": "2ÃÂ¢ÃÂÃÂ5 reports/day progression"
+      "description": "2ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ5 reports/day progression"
     },
     {
       "id": "iplot",
@@ -70,7 +70,7 @@
       "phase": "p2",
       "duration": 4,
       "required": 4,
-      "description": "3ÃÂ¢ÃÂÃÂ7 designs/day progression"
+      "description": "3ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ7 designs/day progression"
     },
     {
       "id": "ipermit",
@@ -78,15 +78,15 @@
       "name": "IPermit Training",
       "duration": 1,
       "required": 4,
-      "description": "1D classroom ÃÂ¢ÃÂÃÂ Individual permit SF"
+      "description": "1D classroom ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ Individual permit SF"
     },
     {
       "id": "ipermit-ex",
       "phase": "p2",
-      "name": "IPermit Exercises 1ÃÂ¢ÃÂÃÂ10",
+      "name": "IPermit Exercises 1ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ10",
       "duration": 2,
       "required": 4,
-      "description": "1ÃÂ¢ÃÂÃÂ3 days each exercise"
+      "description": "1ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ3 days each exercise"
     },
     {
       "id": "ipermit-ess",
@@ -99,10 +99,10 @@
     {
       "id": "nest-ipm",
       "phase": "p2",
-      "name": "Nesting ÃÂ¢ÃÂÃÂ IPermit (Wks 1ÃÂ¢ÃÂÃÂ4)",
+      "name": "Nesting ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ IPermit (Wks 1ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ4)",
       "duration": 4,
       "required": 4,
-      "description": "1ÃÂ¢ÃÂÃÂ2 permits/week progression"
+      "description": "1ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ2 permits/week progression"
     },
     {
       "id": "mp-sf",
@@ -115,7 +115,7 @@
     {
       "id": "mp-ex",
       "phase": "p3",
-      "name": "Master Plan Exercises 1ÃÂ¢ÃÂÃÂ3",
+      "name": "Master Plan Exercises 1ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ3",
       "duration": 1,
       "required": 4,
       "description": "Guided master plan practice"
@@ -280,10 +280,10 @@
   "members": [
     {
       "id": "m1778549113804",
-      "name": "John Mars Venus",
+      "name": "Engr. John Mars Venus",
       "role": "",
-      "team": "",
-      "years": "",
+      "team": "Design Specialist I",
+      "years": "5",
       "notes": "",
       "skills": {
         "pv": 5,
