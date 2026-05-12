@@ -2,7 +2,7 @@
   "courses": [
     {
       "id": "pv",
-      "order": 3,
+      "order": 2,
       "name": "Classroom | PV Fundamentals",
       "phase": "p4",
       "duration": 1,
@@ -119,7 +119,7 @@
     },
     {
       "id": "c1778609275646",
-      "order": 2,
+      "order": 3,
       "name": "Ignite | New Hire Training",
       "phase": "p4",
       "duration": 3,
