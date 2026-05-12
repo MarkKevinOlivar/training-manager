@@ -66,7 +66,7 @@
     {
       "id": "mppp-sf",
       "order": 3,
-      "name": "MPermit Training",
+      "name": "Master Permit Package (MPPP)",
       "phase": "p2",
       "duration": 2,
       "required": 4,
