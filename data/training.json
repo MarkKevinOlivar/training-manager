@@ -128,7 +128,7 @@
     },
     {
       "id": "c1778609900411",
-      "order": 9,
+      "order": 10,
       "name": "Classroom | NEC Training",
       "phase": "p4",
       "duration": 1,
@@ -191,12 +191,12 @@
     },
     {
       "id": "c1778615844808",
-      "name": "Albatross Training 2",
+      "order": 9,
+      "name": "Ignite | Albatross Training 2",
       "phase": "p4",
       "duration": 1,
       "required": 2,
-      "description": "",
-      "order": 10
+      "description": ""
     }
   ],
   "trainees": [
