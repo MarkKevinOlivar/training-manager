@@ -46,15 +46,6 @@
       "order": 3
     },
     {
-      "id": "cert-w",
-      "name": "Written Certification",
-      "phase": "p1",
-      "duration": 1,
-      "required": 4,
-      "description": "Written knowledge exam",
-      "order": 5
-    },
-    {
       "id": "cert-d",
       "name": "Actual Design Certification",
       "phase": "p1",
