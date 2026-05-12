@@ -7,7 +7,7 @@
       "duration": 1,
       "required": 2,
       "description": "Intro to PV systems end-to-end",
-      "order": 5
+      "order": 6
     },
     {
       "id": "nh",
@@ -178,7 +178,16 @@
       "duration": 1,
       "required": 2,
       "description": "",
-      "order": 6
+      "order": 5
+    },
+    {
+      "id": "c1778615697746",
+      "name": "Ignite | Identity Theft",
+      "phase": "p4",
+      "duration": 1,
+      "required": 2,
+      "description": "",
+      "order": 10
     }
   ],
   "trainees": [
