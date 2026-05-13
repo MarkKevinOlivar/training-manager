@@ -101,12 +101,12 @@
     },
     {
       "id": "c1778607429695",
-      "name": "Commercial Estimating Design",
+      "order": 2,
+      "name": "Commercial Project Estimates",
       "phase": "p3",
       "duration": 5,
       "required": 4,
-      "description": "",
-      "order": 2
+      "description": ""
     },
     {
       "id": "c1778609275646",
