@@ -4,7 +4,7 @@
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzFFM0E1RiIvPjxwYXRoIGQ9Ik0xNiA4TDYgMTNsMTAgNSAxMC01LTEwLTV6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTEwIDE1LjV2NWMwIDEuNSAyLjcgMyA2IDNzNi0xLjUgNi0zdi01IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjIgMTMuNXY1IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NH Design Team — Training Manager</title>
+<title>Training Manager</title>
 <script>/*!
 
 JSZip v3.10.1 - A JavaScript class for generating and reading zip files
@@ -50,6 +50,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;ba
 .topbar{background:var(--navy);color:#fff;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
 .brand{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
 .brand em{opacity:.55;font-style:normal;font-weight:400}
+.team-sel{position:relative;display:inline-flex;align-items:center}
+.team-sel-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9);font-size:12px;font-weight:500;padding:3px 8px 3px 9px;border-radius:99px;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;font-family:inherit;transition:background .15s;line-height:1.6}
+.team-sel-btn:hover{background:rgba(255,255,255,.2)}
+.team-dropdown{position:absolute;top:calc(100% + 8px);left:0;background:#142d4e;border:1px solid rgba(255,255,255,.15);border-radius:8px;min-width:210px;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,.45);overflow:hidden;display:none}
+.team-dropdown.open{display:block}
+.team-dropdown-label{padding:8px 14px 4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35)}
+.team-dropdown-item{padding:9px 14px 9px 30px;font-size:13px;color:rgba(255,255,255,.8);cursor:pointer;display:flex;align-items:center;transition:background .1s;position:relative}
+.team-dropdown-item:hover{background:rgba(255,255,255,.1)}
+.team-dropdown-item.active{color:#fff;font-weight:600;padding-left:14px}
+.team-dropdown-item.active::before{content:'✓';margin-right:8px;font-size:11px;color:#9FE1CB}
 .tr{display:flex;align-items:center;gap:10px}
 .sync{font-size:11px;color:rgba(255,255,255,.65);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pill{font-size:11px;padding:3px 10px;border-radius:99px;font-weight:600}
@@ -163,7 +173,14 @@ code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;b
   <span style="width:1px;height:24px;background:rgba(255,255,255,.2);display:inline-block"></span>
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0"><path d="M12 3L2 9l10 6 10-6-10-6z"></path><path d="M2 17l10 6 10-6"></path><path d="M2 13l10 6 10-6"></path></svg>
   <span style="font-size:14px;font-weight:600;letter-spacing:.01em">Training Manager</span>
-  <em style="opacity:.5;font-style:normal;font-weight:400;font-size:13px">NH Design Team</em>
+  <div class="team-sel" id="team-sel">
+  <button class="team-sel-btn" onclick="toggleTeamDrop(event)" id="team-sel-btn">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.7"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <span id="team-sel-label">NH Design Team</span>
+    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:.6"><polyline points="6 9 12 15 18 9"/></svg>
+  </button>
+  <div class="team-dropdown" id="team-dropdown"></div>
+</div>
 </div>
   <div class="tr">
     <span class="sync" id="sync" style="color: rgb(159, 225, 203);">Saved ✓  10:58:31 AM</span>
@@ -324,6 +341,14 @@ code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;b
 </div></div>
 
 <script>
+const TEAMS=[
+  {id:'design',name:'NH Design Team',path:'data/nh-design-team.json'},
+  {id:'sac',name:'NH SAC',path:'data/nh-sac.json'},
+  {id:'interconnection',name:'NH Interconnection Team',path:'data/nh-interconnection.json'},
+  {id:'doc-compliance',name:'NH Document Compliance',path:'data/nh-document-compliance.json'},
+];
+let activeTeam=TEAMS[0].id;
+
 const DP=[
   {id:'p1',name:'Phase 1: NH Onboarding',short:'Phase 1',color:'#1D9E75',order:1,description:'Foundational onboarding training for new hires'},
   {id:'p2',name:'Phase 2: Lot-Level',short:'Phase 2',color:'#185FA5',order:2,description:'Lot-level design courses including IPlot and IPermit'},
@@ -402,6 +427,13 @@ const DC=[
 ];
 
 let S={phases:JSON.parse(JSON.stringify(DP)),courses:JSON.parse(JSON.stringify(DC)),trainees:[]};
+// ── Baked-in defaults — edit these so the app works for anyone who opens the URL ──
+const GH_BAKED={
+  owner:'markkevinolivar',   // GitHub username or org
+  repo:'training-manager',   // Repository name
+  token:'',                  // Optional: paste a read-only fine-grained PAT here for private repos
+};
+
 let GH={owner:'',repo:'',path:'data/training.json',token:'',sha:''};
 let editMode=false,tab='trainees',trainee=null,editCid=null,saving=false;
 let assignTid=null, selectedCourses=new Set();
@@ -427,12 +459,16 @@ function saveLs(){
   localStorage.setItem('gh_repo',GH.repo);
   localStorage.setItem('gh_path',GH.path);
   if(GH.token) localStorage.setItem('gh_token',GH.token);
+  localStorage.setItem('active_team',activeTeam);
 }
 function loadLs(){
-  GH.owner=localStorage.getItem('gh_owner')||'';
-  GH.repo=localStorage.getItem('gh_repo')||'';
+  GH.owner=localStorage.getItem('gh_owner')||GH_BAKED.owner;
+  GH.repo=localStorage.getItem('gh_repo')||GH_BAKED.repo;
   GH.path=localStorage.getItem('gh_path')||'data/training.json';
-  GH.token=localStorage.getItem('gh_token')||'';
+  GH.token=localStorage.getItem('gh_token')||GH_BAKED.token;
+  const t=localStorage.getItem('active_team');
+  activeTeam=(TEAMS.find(x=>x.id===t)?t:TEAMS[0].id);
+  GH.path=TEAMS.find(x=>x.id===activeTeam).path;
 }
 function getEditPw(){return localStorage.getItem('edit_pw')||''}
 function setEditPw(pw){localStorage.setItem('edit_pw',pw)}
@@ -525,6 +561,46 @@ function updateUI(){
 }
 
 function go(t){tab=t;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));g('tab-'+t).classList.add('on');render()}
+function renderTeamDrop(){
+  const dd=g('team-dropdown');
+  const label=g('team-sel-label');
+  const team=TEAMS.find(x=>x.id===activeTeam)||TEAMS[0];
+  if(label) label.textContent=team.name;
+  document.title=team.name+' — Training Manager';
+  if(dd){
+    let h='<div class="team-dropdown-label">Switch Team</div>';
+    TEAMS.forEach(t=>{
+      const active=t.id===activeTeam;
+      h+='<div class="team-dropdown-item'+(active?' active':'')+'" onclick="switchTeam(''+t.id+'')">';
+      h+=t.name+'</div>';
+    });
+    dd.innerHTML=h;
+  }
+}
+function toggleTeamDrop(e){
+  e.stopPropagation();
+  renderTeamDrop();
+  g('team-dropdown').classList.toggle('open');
+}
+function switchTeam(tid){
+  if(tid===activeTeam){g('team-dropdown').classList.remove('open');return;}
+  if(editMode){
+    if(!confirm('Switch to a different team?\nYou are in edit mode — unsaved changes may be lost.')){
+      g('team-dropdown').classList.remove('open');return;
+    }
+    editMode=false;updateUI();
+  }
+  activeTeam=tid;
+  GH.path=TEAMS.find(x=>x.id===tid).path;
+  saveLs();
+  S={phases:JSON.parse(JSON.stringify(DP)),courses:JSON.parse(JSON.stringify(DC)),trainees:[]};
+  g('team-dropdown').classList.remove('open');
+  renderTeamDrop();
+  if(GH.owner&&GH.repo){sync('Loading...','#FAC775');reload();}
+  else{sync('Team switched','rgba(255,255,255,.65)');render();}
+}
+document.addEventListener('click',function(){const dd=g('team-dropdown');if(dd)dd.classList.remove('open');});
+
 function render(){const el=g('ct');if(tab==='trainees')trainee?detail(el):trainees(el);else if(tab==='courses')courses(el);else if(tab==='roster')roster(el);else if(tab==='reports')reports(el);else settings(el)}
 
 // ── TRAINEES LIST ─────────────────────────────────────────────────
@@ -1678,7 +1754,7 @@ function movePhase(id,dir){
 
 g('ai').addEventListener('keydown',e=>{if(e.key==='Enter')doAuth()});
 
-loadLs();render();
+loadLs();renderTeamDrop();render();
 if(GH.owner&&GH.repo){sync('Loading...','#FAC775');reload()}
 
 // ══════════════════════════════════════════════════════════════════
@@ -2444,7 +2520,7 @@ async function exportMemo(tid){
   const a=document.createElement('a');a.href=url;a.download=filename;a.click();
   setTimeout(()=>URL.revokeObjectURL(url),5000);
 }
-loadLs();render();
+loadLs();renderTeamDrop();render();
 if(GH.owner&&GH.repo){sync('Loading...','#FAC775');reload()}
 </script>
 
