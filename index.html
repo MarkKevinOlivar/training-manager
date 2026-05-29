@@ -192,8 +192,8 @@ code{font-family:'Courier New',monospace;background:var(--bg3);padding:1px 5px;b
 <div id="wrap">
   <div class="tabs">
     <button class="tab" id="tab-trainees" onclick="go(&#39;trainees&#39;)">Trainees</button>
-    <button class="tab on" id="tab-courses" onclick="go(&#39;courses&#39;)">Courses &amp; skill matrix</button>
-    <button class="tab" id="tab-roster" onclick="go(&#39;roster&#39;)">Team Roster</button>
+    <button class="tab on" id="tab-courses" onclick="go(&#39;courses&#39;)">Courses &amp; Skill Matrix</button>
+    <button class="tab" id="tab-roster" onclick="go(&#39;roster&#39;)">Team Capability Matrix</button>
     <button class="tab" id="tab-reports" onclick="go(&#39;reports&#39;)">📊 Reports</button>
     <button class="tab" id="tab-settings" onclick="go(&#39;settings&#39;)">⚙ Settings</button>
   </div>
@@ -937,7 +937,7 @@ function clearPlan(id){if(!confirm('Remove all assigned courses from this traine
 function promoteToRoster(tid){
   const t=S.trainees.find(x=>x.id===tid);
   if(!t) return;
-  if(!confirm(`Promote "${t.name}" to the Team Roster?\n\nTheir passed courses will become their skill levels. They'll remain in Trainees too if they have an active plan.`)) return;
+  if(!confirm(`Promote "${t.name}" to the Team Capability Matrix?\n\nTheir passed courses will become their skill levels. They'll remain in Trainees too if they have an active plan.`)) return;
   // Build skills from passed courses
   const skills={};
   (t.plan||[]).forEach(e=>{
