@@ -1,0 +1,264 @@
+{
+  "phases": [
+    {
+      "id": "p1",
+      "name": "Phase 1: NH Onboarding",
+      "short": "Phase 1",
+      "color": "#1D9E75",
+      "order": 1,
+      "description": "Foundational onboarding training for new hires"
+    },
+    {
+      "id": "p2",
+      "name": "Phase 2: Lot-Level",
+      "short": "Phase 2",
+      "color": "#185FA5",
+      "order": 2,
+      "description": "Lot-level design courses including IPlot and IPermit"
+    },
+    {
+      "id": "p3",
+      "name": "Phase 3: Community-Level",
+      "short": "Phase 3",
+      "color": "#E67E22",
+      "order": 3,
+      "description": "Community-level design including Master Plan and MPPP"
+    },
+    {
+      "id": "p4",
+      "name": "Phase 4: Compliance",
+      "short": "Phase 4",
+      "color": "#7F77DD",
+      "order": 4,
+      "description": "Compliance and security self-paced courses"
+    }
+  ],
+  "courses": [
+    {
+      "id": "pv",
+      "order": 1,
+      "phase": "p1",
+      "name": "PV Fundamentals",
+      "duration": 5,
+      "required": 4,
+      "description": "Intro to PV systems end-to-end"
+    },
+    {
+      "id": "nh",
+      "order": 2,
+      "phase": "p1",
+      "name": "Introduction to New Homes",
+      "duration": 5,
+      "required": 4,
+      "description": "NH design types and CRM"
+    },
+    {
+      "id": "sha",
+      "order": 3,
+      "phase": "p1",
+      "name": "Shading Analysis Training",
+      "duration": 5,
+      "required": 4,
+      "description": "Aurora Solar shading reports"
+    },
+    {
+      "id": "sha-p",
+      "order": 4,
+      "phase": "p1",
+      "name": "Shading Analysis Practice",
+      "duration": 5,
+      "required": 4,
+      "description": "2–5 reports/day progression"
+    },
+    {
+      "id": "iplot",
+      "order": 1,
+      "phase": "p2",
+      "name": "IPlot Training + FM Path",
+      "duration": 10,
+      "required": 4,
+      "description": "SF/MF plot plan with BOM and PV Calc"
+    },
+    {
+      "id": "iplot-p",
+      "order": 2,
+      "phase": "p2",
+      "name": "IPlot/Shading Practice",
+      "duration": 5,
+      "required": 4,
+      "description": "2–6 designs/day practice"
+    },
+    {
+      "id": "cert-w",
+      "order": 3,
+      "phase": "p2",
+      "name": "Written Certification",
+      "duration": 1,
+      "required": 4,
+      "description": "Written knowledge exam"
+    },
+    {
+      "id": "cert-d",
+      "order": 4,
+      "phase": "p2",
+      "name": "Actual Design Certification",
+      "duration": 1,
+      "required": 4,
+      "description": "Practical design exam"
+    },
+    {
+      "id": "nest-ip",
+      "order": 5,
+      "phase": "p2",
+      "name": "Nesting — IPlot (Wks 1–4)",
+      "duration": 20,
+      "required": 4,
+      "description": "3–7 designs/day progression"
+    },
+    {
+      "id": "ipermit",
+      "order": 6,
+      "phase": "p2",
+      "name": "IPermit Training",
+      "duration": 5,
+      "required": 4,
+      "description": "1D classroom — Individual permit SF"
+    },
+    {
+      "id": "ipermit-ex",
+      "order": 7,
+      "phase": "p2",
+      "name": "IPermit Exercises 1–10",
+      "duration": 10,
+      "required": 4,
+      "description": "1–3 days each exercise"
+    },
+    {
+      "id": "ipermit-ess",
+      "order": 8,
+      "phase": "p2",
+      "name": "IPermit ESS",
+      "duration": 5,
+      "required": 4,
+      "description": "IPermit with energy storage"
+    },
+    {
+      "id": "nest-ipm",
+      "order": 9,
+      "phase": "p2",
+      "name": "Nesting — IPermit (Wks 1–4)",
+      "duration": 20,
+      "required": 4,
+      "description": "1–2 permits/week progression"
+    },
+    {
+      "id": "mp-sf",
+      "order": 1,
+      "phase": "p3",
+      "name": "Master Plan (SF)",
+      "duration": 5,
+      "required": 4,
+      "description": "Community master plan single-family"
+    },
+    {
+      "id": "mp-ex",
+      "order": 2,
+      "phase": "p3",
+      "name": "Master Plan Exercises 1–3",
+      "duration": 5,
+      "required": 4,
+      "description": "Guided master plan practice"
+    },
+    {
+      "id": "mp-mf",
+      "order": 3,
+      "phase": "p3",
+      "name": "Master Plan (MF)",
+      "duration": 5,
+      "required": 4,
+      "description": "Community master plan multi-family"
+    },
+    {
+      "id": "mp-ess",
+      "order": 4,
+      "phase": "p3",
+      "name": "Master Plan ESS",
+      "duration": 5,
+      "required": 4,
+      "description": "Master plan with energy storage"
+    },
+    {
+      "id": "mppp-sf",
+      "order": 5,
+      "phase": "p3",
+      "name": "MPPP (SF)",
+      "duration": 10,
+      "required": 4,
+      "description": "Master plan permit package SF"
+    },
+    {
+      "id": "mppp-mf",
+      "order": 6,
+      "phase": "p3",
+      "name": "MPPP (MF)",
+      "duration": 10,
+      "required": 4,
+      "description": "Master plan permit package MF"
+    },
+    {
+      "id": "fse",
+      "order": 7,
+      "phase": "p3",
+      "name": "Future Solar Exhibit",
+      "duration": 5,
+      "required": 3,
+      "description": "Preliminary sales document MF"
+    },
+    {
+      "id": "ssp",
+      "order": 8,
+      "phase": "p3",
+      "name": "Solar Site Plan",
+      "duration": 5,
+      "required": 1,
+      "description": "Optimal PV placement per lot"
+    },
+    {
+      "id": "memo",
+      "order": 1,
+      "phase": "p4",
+      "name": "Intro to SPECs & Memos",
+      "duration": 5,
+      "required": 3,
+      "description": "Insperity self-paced"
+    },
+    {
+      "id": "phish",
+      "order": 2,
+      "phase": "p4",
+      "name": "Phishing & Anti-Spam",
+      "duration": 5,
+      "required": 3,
+      "description": "Insperity self-paced"
+    },
+    {
+      "id": "idtheft",
+      "order": 3,
+      "phase": "p4",
+      "name": "Identity Theft Awareness",
+      "duration": 5,
+      "required": 3,
+      "description": "Insperity self-paced"
+    },
+    {
+      "id": "social",
+      "order": 4,
+      "phase": "p4",
+      "name": "Social Engineering",
+      "duration": 5,
+      "required": 3,
+      "description": "Insperity self-paced"
+    }
+  ],
+  "trainees": []
+}
