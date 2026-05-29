@@ -1823,7 +1823,7 @@ h+='<button class="btn sm" data-mid="'+m.id+'" onclick="openMemberModal(this.dat
         const phaseCourses=S.courses.filter(c=>c.phase===ph.id&&c.required>2&&m.skills&&m.skills[c.id]!==undefined);
         if(!phaseCourses.length) return;
         h+='<div style="margin-bottom:8px">';
-        h+='<div style="font-size:10px;font-weight:700;color:'+ph.color+';text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">'+ph.name+'</div>';
+        h+='<div style="font-size:10px;font-weight:700;color:'+ph.color+';text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">'+ph.name.replace(/^Phase \d+:\s*/,'')+'</div>';
         h+='<div style="display:flex;flex-wrap:wrap;gap:6px">';
         phaseCourses.forEach(function(c){
           const lv=m.skills[c.id];
@@ -1864,6 +1864,15 @@ h+='<button class="btn sm" data-mid="'+m.id+'" onclick="openMemberModal(this.dat
       });
     });
     h+='</tbody></table></div></div>';
+    h+='<div style="display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap">';
+    h+='<span style="font-size:11px;color:var(--text3);font-weight:600;margin-right:4px">Skill level:</span>';
+    const lvLabels=[['1','Not acquired'],['2','Foundational'],['3','Guided'],['4','Independent'],['5','Expert']];
+    lvLabels.forEach(function(x){
+      h+='<span style="display:inline-flex;align-items:center;gap:5px;font-size:11px">';
+      h+='<span class="lv l'+x[0]+'" style="width:22px;height:22px;font-size:10px">'+x[0]+'</span>';
+      h+='<span style="color:var(--text2)">'+x[1]+'</span></span>';
+    });
+    h+='</div>';
   }
   el.innerHTML=h;
 }
