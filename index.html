@@ -569,12 +569,15 @@ function renderTeamDrop(){
   document.title=team.name+' — Training Manager';
   if(dd){
     let h='<div class="team-dropdown-label">Switch Team</div>';
-    TEAMS.forEach(t=>{
+    TEAMS.forEach(function(t){
       const active=t.id===activeTeam;
-      h+='<div class="team-dropdown-item'+(active?' active':'')+'" onclick="switchTeam(''+t.id+'')">';
+      h+='<div class="team-dropdown-item'+(active?' active':'')+'" data-tid="'+t.id+'">';
       h+=t.name+'</div>';
     });
     dd.innerHTML=h;
+    dd.querySelectorAll('[data-tid]').forEach(function(el){
+      el.addEventListener('click',function(e){e.stopPropagation();switchTeam(el.dataset.tid);});
+    });
   }
 }
 function toggleTeamDrop(e){
