@@ -71,26 +71,8 @@
       "description": "2â5 reports/day progression"
     },
     {
-      "id": "iplot-p",
-      "order": 1,
-      "phase": "p2",
-      "name": "IPlot/Shading Practice",
-      "duration": 5,
-      "required": 4,
-      "description": "2â6 designs/day practice"
-    },
-    {
-      "id": "cert-w",
-      "order": 2,
-      "phase": "p2",
-      "name": "Written Certification",
-      "duration": 1,
-      "required": 4,
-      "description": "Written knowledge exam"
-    },
-    {
       "id": "cert-d",
-      "order": 3,
+      "order": 1,
       "phase": "p2",
       "name": "Actual Design Certification",
       "duration": 1,
@@ -99,7 +81,7 @@
     },
     {
       "id": "nest-ip",
-      "order": 4,
+      "order": 2,
       "phase": "p2",
       "name": "Nesting â IPlot (Wks 1â4)",
       "duration": 20,
@@ -108,7 +90,7 @@
     },
     {
       "id": "ipermit",
-      "order": 5,
+      "order": 3,
       "phase": "p2",
       "name": "IPermit Training",
       "duration": 5,
@@ -117,7 +99,7 @@
     },
     {
       "id": "ipermit-ex",
-      "order": 6,
+      "order": 4,
       "phase": "p2",
       "name": "IPermit Exercises 1â10",
       "duration": 10,
@@ -126,7 +108,7 @@
     },
     {
       "id": "ipermit-ess",
-      "order": 7,
+      "order": 5,
       "phase": "p2",
       "name": "IPermit ESS",
       "duration": 5,
@@ -135,7 +117,7 @@
     },
     {
       "id": "nest-ipm",
-      "order": 8,
+      "order": 6,
       "phase": "p2",
       "name": "Nesting â IPermit (Wks 1â4)",
       "duration": 20,
