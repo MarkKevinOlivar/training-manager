@@ -80,24 +80,6 @@
       "description": "Community master plan single-family"
     },
     {
-      "id": "fse",
-      "order": 2,
-      "phase": "p3",
-      "name": "Future Solar Exhibit",
-      "duration": 5,
-      "required": 3,
-      "description": "Preliminary sales document MF"
-    },
-    {
-      "id": "ssp",
-      "order": 3,
-      "phase": "p3",
-      "name": "Solar Site Plan",
-      "duration": 5,
-      "required": 1,
-      "description": "Optimal PV placement per lot"
-    },
-    {
       "id": "memo",
       "order": 1,
       "phase": "p4",
