@@ -71,24 +71,6 @@
       "description": "2â5 reports/day progression"
     },
     {
-      "id": "ipermit-ess",
-      "order": 1,
-      "phase": "p2",
-      "name": "IPermit ESS",
-      "duration": 5,
-      "required": 4,
-      "description": "IPermit with energy storage"
-    },
-    {
-      "id": "nest-ipm",
-      "order": 2,
-      "phase": "p2",
-      "name": "Nesting â IPermit (Wks 1â4)",
-      "duration": 20,
-      "required": 4,
-      "description": "1â2 permits/week progression"
-    },
-    {
       "id": "mp-sf",
       "order": 1,
       "phase": "p3",
