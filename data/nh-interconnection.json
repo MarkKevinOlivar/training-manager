@@ -80,26 +80,8 @@
       "description": "Community master plan single-family"
     },
     {
-      "id": "mppp-sf",
-      "order": 2,
-      "phase": "p3",
-      "name": "MPPP (SF)",
-      "duration": 10,
-      "required": 4,
-      "description": "Master plan permit package SF"
-    },
-    {
-      "id": "mppp-mf",
-      "order": 3,
-      "phase": "p3",
-      "name": "MPPP (MF)",
-      "duration": 10,
-      "required": 4,
-      "description": "Master plan permit package MF"
-    },
-    {
       "id": "fse",
-      "order": 4,
+      "order": 2,
       "phase": "p3",
       "name": "Future Solar Exhibit",
       "duration": 5,
@@ -108,7 +90,7 @@
     },
     {
       "id": "ssp",
-      "order": 5,
+      "order": 3,
       "phase": "p3",
       "name": "Solar Site Plan",
       "duration": 5,
