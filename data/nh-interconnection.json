@@ -80,17 +80,8 @@
       "description": "Community master plan single-family"
     },
     {
-      "id": "mp-ex",
-      "order": 2,
-      "phase": "p3",
-      "name": "Master Plan Exercises 1Ã¢ÂÂ3",
-      "duration": 5,
-      "required": 4,
-      "description": "Guided master plan practice"
-    },
-    {
       "id": "mp-mf",
-      "order": 3,
+      "order": 2,
       "phase": "p3",
       "name": "Master Plan (MF)",
       "duration": 5,
@@ -99,7 +90,7 @@
     },
     {
       "id": "mp-ess",
-      "order": 4,
+      "order": 3,
       "phase": "p3",
       "name": "Master Plan ESS",
       "duration": 5,
@@ -108,7 +99,7 @@
     },
     {
       "id": "mppp-sf",
-      "order": 5,
+      "order": 4,
       "phase": "p3",
       "name": "MPPP (SF)",
       "duration": 10,
@@ -117,7 +108,7 @@
     },
     {
       "id": "mppp-mf",
-      "order": 6,
+      "order": 5,
       "phase": "p3",
       "name": "MPPP (MF)",
       "duration": 10,
@@ -126,7 +117,7 @@
     },
     {
       "id": "fse",
-      "order": 7,
+      "order": 6,
       "phase": "p3",
       "name": "Future Solar Exhibit",
       "duration": 5,
@@ -135,7 +126,7 @@
     },
     {
       "id": "ssp",
-      "order": 8,
+      "order": 7,
       "phase": "p3",
       "name": "Solar Site Plan",
       "duration": 5,
