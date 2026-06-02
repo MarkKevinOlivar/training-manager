@@ -62,15 +62,6 @@
       "description": "Aurora Solar shading reports"
     },
     {
-      "id": "sha-p",
-      "order": 4,
-      "phase": "p1",
-      "name": "Shading Analysis Practice",
-      "duration": 5,
-      "required": 4,
-      "description": "2Ã¢ÂÂ5 reports/day progression"
-    },
-    {
       "id": "mp-sf",
       "order": 1,
       "phase": "p3",
