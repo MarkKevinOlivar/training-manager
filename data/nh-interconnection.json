@@ -89,26 +89,8 @@
       "description": "Insperity self-paced"
     },
     {
-      "id": "phish",
-      "order": 2,
-      "phase": "p4",
-      "name": "Phishing & Anti-Spam",
-      "duration": 5,
-      "required": 3,
-      "description": "Insperity self-paced"
-    },
-    {
-      "id": "idtheft",
-      "order": 3,
-      "phase": "p4",
-      "name": "Identity Theft Awareness",
-      "duration": 5,
-      "required": 3,
-      "description": "Insperity self-paced"
-    },
-    {
       "id": "social",
-      "order": 4,
+      "order": 2,
       "phase": "p4",
       "name": "Social Engineering",
       "duration": 5,
