@@ -68,7 +68,7 @@
       "name": "Shading Analysis Practice",
       "duration": 5,
       "required": 4,
-      "description": "2â5 reports/day progression"
+      "description": "2Ã¢ÂÂ5 reports/day progression"
     },
     {
       "id": "mp-sf",
@@ -83,7 +83,7 @@
       "id": "mp-ex",
       "order": 2,
       "phase": "p3",
-      "name": "Master Plan Exercises 1â3",
+      "name": "Master Plan Exercises 1Ã¢ÂÂ3",
       "duration": 5,
       "required": 4,
       "description": "Guided master plan practice"
@@ -177,6 +177,15 @@
       "duration": 5,
       "required": 3,
       "description": "Insperity self-paced"
+    },
+    {
+      "id": "c1780410054430",
+      "name": "Placeholder",
+      "phase": "p2",
+      "duration": 5,
+      "required": 4,
+      "description": "",
+      "order": 1
     }
   ],
   "trainees": []
