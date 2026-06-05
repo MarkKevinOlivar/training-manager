@@ -88,7 +88,18 @@
       "code": "",
       "startDate": "2026-06-05",
       "notes": "",
-      "plan": []
+      "plan": [
+        {
+          "courseId": "c1780410054430",
+          "startDate": "2026-06-05",
+          "endDate": "2026-06-05",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        }
+      ]
     }
   ]
 }
