@@ -287,6 +287,41 @@
         "idtheft": 0,
         "social": 0
       }
+    },
+    {
+      "id": "m1780675071102",
+      "name": "Kevin Carait",
+      "code": "KPC",
+      "role": "",
+      "team": "",
+      "years": "",
+      "notes": "",
+      "skills": {
+        "pv": 0,
+        "nh": 0,
+        "sha": 0,
+        "iplot": 0,
+        "iplot-p": 0,
+        "cert-w": 0,
+        "cert-d": 0,
+        "nest-ip": 0,
+        "ipermit": 0,
+        "ipermit-ex": 0,
+        "ipermit-ess": 0,
+        "nest-ipm": 0,
+        "mp-sf": 0,
+        "mp-ex": 0,
+        "mp-mf": 0,
+        "mp-ess": 0,
+        "mppp-sf": 0,
+        "mppp-mf": 0,
+        "fse": 0,
+        "ssp": 0,
+        "memo": 0,
+        "phish": 0,
+        "idtheft": 0,
+        "social": 0
+      }
     }
   ]
 }
