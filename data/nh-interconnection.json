@@ -72,12 +72,12 @@
     },
     {
       "id": "c1780410054430",
-      "name": "Placeholder",
+      "order": 1,
+      "name": "PV IX Application",
       "phase": "p2",
-      "duration": 5,
+      "duration": 3,
       "required": 4,
-      "description": "",
-      "order": 1
+      "description": ""
     }
   ],
   "trainees": []
