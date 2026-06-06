@@ -91,11 +91,11 @@
     {
       "id": "cert-d",
       "order": 4,
+      "name": "Sales Proposal Creation",
       "phase": "p2",
-      "name": "Actual Design Certification",
-      "duration": 1,
+      "duration": 5,
       "required": 4,
-      "description": "Practical design exam"
+      "description": ""
     },
     {
       "id": "nest-ip",
