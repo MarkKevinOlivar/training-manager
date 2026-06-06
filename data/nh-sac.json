@@ -82,11 +82,11 @@
     {
       "id": "cert-w",
       "order": 3,
+      "name": "Escrow Update",
       "phase": "p2",
-      "name": "Written Certification",
-      "duration": 1,
+      "duration": 2,
       "required": 4,
-      "description": "Written knowledge exam"
+      "description": ""
     },
     {
       "id": "cert-d",
