@@ -181,11 +181,11 @@
     {
       "id": "mppp-sf",
       "order": 5,
+      "name": "M1/M2 Support",
       "phase": "p3",
-      "name": "MPPP (SF)",
-      "duration": 10,
+      "duration": 5,
       "required": 4,
-      "description": "Master plan permit package SF"
+      "description": ""
     },
     {
       "id": "mppp-mf",
