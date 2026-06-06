@@ -154,11 +154,11 @@
     {
       "id": "mp-ex",
       "order": 2,
+      "name": "Pre-COE Commissioning Reports",
       "phase": "p3",
-      "name": "Master Plan Exercises 1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ3",
       "duration": 5,
       "required": 4,
-      "description": "Guided master plan practice"
+      "description": ""
     },
     {
       "id": "mp-mf",
