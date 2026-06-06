@@ -118,11 +118,11 @@
     {
       "id": "ipermit-ex",
       "order": 7,
+      "name": "Purchase Order",
       "phase": "p2",
-      "name": "IPermit Exercises 1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ10",
       "duration": 10,
       "required": 4,
-      "description": "1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ3 days each exercise"
+      "description": "Purchase Order creation, MFH, POMOD, mailbox management, dashboards"
     },
     {
       "id": "ipermit-ess",
