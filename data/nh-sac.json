@@ -172,11 +172,11 @@
     {
       "id": "mp-ess",
       "order": 4,
+      "name": "Lease Array Mapping",
       "phase": "p3",
-      "name": "Master Plan ESS",
       "duration": 5,
       "required": 4,
-      "description": "Master plan with energy storage"
+      "description": ""
     },
     {
       "id": "mppp-sf",
