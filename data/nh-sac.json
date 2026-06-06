@@ -73,11 +73,11 @@
     {
       "id": "iplot-p",
       "order": 2,
+      "name": "Design Distribution",
       "phase": "p2",
-      "name": "IPlot/Shading Practice",
-      "duration": 5,
+      "duration": 3,
       "required": 4,
-      "description": "2ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ6 designs/day practice"
+      "description": "Distribute Design to Builder and IP"
     },
     {
       "id": "cert-w",
