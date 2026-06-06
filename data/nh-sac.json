@@ -208,11 +208,11 @@
     {
       "id": "ssp",
       "order": 8,
+      "name": "SAC - Compensation",
       "phase": "p3",
-      "name": "Solar Site Plan",
-      "duration": 5,
-      "required": 1,
-      "description": "Optimal PV placement per lot"
+      "duration": 3,
+      "required": 5,
+      "description": ""
     },
     {
       "id": "memo",
