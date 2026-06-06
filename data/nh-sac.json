@@ -127,11 +127,11 @@
     {
       "id": "ipermit-ess",
       "order": 8,
+      "name": "Lien Waiver",
       "phase": "p2",
-      "name": "IPermit ESS",
-      "duration": 5,
+      "duration": 3,
       "required": 4,
-      "description": "IPermit with energy storage"
+      "description": "Report, sending lien waiver to IP, follow up, using docusign/ keeper"
     },
     {
       "id": "nest-ipm",
