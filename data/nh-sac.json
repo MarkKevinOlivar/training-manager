@@ -64,11 +64,11 @@
     {
       "id": "iplot",
       "order": 1,
+      "name": "Community Lot Creation",
       "phase": "p2",
-      "name": "IPlot Training + FM Path",
-      "duration": 10,
+      "duration": 5,
       "required": 4,
-      "description": "SF/MF plot plan with BOM and PV Calc"
+      "description": "Creating community lot in Salesforce"
     },
     {
       "id": "iplot-p",
