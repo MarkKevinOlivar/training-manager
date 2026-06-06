@@ -46,11 +46,11 @@
     {
       "id": "nh",
       "order": 2,
+      "name": "Introduction to Salesforce",
       "phase": "p1",
-      "name": "Introduction to New Homes",
-      "duration": 5,
-      "required": 4,
-      "description": "NH design types and CRM"
+      "duration": 1,
+      "required": 2,
+      "description": "Dashboards, Reports"
     },
     {
       "id": "sha",
