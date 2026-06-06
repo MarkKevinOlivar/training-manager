@@ -190,11 +190,11 @@
     {
       "id": "mppp-mf",
       "order": 6,
+      "name": "NTC/SWO",
       "phase": "p3",
-      "name": "MPPP (MF)",
       "duration": 10,
       "required": 4,
-      "description": "Master plan permit package MF"
+      "description": "Salesforce, Dashboard, case creation, case monitoring"
     },
     {
       "id": "fse",
