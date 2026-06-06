@@ -37,11 +37,11 @@
     {
       "id": "pv",
       "order": 1,
+      "name": "Introduction to New Homes",
       "phase": "p1",
-      "name": "PV Fundamentals",
-      "duration": 5,
-      "required": 4,
-      "description": "Intro to PV systems end-to-end"
+      "duration": 1,
+      "required": 2,
+      "description": ""
     },
     {
       "id": "nh",
@@ -77,7 +77,7 @@
       "name": "IPlot/Shading Practice",
       "duration": 5,
       "required": 4,
-      "description": "2ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ6 designs/day practice"
+      "description": "2ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ6 designs/day practice"
     },
     {
       "id": "cert-w",
@@ -101,10 +101,10 @@
       "id": "nest-ip",
       "order": 5,
       "phase": "p2",
-      "name": "Nesting ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ IPlot (Wks 1ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ4)",
+      "name": "Nesting ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ IPlot (Wks 1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ4)",
       "duration": 20,
       "required": 4,
-      "description": "3ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ7 designs/day progression"
+      "description": "3ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ7 designs/day progression"
     },
     {
       "id": "ipermit",
@@ -113,16 +113,16 @@
       "name": "IPermit Training",
       "duration": 5,
       "required": 4,
-      "description": "1D classroom ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ Individual permit SF"
+      "description": "1D classroom ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Individual permit SF"
     },
     {
       "id": "ipermit-ex",
       "order": 7,
       "phase": "p2",
-      "name": "IPermit Exercises 1ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ10",
+      "name": "IPermit Exercises 1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ10",
       "duration": 10,
       "required": 4,
-      "description": "1ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ3 days each exercise"
+      "description": "1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ3 days each exercise"
     },
     {
       "id": "ipermit-ess",
@@ -137,10 +137,10 @@
       "id": "nest-ipm",
       "order": 9,
       "phase": "p2",
-      "name": "Nesting ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ IPermit (Wks 1ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ4)",
+      "name": "Nesting ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ IPermit (Wks 1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ4)",
       "duration": 20,
       "required": 4,
-      "description": "1ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ2 permits/week progression"
+      "description": "1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ2 permits/week progression"
     },
     {
       "id": "mp-sf",
@@ -155,7 +155,7 @@
       "id": "mp-ex",
       "order": 2,
       "phase": "p3",
-      "name": "Master Plan Exercises 1ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ3",
+      "name": "Master Plan Exercises 1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ3",
       "duration": 5,
       "required": 4,
       "description": "Guided master plan practice"
