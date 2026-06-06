@@ -203,7 +203,7 @@
       "phase": "p3",
       "duration": 10,
       "required": 4,
-      "description": "1. Remote Activation PVS/Enphase Combiner, Cash/Lease ​\n2. Scheduling for Commissioning ​\n3. Re-scheduling ​\n4. NTC Review ​\n5. CSAT Creation\n6. Monitoring"
+      "description": "1. Remote Activation PVS/Enphase Combiner, Cash/Lease ​\n2. Scheduling for Commissioning ​\n3. Re-scheduling ​\n4. NTC Review ​\n5. CSAT Creation\n6. Monitoring\n7. AWS\n8. Call handling - Inbound/ Outbound\n9 . Metrics"
     },
     {
       "id": "ssp",
