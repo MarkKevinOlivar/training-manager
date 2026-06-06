@@ -77,7 +77,7 @@
       "name": "IPlot/Shading Practice",
       "duration": 5,
       "required": 4,
-      "description": "2Ã¢ÂÂ6 designs/day practice"
+      "description": "2ÃÂ¢ÃÂÃÂ6 designs/day practice"
     },
     {
       "id": "cert-w",
@@ -101,10 +101,10 @@
       "id": "nest-ip",
       "order": 5,
       "phase": "p2",
-      "name": "Nesting Ã¢ÂÂ IPlot (Wks 1Ã¢ÂÂ4)",
+      "name": "Nesting ÃÂ¢ÃÂÃÂ IPlot (Wks 1ÃÂ¢ÃÂÃÂ4)",
       "duration": 20,
       "required": 4,
-      "description": "3Ã¢ÂÂ7 designs/day progression"
+      "description": "3ÃÂ¢ÃÂÃÂ7 designs/day progression"
     },
     {
       "id": "ipermit",
@@ -113,16 +113,16 @@
       "name": "IPermit Training",
       "duration": 5,
       "required": 4,
-      "description": "1D classroom Ã¢ÂÂ Individual permit SF"
+      "description": "1D classroom ÃÂ¢ÃÂÃÂ Individual permit SF"
     },
     {
       "id": "ipermit-ex",
       "order": 7,
       "phase": "p2",
-      "name": "IPermit Exercises 1Ã¢ÂÂ10",
+      "name": "IPermit Exercises 1ÃÂ¢ÃÂÃÂ10",
       "duration": 10,
       "required": 4,
-      "description": "1Ã¢ÂÂ3 days each exercise"
+      "description": "1ÃÂ¢ÃÂÃÂ3 days each exercise"
     },
     {
       "id": "ipermit-ess",
@@ -137,10 +137,10 @@
       "id": "nest-ipm",
       "order": 9,
       "phase": "p2",
-      "name": "Nesting Ã¢ÂÂ IPermit (Wks 1Ã¢ÂÂ4)",
+      "name": "Nesting ÃÂ¢ÃÂÃÂ IPermit (Wks 1ÃÂ¢ÃÂÃÂ4)",
       "duration": 20,
       "required": 4,
-      "description": "1Ã¢ÂÂ2 permits/week progression"
+      "description": "1ÃÂ¢ÃÂÃÂ2 permits/week progression"
     },
     {
       "id": "mp-sf",
@@ -155,7 +155,7 @@
       "id": "mp-ex",
       "order": 2,
       "phase": "p3",
-      "name": "Master Plan Exercises 1Ã¢ÂÂ3",
+      "name": "Master Plan Exercises 1ÃÂ¢ÃÂÃÂ3",
       "duration": 5,
       "required": 4,
       "description": "Guided master plan practice"
@@ -292,6 +292,41 @@
       "id": "m1780675071102",
       "name": "Kevin Carait",
       "code": "KPC",
+      "role": "",
+      "team": "",
+      "years": "",
+      "notes": "",
+      "skills": {
+        "pv": 0,
+        "nh": 0,
+        "sha": 0,
+        "iplot": 0,
+        "iplot-p": 0,
+        "cert-w": 0,
+        "cert-d": 0,
+        "nest-ip": 0,
+        "ipermit": 0,
+        "ipermit-ex": 0,
+        "ipermit-ess": 0,
+        "nest-ipm": 0,
+        "mp-sf": 0,
+        "mp-ex": 0,
+        "mp-mf": 0,
+        "mp-ess": 0,
+        "mppp-sf": 0,
+        "mppp-mf": 0,
+        "fse": 0,
+        "ssp": 0,
+        "memo": 0,
+        "phish": 0,
+        "idtheft": 0,
+        "social": 0
+      }
+    },
+    {
+      "id": "m1780783572518",
+      "name": "James AVila",
+      "code": "JAO",
       "role": "",
       "team": "",
       "years": "",
