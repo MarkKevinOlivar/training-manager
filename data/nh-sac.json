@@ -199,11 +199,11 @@
     {
       "id": "fse",
       "order": 7,
+      "name": "SAC",
       "phase": "p3",
-      "name": "Future Solar Exhibit",
-      "duration": 5,
-      "required": 3,
-      "description": "Preliminary sales document MF"
+      "duration": 10,
+      "required": 4,
+      "description": "1. Remote Activation PVS/Enphase Combiner, Cash/Lease ​\n2. Scheduling for Commissioning ​\n3. Re-scheduling ​\n4. NTC Review ​\n5. CSAT Creation\n6. Monitoring"
     },
     {
       "id": "ssp",
