@@ -145,11 +145,11 @@
     {
       "id": "mp-sf",
       "order": 1,
+      "name": "Enlighten Site Creation",
       "phase": "p3",
-      "name": "Master Plan (SF)",
       "duration": 5,
       "required": 4,
-      "description": "Community master plan single-family"
+      "description": ""
     },
     {
       "id": "mp-ex",
