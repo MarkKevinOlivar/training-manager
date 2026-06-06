@@ -100,11 +100,11 @@
     {
       "id": "nest-ip",
       "order": 5,
+      "name": "Permitting",
       "phase": "p2",
-      "name": "Nesting ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ IPlot (Wks 1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ4)",
-      "duration": 20,
+      "duration": 5,
       "required": 4,
-      "description": "3ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ7 designs/day progression"
+      "description": "Permit submission, Permit validation"
     },
     {
       "id": "ipermit",
