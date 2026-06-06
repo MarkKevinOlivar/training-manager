@@ -332,6 +332,10 @@
       "years": "",
       "notes": "",
       "skills": {
+        "memo": 5,
+        "phish": 5,
+        "idtheft": 5,
+        "social": 5,
         "pv": 0,
         "nh": 0,
         "sha": 0,
@@ -351,11 +355,7 @@
         "mppp-sf": 0,
         "mppp-mf": 0,
         "fse": 0,
-        "ssp": 0,
-        "memo": 0,
-        "phish": 0,
-        "idtheft": 0,
-        "social": 0
+        "ssp": 0
       }
     },
     {
