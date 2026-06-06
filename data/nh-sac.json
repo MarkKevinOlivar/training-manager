@@ -163,11 +163,11 @@
     {
       "id": "mp-mf",
       "order": 3,
+      "name": "PVS6 Swap to Envoy Reports",
       "phase": "p3",
-      "name": "Master Plan (MF)",
       "duration": 5,
       "required": 4,
-      "description": "Community master plan multi-family"
+      "description": ""
     },
     {
       "id": "mp-ess",
