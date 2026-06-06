@@ -109,11 +109,11 @@
     {
       "id": "ipermit",
       "order": 6,
+      "name": "Work Order Processing",
       "phase": "p2",
-      "name": "IPermit Training",
-      "duration": 5,
+      "duration": 15,
       "required": 4,
-      "description": "1D classroom ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Individual permit SF"
+      "description": "Work order processing, Builder portals, mailbox management, dashboards, discrepancy resolution"
     },
     {
       "id": "ipermit-ex",
