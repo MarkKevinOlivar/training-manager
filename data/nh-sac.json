@@ -136,11 +136,11 @@
     {
       "id": "nest-ipm",
       "order": 9,
+      "name": "CF2R",
       "phase": "p2",
-      "name": "Nesting ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ IPermit (Wks 1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ4)",
-      "duration": 20,
+      "duration": 3,
       "required": 4,
-      "description": "1ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ2 permits/week progression"
+      "description": "Salesforce, dashboard, submission to portal"
     },
     {
       "id": "mp-sf",
