@@ -4,8 +4,8 @@
       "id": "p1",
       "name": "Phase 1: NH Onboarding",
       "short": "Phase 1",
-      "color": "#1D9E75",
       "order": 1,
+      "color": "#ffff80",
       "description": "Foundational onboarding training for new hires"
     },
     {
