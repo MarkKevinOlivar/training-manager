@@ -330,8 +330,10 @@
       "role": "",
       "team": "",
       "years": "",
-      "notes": "",
+      "notes": "transferred to SAC/PC team June 7, 2026",
       "skills": {
+        "mppp-mf": 3,
+        "fse": 3,
         "memo": 5,
         "phish": 5,
         "idtheft": 5,
@@ -353,8 +355,6 @@
         "mp-mf": 0,
         "mp-ess": 0,
         "mppp-sf": 0,
-        "mppp-mf": 0,
-        "fse": 0,
         "ssp": 0
       }
     },
