@@ -10,11 +10,11 @@
     },
     {
       "id": "p2",
-      "name": "Phase 2: Lot-Level",
+      "name": "Phase 2: Project Admin",
       "short": "Phase 2",
-      "color": "#185FA5",
       "order": 2,
-      "description": "Lot-level design courses including IPlot and IPermit"
+      "color": "#008080",
+      "description": ""
     },
     {
       "id": "p3",
