@@ -18,11 +18,11 @@
     },
     {
       "id": "p3",
-      "name": "Phase 3: Community-Level",
+      "name": "Phase 3: SAC/NTC/SWO",
       "short": "Phase 3",
-      "color": "#E67E22",
       "order": 3,
-      "description": "Community-level design including Master Plan and MPPP"
+      "color": "#0000ff",
+      "description": "Service Activation, Notice to Correct, Service Work Order"
     },
     {
       "id": "p4",
