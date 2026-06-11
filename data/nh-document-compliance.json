@@ -233,5 +233,15 @@
       "order": 1
     }
   ],
-  "trainees": []
+  "trainees": [
+    {
+      "id": "t1781192801903",
+      "name": "Trainee 1 Name",
+      "role": "",
+      "code": "MTO",
+      "startDate": "2026-06-11",
+      "notes": "",
+      "plan": []
+    }
+  ]
 }
