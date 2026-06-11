@@ -878,6 +878,26 @@
         }
       ],
       "code": "JTZ"
+    },
+    {
+      "id": "m1778549113804",
+      "name": "Engr. John Mars Venus",
+      "role": "",
+      "trainer": "",
+      "startDate": "2026-06-11",
+      "notes": "",
+      "plan": [
+        {
+          "courseId": "c1778607429695",
+          "startDate": "2026-06-11",
+          "endDate": "2026-06-11",
+          "result": "none",
+          "score": "",
+          "completionDate": "",
+          "notes": "",
+          "trainer": ""
+        }
+      ]
     }
   ],
   "members": [
