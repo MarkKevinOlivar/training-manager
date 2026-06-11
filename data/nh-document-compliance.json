@@ -35,26 +35,8 @@
   ],
   "courses": [
     {
-      "id": "nh",
-      "order": 1,
-      "phase": "p1",
-      "name": "Introduction to New Homes",
-      "duration": 5,
-      "required": 4,
-      "description": "NH design types and CRM"
-    },
-    {
-      "id": "sha",
-      "order": 2,
-      "phase": "p1",
-      "name": "Shading Analysis Training",
-      "duration": 5,
-      "required": 4,
-      "description": "Aurora Solar shading reports"
-    },
-    {
       "id": "sha-p",
-      "order": 3,
+      "order": 1,
       "phase": "p1",
       "name": "Shading Analysis Practice",
       "duration": 5,
