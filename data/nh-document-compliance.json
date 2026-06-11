@@ -35,15 +35,6 @@
   ],
   "courses": [
     {
-      "id": "sha-p",
-      "order": 1,
-      "phase": "p1",
-      "name": "Shading Analysis Practice",
-      "duration": 5,
-      "required": 4,
-      "description": "2â5 reports/day progression"
-    },
-    {
       "id": "iplot",
       "order": 1,
       "phase": "p2",
@@ -231,6 +222,15 @@
       "duration": 5,
       "required": 3,
       "description": "Insperity self-paced"
+    },
+    {
+      "id": "c1781192753020",
+      "name": "Training 1",
+      "phase": "p1",
+      "duration": 1,
+      "required": 5,
+      "description": "",
+      "order": 1
     }
   ],
   "trainees": []
