@@ -59,6 +59,15 @@
       "duration": 1,
       "required": 2,
       "description": "Process, Key Responsibilities and Goals, Utilities, Internal and External Customers, Spec Review"
+    },
+    {
+      "id": "c1781801876308",
+      "name": "Introduction to Salesforce",
+      "phase": "ph1781800711564",
+      "duration": 1,
+      "required": 5,
+      "description": "Dashboards and Reports",
+      "order": 3
     }
   ],
   "trainees": [
