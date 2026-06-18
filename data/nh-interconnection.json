@@ -107,12 +107,12 @@
     },
     {
       "id": "c1781802356492",
+      "order": 2,
       "name": "PACIFIC GAS & ELECTRIC (PG&E)",
       "phase": "ph1781801068299",
       "duration": 10,
       "required": 5,
-      "description": "Spec Review, Portal Requirements and QC Checklist, SFDC Past SLA Codes/ Sub-Category Codes, Submission Demo, Exam, Side by Side Activities/Peer to Peer QA",
-      "order": 2
+      "description": "Spec Review, Portal Requirements & QC Checklist, Past SLA & Sub-Category Codes, Submission Demo, Exam, Side by Side Activity/Peer to Peer QA"
     }
   ],
   "trainees": [
