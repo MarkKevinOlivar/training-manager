@@ -35,15 +35,6 @@
   ],
   "courses": [
     {
-      "id": "pv",
-      "order": 1,
-      "phase": "p1",
-      "name": "PV Fundamentals",
-      "duration": 5,
-      "required": 4,
-      "description": "Intro to PV systems end-to-end"
-    },
-    {
       "id": "mp-sf",
       "order": 1,
       "phase": "p3",
