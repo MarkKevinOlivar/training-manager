@@ -102,22 +102,5 @@
       ]
     }
   ],
-  "members": [
-    {
-      "id": "m1780674212592",
-      "name": "John Mars Venus",
-      "code": "",
-      "role": "",
-      "team": "",
-      "years": "",
-      "notes": "",
-      "skills": {
-        "c1780410054430": 4,
-        "pv": 0,
-        "mp-sf": 0,
-        "memo": 0,
-        "social": 0
-      }
-    }
-  ]
+  "members": []
 }
