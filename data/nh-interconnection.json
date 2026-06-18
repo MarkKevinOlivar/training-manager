@@ -1,12 +1,12 @@
 {
   "phases": [
     {
-      "id": "p4",
-      "name": "Phase 4: Compliance",
-      "short": "Phase 4",
-      "color": "#7F77DD",
-      "order": 4,
-      "description": "Compliance and security self-paced courses"
+      "id": "ph1781800711564",
+      "name": "Compliance and On-Boarding",
+      "short": "Phase 1",
+      "order": 1,
+      "color": "#1d9e75",
+      "description": "Understanding New Homes Division\nBusiness and New Homes Org Chart"
     }
   ],
   "courses": [],
