@@ -292,6 +292,15 @@
       "required": 5,
       "description": "SFDC Dashboard, Spec Review, Process, Side by Side, Exam",
       "order": 1
+    },
+    {
+      "id": "c1781808164225",
+      "name": "PTO Letter Validation",
+      "phase": "ph1781808006648",
+      "duration": 1,
+      "required": 5,
+      "description": "SFDC Dashboard, Spec Review, Process, Side by Side, Exam",
+      "order": 2
     }
   ],
   "trainees": [],
