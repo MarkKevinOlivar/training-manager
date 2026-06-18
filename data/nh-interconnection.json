@@ -31,6 +31,14 @@
       "order": 4,
       "color": "#9f1d2a",
       "description": ""
+    },
+    {
+      "id": "ph1781801237499",
+      "name": "COMPLIANCE",
+      "short": "PHASE 4",
+      "order": 5,
+      "color": "#8a9f1d",
+      "description": ""
     }
   ],
   "courses": [],
