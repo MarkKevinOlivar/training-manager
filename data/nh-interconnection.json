@@ -1,22 +1,6 @@
 {
   "phases": [
     {
-      "id": "p2",
-      "name": "Phase 2: PG&E Trainings",
-      "short": "Phase 2",
-      "order": 2,
-      "color": "#185fa5",
-      "description": "--"
-    },
-    {
-      "id": "p3",
-      "name": "Phase 3: Community-Level",
-      "short": "Phase 3",
-      "color": "#E67E22",
-      "order": 3,
-      "description": "Community-level design including Master Plan and MPPP"
-    },
-    {
       "id": "p4",
       "name": "Phase 4: Compliance",
       "short": "Phase 4",
