@@ -304,12 +304,12 @@
     },
     {
       "id": "c1781808654594",
+      "order": 3,
       "name": "RAMP Expense Validation",
-      "phase": "ph1781800711564",
+      "phase": "ph1781800891411",
       "duration": 1,
       "required": 5,
-      "description": "Credit Card Transaction Validation for Interconnection process.",
-      "order": 5
+      "description": "Credit Card Transaction Validation for Interconnection process."
     }
   ],
   "trainees": [],
