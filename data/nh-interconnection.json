@@ -301,6 +301,15 @@
       "required": 5,
       "description": "SFDC Dashboard, Spec Review, Process, Side by Side, Exam",
       "order": 2
+    },
+    {
+      "id": "c1781808654594",
+      "name": "RAMP Expense Validation",
+      "phase": "ph1781800711564",
+      "duration": 1,
+      "required": 5,
+      "description": "Credit Card Transaction Validation for Interconnection process.",
+      "order": 5
     }
   ],
   "trainees": [],
