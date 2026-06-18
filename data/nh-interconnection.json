@@ -7,6 +7,14 @@
       "order": 1,
       "color": "#1d9e75",
       "description": "Understanding New Homes Division"
+    },
+    {
+      "id": "ph1781800891411",
+      "name": "Pre-submission (SDPTO) and Post Submissions (RPTO)",
+      "short": "Phase 2",
+      "order": 2,
+      "color": "#1d9e75",
+      "description": ""
     }
   ],
   "courses": [],
