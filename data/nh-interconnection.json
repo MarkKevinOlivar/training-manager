@@ -2,11 +2,11 @@
   "phases": [
     {
       "id": "ph1781800711564",
-      "name": "Compliance and On-Boarding",
-      "short": "Phase 1",
+      "name": "PHASE 1: Compliance and On-Boarding",
+      "short": "Understanding New Homes Division",
       "order": 1,
       "color": "#1d9e75",
-      "description": "Understanding New Homes Division\nBusiness and New Homes Org Chart"
+      "description": "Business and New Homes Organization Chart"
     }
   ],
   "courses": [],
