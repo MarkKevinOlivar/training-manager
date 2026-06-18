@@ -185,6 +185,15 @@
       "required": 5,
       "description": "Spec Review, Portal Standards & QC Checklist, Past SLA & Sub-Category Codes, Submission Demo, Exam, Side by Side Activity/Peer to Peer QA",
       "order": 10
+    },
+    {
+      "id": "c1781803651117",
+      "name": "TURLOCK IRRIGATION DISTRICT (TID)",
+      "phase": "ph1781800711564",
+      "duration": 10,
+      "required": 5,
+      "description": "Spec Review, Portal Standards & QC Checklist, Past SLA & Sub-Category Codes, Submission Demo, Exam, Side by Side Activity/Peer to Peer QA",
+      "order": 5
     }
   ],
   "trainees": [
