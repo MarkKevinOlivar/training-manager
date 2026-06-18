@@ -35,15 +35,6 @@
   ],
   "courses": [
     {
-      "id": "mp-sf",
-      "order": 1,
-      "phase": "p3",
-      "name": "Master Plan (SF)",
-      "duration": 5,
-      "required": 4,
-      "description": "Community master plan single-family"
-    },
-    {
       "id": "memo",
       "order": 1,
       "phase": "p4",
@@ -60,15 +51,6 @@
       "duration": 5,
       "required": 3,
       "description": "Insperity self-paced"
-    },
-    {
-      "id": "c1780410054430",
-      "order": 1,
-      "name": "PV IX Application",
-      "phase": "p2",
-      "duration": 3,
-      "required": 4,
-      "description": ""
     }
   ],
   "trainees": [
@@ -79,18 +61,7 @@
       "code": "",
       "startDate": "2026-06-05",
       "notes": "",
-      "plan": [
-        {
-          "courseId": "c1780410054430",
-          "startDate": "2026-06-05",
-          "endDate": "2026-06-05",
-          "result": "none",
-          "score": "",
-          "completionDate": "",
-          "notes": "",
-          "trainer": ""
-        }
-      ]
+      "plan": []
     }
   ],
   "members": []
