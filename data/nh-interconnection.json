@@ -80,12 +80,12 @@
     },
     {
       "id": "c1781801957212",
+      "order": 1,
       "name": "SDPTO: Process, Reports and Work Queue",
-      "phase": "ph1781800711564",
+      "phase": "ph1781800891411",
       "duration": 1,
       "required": 5,
-      "description": "Spec Review, Interconnection QC checklist, SFDC Dashboard and Controls",
-      "order": 5
+      "description": "Spec Review, Interconnection QC checklist, SFDC Dashboard and Controls"
     }
   ],
   "trainees": [
