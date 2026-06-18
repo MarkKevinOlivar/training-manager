@@ -161,12 +161,12 @@
     },
     {
       "id": "c1781803316909",
+      "order": 8,
       "name": "CITY OF BANNING ELECTRIC UTILITY",
       "phase": "ph1781801068299",
-      "duration": 5,
-      "required": 4,
-      "description": "",
-      "order": 8
+      "duration": 10,
+      "required": 5,
+      "description": "Spec Review, Portal Standards & QC Checklist, Past SLA & Sub-Category Codes, Submission Demo, Exam, Side by Side Activity/Peer to Peer QA"
     }
   ],
   "trainees": [
