@@ -95,6 +95,15 @@
       "required": 5,
       "description": "Mailbox Management, Spec Review, SFDC Dashboard and Controls",
       "order": 2
+    },
+    {
+      "id": "c1781802220964",
+      "name": "SAN DIEGO GAS & ELECTRIC (SDG&E)",
+      "phase": "ph1781800711564",
+      "duration": 10,
+      "required": 5,
+      "description": "Spec Review, Portal, Requirements and QC Checklist, SFDC Past SLA Codes, Sub-Category Codes, Submission Demo, Examination, Side by Side Activities/Peer to Peer QA",
+      "order": 5
     }
   ],
   "trainees": [
