@@ -77,6 +77,15 @@
       "required": 5,
       "description": "Introduction to PV Systems (End to End), Single Line Diagram/ AC-DC Calculator",
       "order": 4
+    },
+    {
+      "id": "c1781801957212",
+      "name": "SDPTO: Process, Reports and Work Queue",
+      "phase": "ph1781800711564",
+      "duration": 1,
+      "required": 5,
+      "description": "Spec Review, Interconnection QC checklist, SFDC Dashboard and Controls",
+      "order": 5
     }
   ],
   "trainees": [
