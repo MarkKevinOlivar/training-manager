@@ -49,16 +49,16 @@
       "duration": 1,
       "required": 2,
       "description": "Business and New Homes Organization Chart",
-      "order": 2
+      "order": 1
     },
     {
       "id": "c1781801822196",
+      "order": 2,
       "name": "New Homes: Introduction to Interconnection",
       "phase": "ph1781800711564",
       "duration": 1,
       "required": 2,
-      "description": "Process, Key Responsibilities, Goals\nUtilities\nInternal and External Customers\nSpec Review",
-      "order": 1
+      "description": "Process, Key Responsibilities and Goals, Utilities, Internal and External Customers, Spec Review"
     }
   ],
   "trainees": [
