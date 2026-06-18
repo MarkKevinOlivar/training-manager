@@ -212,6 +212,15 @@
       "required": 5,
       "description": "Spec Review, Portal Standards & QC Checklist, Past SLA & Sub-Category Codes, Submission Demo, Exam, Side by Side Activity/Peer to Peer QA",
       "order": 13
+    },
+    {
+      "id": "c1781804096030",
+      "name": "LODI ELECTRIC UTILITY (LODI)",
+      "phase": "ph1781801068299",
+      "duration": 10,
+      "required": 5,
+      "description": "Spec Review, Portal Standards & QC Checklist, Past SLA & Sub-Category Codes, Submission Demo, Exam, Side by Side Activity/Peer to Peer QA",
+      "order": 14
     }
   ],
   "trainees": [
