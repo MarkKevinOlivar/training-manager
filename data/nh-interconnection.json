@@ -257,6 +257,15 @@
       "required": 5,
       "description": "Peer to Peer (Pre QA validation), Corporate (QA validation), SFDC Dashboard and Navigation",
       "order": 1
+    },
+    {
+      "id": "c1781804588631",
+      "name": "Introduction: Memo and Spec",
+      "phase": "ph1781801237499",
+      "duration": 1,
+      "required": 4,
+      "description": "Format and Technical Writing, Portal Navigation, Spec Review",
+      "order": 2
     }
   ],
   "trainees": [
