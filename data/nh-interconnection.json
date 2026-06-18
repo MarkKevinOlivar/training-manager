@@ -68,6 +68,15 @@
       "required": 5,
       "description": "Dashboards and Reports",
       "order": 3
+    },
+    {
+      "id": "c1781801919380",
+      "name": "PV Fundamentals",
+      "phase": "ph1781800711564",
+      "duration": 1,
+      "required": 5,
+      "description": "Introduction to PV Systems (End to End), Single Line Diagram/ AC-DC Calculator",
+      "order": 4
     }
   ],
   "trainees": [
