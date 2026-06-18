@@ -266,6 +266,15 @@
       "required": 4,
       "description": "Format and Technical Writing, Portal Navigation, Spec Review",
       "order": 2
+    },
+    {
+      "id": "c1781807898512",
+      "name": "Indivdual Scorecard and Critical Success Factor (CSF)",
+      "phase": "ph1781801237499",
+      "duration": 1,
+      "required": 5,
+      "description": "Target Metrics, Scoring",
+      "order": 3
     }
   ],
   "trainees": [],
