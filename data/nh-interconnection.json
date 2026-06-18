@@ -248,6 +248,15 @@
       "required": 5,
       "description": "Spec Review, SFDC Management, OHO Checklist, Exam, Call Simulation & Shadowing, Nesting Period",
       "order": 1
+    },
+    {
+      "id": "c1781804538174",
+      "name": "First Pass Yield (FPY)",
+      "phase": "ph1781801237499",
+      "duration": 1,
+      "required": 5,
+      "description": "Peer to Peer (Pre QA validation), Corporate (QA validation), SFDC Dashboard and Navigation",
+      "order": 1
     }
   ],
   "trainees": [
