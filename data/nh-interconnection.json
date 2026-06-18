@@ -39,6 +39,14 @@
       "order": 5,
       "color": "#8a9f1d",
       "description": ""
+    },
+    {
+      "id": "ph1781808006648",
+      "name": "Final Solar Permit and PTO Letter Validation",
+      "short": "PHASE 5",
+      "order": 6,
+      "color": "#1f9f1d",
+      "description": ""
     }
   ],
   "courses": [
