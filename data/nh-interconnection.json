@@ -239,6 +239,15 @@
       "duration": 10,
       "required": 5,
       "description": "Spec Review, Portal Standards & QC Checklist, Past SLA & Sub-Category Codes, Submission Demo, Exam, Side by Side Activity/Peer to Peer QA"
+    },
+    {
+      "id": "c1781804492366",
+      "name": "OHO: Process, Reports and Work Queue",
+      "phase": "ph1781801196723",
+      "duration": 30,
+      "required": 5,
+      "description": "Spec Review, SFDC Management, OHO Checklist, Exam, Call Simulation & Shadowing, Nesting Period",
+      "order": 1
     }
   ],
   "trainees": [
