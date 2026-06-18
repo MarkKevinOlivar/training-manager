@@ -86,6 +86,15 @@
       "duration": 1,
       "required": 5,
       "description": "Spec Review, Interconnection QC checklist, SFDC Dashboard and Controls"
+    },
+    {
+      "id": "c1781802003988",
+      "name": "RPTO: Process, Reports and Work Queue",
+      "phase": "ph1781800891411",
+      "duration": 1,
+      "required": 5,
+      "description": "Mailbox Management, Spec Review, SFDC Dashboard and Controls",
+      "order": 2
     }
   ],
   "trainees": [
