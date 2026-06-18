@@ -41,7 +41,17 @@
       "description": ""
     }
   ],
-  "courses": [],
+  "courses": [
+    {
+      "id": "c1781801793956",
+      "name": "Understanding New Homes Division",
+      "phase": "ph1781800711564",
+      "duration": 1,
+      "required": 2,
+      "description": "Business and New Homes Organization Chart",
+      "order": 1
+    }
+  ],
   "trainees": [
     {
       "id": "t1780674137468",
