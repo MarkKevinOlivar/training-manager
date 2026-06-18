@@ -176,6 +176,15 @@
       "required": 5,
       "description": "Spec Review, Portal Standards & QC Checklist, Past SLA & Sub-Category Codes, Submission Demo, Exam, Side by Side Activity/Peer to Peer QA",
       "order": 9
+    },
+    {
+      "id": "c1781803492926",
+      "name": "IMPERIAL IRRIGATION DISTRICT (IID)",
+      "phase": "ph1781801068299",
+      "duration": 10,
+      "required": 5,
+      "description": "Spec Review, Portal Standards & QC Checklist, Past SLA & Sub-Category Codes, Submission Demo, Exam, Side by Side Activity/Peer to Peer QA",
+      "order": 10
     }
   ],
   "trainees": [
