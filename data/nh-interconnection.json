@@ -33,26 +33,7 @@
       "description": "Compliance and security self-paced courses"
     }
   ],
-  "courses": [
-    {
-      "id": "memo",
-      "order": 1,
-      "phase": "p4",
-      "name": "Intro to SPECs & Memos",
-      "duration": 5,
-      "required": 3,
-      "description": "Insperity self-paced"
-    },
-    {
-      "id": "social",
-      "order": 2,
-      "phase": "p4",
-      "name": "Social Engineering",
-      "duration": 5,
-      "required": 3,
-      "description": "Insperity self-paced"
-    }
-  ],
+  "courses": [],
   "trainees": [
     {
       "id": "t1780674137468",
