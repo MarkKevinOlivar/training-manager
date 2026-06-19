@@ -312,7 +312,17 @@
       "description": "Credit Card Transaction Validation for Interconnection process."
     }
   ],
-  "trainees": [],
+  "trainees": [
+    {
+      "id": "t1781833351116",
+      "name": "Christine Ann U. Hernandez",
+      "role": "Project Coordinator II",
+      "code": "CZH",
+      "startDate": "2025-05-01",
+      "notes": "",
+      "plan": []
+    }
+  ],
   "members": [
     {
       "id": "m1781805563385",
