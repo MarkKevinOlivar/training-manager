@@ -345,10 +345,10 @@
           "courseId": "c1781801876308",
           "startDate": "2025-05-01",
           "endDate": "2025-05-31",
-          "result": "none",
-          "score": "",
-          "completionDate": "",
-          "notes": "",
+          "result": "pass",
+          "score": "Pass",
+          "completionDate": "2025-05-31",
+          "notes": "For record purposes only. Already trained.",
           "trainer": ""
         },
         {
