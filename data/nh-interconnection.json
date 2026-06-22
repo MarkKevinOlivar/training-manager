@@ -585,10 +585,10 @@
           "courseId": "c1781802220964",
           "startDate": "2026-03-23",
           "endDate": "2026-03-23",
-          "result": "none",
-          "score": "",
+          "result": "pass",
+          "score": "Pass",
           "completionDate": "",
-          "notes": "",
+          "notes": "For record purposes only. Already trained.",
           "trainer": ""
         },
         {
