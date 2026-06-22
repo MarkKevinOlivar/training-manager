@@ -1295,10 +1295,10 @@
           "courseId": "c1781801957212",
           "startDate": "2025-05-01",
           "endDate": "2026-06-22",
-          "result": "none",
-          "score": "",
-          "completionDate": "",
-          "notes": "",
+          "result": "pass",
+          "score": "Pass",
+          "completionDate": "2026-06-22",
+          "notes": "For record purposes only. Already trained.",
           "trainer": ""
         },
         {
