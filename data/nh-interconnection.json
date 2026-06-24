@@ -310,6 +310,15 @@
       "duration": 1,
       "required": 5,
       "description": "Credit Card Transaction Validation for Interconnection process."
+    },
+    {
+      "id": "c1782327006266",
+      "name": "Introduction to Goals System",
+      "phase": "ph1781800711564",
+      "duration": 5,
+      "required": 5,
+      "description": "Output targets, Short-term goals, Process goals",
+      "order": 5
     }
   ],
   "trainees": [
@@ -1562,7 +1571,7 @@
       "role": "Project Coordinator II",
       "team": "Interconnection Team",
       "years": "1",
-      "notes": "Promoted from training â 6/22/2026",
+      "notes": "Promoted from training Ã¢ÂÂ 6/22/2026",
       "skills": {
         "c1781801793956": 2,
         "c1781801822196": 2,
@@ -1602,7 +1611,7 @@
       "role": "Project Coordinator",
       "team": "Interconnection Team",
       "years": "0.25",
-      "notes": "Promoted from training â 6/22/2026",
+      "notes": "Promoted from training Ã¢ÂÂ 6/22/2026",
       "skills": {
         "c1781801793956": 5,
         "c1781801822196": 5,
@@ -1642,7 +1651,7 @@
       "role": "Senior Project Coordinator",
       "team": "Interconnection Team",
       "years": "1",
-      "notes": "Promoted from training â 6/22/2026",
+      "notes": "Promoted from training Ã¢ÂÂ 6/22/2026",
       "skills": {
         "c1781801793956": 5,
         "c1781801822196": 5,
@@ -1682,7 +1691,7 @@
       "role": "Project Coordinator",
       "team": "Interconnection Team",
       "years": "1",
-      "notes": "Promoted from training â 6/22/2026",
+      "notes": "Promoted from training Ã¢ÂÂ 6/22/2026",
       "skills": {
         "c1781801793956": 2,
         "c1781801822196": 2,
@@ -1762,7 +1771,7 @@
       "role": "Project Coordinator",
       "team": "Interconnection Team",
       "years": "0.7",
-      "notes": "Promoted from training — 6/22/2026",
+      "notes": "Promoted from training â 6/22/2026",
       "skills": {
         "c1781801793956": 2,
         "c1781801822196": 2,
@@ -1802,7 +1811,7 @@
       "role": "Project Specialist",
       "team": "Interconnection Team",
       "years": "2",
-      "notes": "Promoted from training — 6/22/2026",
+      "notes": "Promoted from training â 6/22/2026",
       "skills": {
         "c1781801793956": 2,
         "c1781801822196": 2,
@@ -1842,7 +1851,7 @@
       "role": "Senior Project Coordinator",
       "team": "Interconnection Team",
       "years": "1",
-      "notes": "Promoted from training — 6/22/2026",
+      "notes": "Promoted from training â 6/22/2026",
       "skills": {
         "c1781801793956": 2,
         "c1781801822196": 2,
