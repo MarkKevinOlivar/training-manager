@@ -313,12 +313,12 @@
     },
     {
       "id": "c1782327006266",
+      "order": 4,
       "name": "Introduction to Goals System",
-      "phase": "ph1781800711564",
+      "phase": "ph1781801237499",
       "duration": 5,
       "required": 5,
-      "description": "Output targets, Short-term goals, Process goals",
-      "order": 5
+      "description": "Output targets, Short-term goals, Process goals"
     }
   ],
   "trainees": [
